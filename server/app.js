@@ -15,6 +15,9 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
+// start up mongoose db
+require('./database/mongoose')
+
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 
