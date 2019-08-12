@@ -3,8 +3,6 @@
 # dependencies
 node_modules/
 
-#environment variables
-.env
 
 # production
 /build/
