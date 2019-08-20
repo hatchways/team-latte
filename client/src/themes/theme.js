@@ -1,6 +1,7 @@
 import { createMuiTheme } from "@material-ui/core";
 
-export const theme = createMuiTheme({
+//This is creating a custom theme...
+/* export const theme = createMuiTheme({
   typography: {
     fontFamily: '"Roboto"'
   },
@@ -9,3 +10,17 @@ export const theme = createMuiTheme({
   error: "#d8000c",
   bgcolor: "#f6f6f6"
 });
+*/
+
+const theme = createMuiTheme({
+  palette: {
+    primary: "#69E781"
+  },
+  typography: {
+    fontFamily:"Arial"
+  }
+
+});
+
+export default theme;
+
