@@ -8,6 +8,8 @@ import Container from '@material-ui/core/Container';
 import { Typography } from "@material-ui/core"
 import Button from '@material-ui/core/Button';
 
+import Fields from './Fields'
+
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import JHAvatar from '../assets/jh-avatar.jpg'
 import "./Profile.css"
@@ -21,12 +23,7 @@ const useStyles = makeStyles({
     width: 60,
     height: 60,
   },
-  fields: {
-    padding: 50,
-  },
-  field: {
-    padding: 2,
-  },
+
   projectTitle: {
     padding: 20,
   },
@@ -34,6 +31,8 @@ const useStyles = makeStyles({
     padding:20,
   }
 });
+
+const fieldsData =["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"]
 
 export default function ProfilePage() {
   const classes = useStyles()
@@ -61,12 +60,7 @@ export default function ProfilePage() {
               </Typography>
             </Grid>
 
-            <Grid container justify="center" alignItems="center" className={classes.fields}>
-              <Chip label="TECHNOLOGY" color="primary" size="small" className={classes.field}/>
-              <Chip label="COFFEE" color="primary" size="small" className={classes.field}/>
-              <Chip label="CUSTOMER SERVICE" color="primary" size="small" className={classes.field}/>
-              <Chip label="RESTAURANT" color="primary" size="small" className={classes.field}/>
-            </Grid>
+            <Fields fieldsData={fieldsData} />
             
             <Grid container justify="center" alignItems="center">
               <Button variant="outlined" className={classes.messageButton}>
