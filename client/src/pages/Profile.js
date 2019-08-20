@@ -6,7 +6,7 @@ import Chip from '@material-ui/core/Chip';
 
 import JHAvatar from '../assets/jh-avatar.jpg'
 
-export class ProfilePage extends React.Component {
+class ProfilePage extends React.Component {
   
   render() {
 
@@ -73,3 +73,5 @@ export class ProfilePage extends React.Component {
     )
   }
 }
+
+export default ProfilePage
