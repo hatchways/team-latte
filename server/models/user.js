@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema({
     }],
 })
 
+userSchema.virtual('Projects', {
+    ref: 'Project',
+    localField: '_id',
+    foreignField: 'author'
+})
+
 userSchema.methods.generateAuthToken = async function () {
     console.log('hello')
     const token = jwt.sign({_id: this.id.toString()},process.env.JWT_SECRET)
@@ -43,12 +49,15 @@ userSchema.methods.toJSON = function() {
     const userObject = this.toObject()
 
     delete userObject.password
+    delete userObject.tokens
+    delete userObject.__v
 
     return userObject
 }
 
 userSchema.statics.checkCredentials = async(email, password) =>{
     const user = await User.findOne({email})
+    console.log(email)
     if(!user){
         throw new Error('Login credentials are incorrect.')
     }
