@@ -41,7 +41,6 @@ router.post('/project', auth, upload.array('images', 5), async (req, res) => {
     Promise.all(promises).then(results => {
         results.forEach(result => {
             photos.push(result.Location)
-            console.log(result.Location)
         });
         const project = new Project({
             ... req.body,
@@ -52,7 +51,7 @@ router.post('/project', auth, upload.array('images', 5), async (req, res) => {
         project.save()
         res.send(project)
     }).catch(e => {
-        console.log(e)
+        res.status(503).send(e)
     })
 })
 

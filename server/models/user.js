@@ -36,7 +36,6 @@ userSchema.virtual('Projects', {
 })
 
 userSchema.methods.generateAuthToken = async function () {
-    console.log('hello')
     const token = jwt.sign({_id: this.id.toString()},process.env.JWT_SECRET)
 
     this.tokens = this.tokens.concat({ token })
@@ -57,13 +56,11 @@ userSchema.methods.toJSON = function() {
 
 userSchema.statics.checkCredentials = async(email, password) =>{
     const user = await User.findOne({email})
-    console.log(email)
     if(!user){
         throw new Error('Login credentials are incorrect.')
     }
     const pCompare = await bcrypt.compare(password, user.password)
     if(pCompare){
-        console.log(user)
         return user
     }else {
         throw new Error('Login credentials are incorrect.')
