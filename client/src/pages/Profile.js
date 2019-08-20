@@ -9,10 +9,16 @@ import { Typography } from "@material-ui/core"
 import Button from '@material-ui/core/Button';
 
 import Fields from './Fields'
+import ProjectList from './Project'
 
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import JHAvatar from '../assets/jh-avatar.jpg'
+import coffeeCup from '../assets/coffee-cup.jpg'
+import espresso from '../assets/espresso.jpg'
+import espresso2 from '../assets/espresso2.jpg'
+import pouringCoffee from '../assets/pouring-coffee.jpg'
 import "./Profile.css"
+
 
 const useStyles = makeStyles({
   avatar: {
@@ -32,7 +38,40 @@ const useStyles = makeStyles({
   }
 });
 
-const fieldsData =["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"]
+const fieldsData = ["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"]
+
+const projectData = [
+  {
+    img: coffeeCup,
+    alt: 'Coffee Cup',
+    field: 'Customer Service',
+    title: "Urban Jungle: eco-friendly coffee shop",
+    raised: '23,874',
+    goal: '40,000',
+    equity: '10%',
+    daysToGo: '44 days to go'
+  },
+  {
+    img: espresso,
+    alt: 'Espresso',
+    field: 'Coffee',
+    title: 'Energy Run: the quickest coffee experience',
+    raised: '7,257',
+    goal: '12,383',
+    equity: '13%',
+    daysToGo: '19'
+  },
+  {
+    img: pouringCoffee,
+    alt:'Pouring Coffee',
+    field: 'Restaurant',
+    title: 'Energy Rush: an even quicker coffee experience',
+    raised: '34,912',
+    goal: '50,000',
+    equity: '5%',
+    daysToGo: '5'
+  }
+] 
 
 export default function ProfilePage() {
   const classes = useStyles()
@@ -77,6 +116,8 @@ export default function ProfilePage() {
             <Typography variant="h3" gutterBottom className={classes.projectTitle}>
               Projects
             </Typography>
+
+            <ProjectList projectData={projectData}/>
 
 
 
