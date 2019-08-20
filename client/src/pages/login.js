@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import {Link } from 'react-router-dom';
 import { makeStyles, Container, Typography, TextField, Button, CssBaseline, Divider, FormControlLabel, Checkbox } from '@material-ui/core';
 
+//Comment for observing testing
+
 const useStyles = makeStyles( theme => ({
     containerTweaks: {
         marginTop: theme.spacing(4),
