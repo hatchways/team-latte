@@ -22,9 +22,8 @@ const upload = multer({
 })
 
 router.post('/project', auth, upload.array('images', 5), async (req, res) => {
-
     const s3 = new AWS.S3();
-    let promises = req.files.map(file => {
+    const promises = req.files.map(file => {
         const params = {
         Bucket: process.env.aws_bucket,
         Key: req.body.title.replace(/[^a-zA-Z0-9]/g, '') + file.originalname,
@@ -37,7 +36,7 @@ router.post('/project', auth, upload.array('images', 5), async (req, res) => {
     })
 
     
-    let photos= []
+    const photos= []
     Promise.all(promises).then(results => {
         results.forEach(result => {
             photos.push({
@@ -60,7 +59,57 @@ router.post('/project', auth, upload.array('images', 5), async (req, res) => {
 })
 
 router.put('/project/:id', auth, upload.array('images', 5), async (req, res) => {
+    console.log(req.body)
     const s3 = new AWS.S3()
+    const project = await Project.findById(req.params.id)
+
+    const deletePhoto = req.body.removals.map(removal => ({Key: removal}))
+
+    project.photos = project.photos.filter(photo => {
+        console.log('req.body.removals: ' + req.body.removals)
+        console.log('photo.photo.key: ' + photo.photo.key)
+        console.log('includes: ' + (req.body.removals.includes(photo.photo.key)))
+        return (!(req.body.removals.includes(photo.photo.key)))
+        
+    })
+     const params = {
+         Bucket: process.env.aws_bucket,
+         Delete: {
+             Objects: deletePhoto,
+             Quiet: true
+         },
+     }
+
+     s3.deleteObjects(params, (err, data) => {
+         if(err) res.status(503).send(err)
+     })
+
+    let promises = req.files.map(file => {
+        const params = {
+        Bucket: process.env.aws_bucket,
+        Key: req.body.title.replace(/[^a-zA-Z0-9]/g, '') + file.originalname,
+        Body: file.buffer,
+        ACL: 'public-read'
+        }
+
+        return s3.upload(params).promise()
+    })
+
+    
+    Promise.all(promises).then(results => {
+        results.forEach(result => {
+            project.photos.push({
+                photo: {
+                    link: result.Location, 
+                    key: result.key
+                }
+            })
+        });
+        project.save()
+        res.send(project)
+    }).catch(e => {
+        res.status(503).send(e)
+    })
 
 })
 
