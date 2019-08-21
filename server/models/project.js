@@ -18,9 +18,18 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    photos: {
-        type: [String],
-    },
+    photos: [{
+            photo:{
+                key: {
+                    type: String,
+                    required: true
+                },
+                link: {
+                    type: String,
+                    required: true
+                }
+            }
+    }],
     funding_goal:{
         type: Number,
         required: true

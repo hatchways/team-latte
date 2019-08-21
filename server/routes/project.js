@@ -40,19 +40,28 @@ router.post('/project', auth, upload.array('images', 5), async (req, res) => {
     let photos= []
     Promise.all(promises).then(results => {
         results.forEach(result => {
-            photos.push(result.Location)
+            photos.push({
+                photo: {
+                    link: result.Location, 
+                    key: result.key
+                }
+            })
         });
         const project = new Project({
             ... req.body,
             photos,
             author: req.user._id
         })
-        
         project.save()
         res.send(project)
     }).catch(e => {
         res.status(503).send(e)
     })
+})
+
+router.put('/project/:id', auth, upload.array('images', 5), async (req, res) => {
+    const s3 = new AWS.S3()
+
 })
 
 module.exports = router
