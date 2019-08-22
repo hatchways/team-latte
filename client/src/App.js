@@ -3,15 +3,18 @@ import { MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import { theme } from "./themes/theme";
-import LandingPage from "./pages/Landing";
+
 
 import "./App.css";
+import CreateForm from "./pages/Create";
+import EditForm from "./pages/Edit"
 
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-        <Route path="/" component={LandingPage} />
+        <Route exact path="/" component={CreateForm} />
+        <Route path="/edit" component={EditForm} />
       </BrowserRouter>
     </MuiThemeProvider>
   );
