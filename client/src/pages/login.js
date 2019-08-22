@@ -15,10 +15,7 @@ const useStyles = makeStyles( theme => ({
     pageInfoTweaks: {
         margin: theme.spacing(1)
     },
-    formTweaks: {
-       // border: `2px solid red`,
-        
-    },
+   
     dividerTweaks: {
         margin: theme.spacing(2)
     },
@@ -46,13 +43,13 @@ function Login() {
         
         <div className={classes.containerTweaks}>
             <div className={classes.pageInfoTweaks}>
-                <Typography component="h1" variant="h4">Member login</Typography>
+                <Typography variant="h4">Member login</Typography>
                 <Divider variant="fullWidth" className={classes.dividerTweaks}/>
                 <Typography align="center">New here? <Link to="/signup">Sign Up</Link></Typography>
                 
             </div>
             <div>
-            <form onSubmit={handleSubmit} className={classes.formTweaks}>
+            <form onSubmit={handleSubmit}>
             <TextField 
                         type="email" 
                         name="email" 

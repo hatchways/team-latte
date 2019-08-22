@@ -14,11 +14,11 @@ import { createMuiTheme } from "@material-ui/core";
 
 const theme = createMuiTheme({
   palette: {
+    main:{
     primary: "#69E781"
-  },
-  typography: {
-    fontFamily:"Arial"
   }
+},
+
 
 });
 

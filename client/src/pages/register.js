@@ -76,7 +76,7 @@ function Signup () {
                         onChange={e => setPassword(e.target.value)} 
                         label="Password" fullWidth required />
             <TextField 
-                        type="confirm" 
+                        type="password" 
                         name="confirm"
                         id="confirm"
                         margin='normal' 
@@ -86,8 +86,7 @@ function Signup () {
                 type='submit'
                 name='password'
                 variant='contained'
-                fullWidth
-                >
+                fullWidth>
                 Create Account
             </Button>  
             </form>
