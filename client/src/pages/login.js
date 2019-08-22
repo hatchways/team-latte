@@ -11,6 +11,7 @@ const useStyles = makeStyles( theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         fontFamily: '"ProximaNova"', //Not sure how to change font
+        paddingTop: 60
     },
     pageInfoTweaks: {
         margin: theme.spacing(1)
