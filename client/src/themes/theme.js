@@ -1,6 +1,6 @@
 import { createMuiTheme } from "@material-ui/core";
 
-
+//This is creating a custom theme...
 export const theme = createMuiTheme({
   typography: {
     fontFamily: 'Proxima Nova',
@@ -12,16 +12,26 @@ export const theme = createMuiTheme({
   error: "#d8000c",
   bgcolor: 'rgba(255, 255, 255, 0.1)',
   
+  palette: {
+    main:{
+    primary: "#69E781"
+    }
+  },
+                                    
   overrides: {
     MuiButton: {
       text: {
         color: '#0066ff'
     }
   },
-  MuiAppBar: {
-    text: {
-      fontSize: 16
+    MuiAppBar: {
+      text: {
+        fontSize: 16
     }
   }
   }
+  
 });
+
+export default theme;
+
