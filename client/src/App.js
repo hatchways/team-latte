@@ -24,7 +24,7 @@ function App() {
           <Route path="/" component={Navbar} /> 
           <Route path='/login' component={Login} />
           <Route path='/signup' component={Signup} />
-          <Route exact path="/create" component={CreateForm} />
+          <Route path="/create" component={CreateForm} />
           <Route path="/edit" component={EditForm} />
           <Route path="/explore" component={Explore} />
           <Route path="/launch" component={Launch} />
