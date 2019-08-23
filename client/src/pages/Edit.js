@@ -14,7 +14,7 @@ const EditPageStyling = makeStyles(theme => ({
         firstColumn: {
             marginLeft: theme.spacing(0)
         }
-    
+
 })
 );
 
@@ -37,12 +37,75 @@ const EditPageStyling = makeStyles(theme => ({
         //This should progress user to the next step
 
 function EditForm() {
+    const classes = EditPageStyling();
+
+
     return(
-        <Grid container component='main'>
+        <Grid container component='main' spacing={7} className={classes.containerTweaks} > 
             <CssBaseline />
-            <Grid item>
-            <Grid component ={Paper}></Grid>
+
+        
+            <Grid item xs={false} sm={4} md={3} component={Paper} elevation={6} square className={classes.firstColumn}> 
+                <Typography variant="h6">Sample project name</Typography>
+                <Button>Preview</Button>
+                <Stepper orientation='vertical'>
+                    <Step >
+                        <StepLabel>Basics</StepLabel>
+                    </Step>
+                    <Step >
+                        <StepLabel>Rewards</StepLabel>
+                    </Step>
+                    <Step >
+                        <StepLabel>Rewards</StepLabel>
+                    </Step>
+                    <Step >
+                        <StepLabel>Story</StepLabel>
+                    </Step>
+                    <Step >
+                        <StepLabel>People</StepLabel>
+                    </Step>
+                    <Step >
+                        <StepLabel>Payment</StepLabel>
+                    </Step>
+                </Stepper>
+                <Button><DeleteIcon></DeleteIcon>Delete Project</Button>
             </Grid>
+            
+            <Grid item xs={false} md={9} >
+                <div component={Paper}>
+                    <Typography variant="h5">Let's start with basics</Typography>
+                    
+                    <Typography variant="body1">Project Title</Typography>
+                        <TextField variant="outlined" label="Name of your awesome project" required />
+                    
+                    <Typography variant="body1">Subtitle</Typography>
+                        <TextField variant="outlined" label="Tell us more about your project..."/>
+                    
+                    <Typography variant="body1">Industry</Typography>
+                        <FormControl  variant="outlined" required>
+                        <Select autoWidth>
+                            <MenuItem value="">Select Industry</MenuItem>
+                            <MenuItem value={1}>Industry 1</MenuItem>
+                            <MenuItem value={2}>Industry 2</MenuItem>
+                            <MenuItem value={3}>Industry 3</MenuItem>
+                            <MenuItem value={4}>Industry 4</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <Typography variant="body1" >Project Location</Typography>
+                        <FormControl variant="outlined" required>
+                        <Select autoWidth>
+                            <MenuItem value="">Select Location</MenuItem>
+                            <MenuItem value={1}>Location 1</MenuItem>
+                            <MenuItem value={2}>Location 2</MenuItem>
+                            <MenuItem value={3}>Location 3</MenuItem>
+                            <MenuItem value={4}>Location 4</MenuItem>
+                        </Select>
+                        </FormControl>
+
+                </div>
+
+            </Grid> 
 
         </Grid>
     )
