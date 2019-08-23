@@ -5,21 +5,21 @@ import { Typography, Container, TextField, Button,CssBaseline,makeStyles, Divide
 
 const useStyles = makeStyles( theme => ({
     containerTweaks: {
-        marginTop: theme.spacing(4),
+        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         fontFamily: '"ProximaNova"', //Not sure how to change font
-        paddingTop: 60
     },
     pageInfoTweaks: {
         margin: theme.spacing(1)
     },
     dividerTweaks: {
-        margin: theme.spacing(2)
+        margin: theme.spacing(2),
     },
     button: {
         backgroundColor: '#69E781',
+        color: 'white',
         margin: theme.spacing(3, 0, 2),
     }
 
