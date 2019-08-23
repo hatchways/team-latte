@@ -6,15 +6,15 @@ import { makeStyles, Container, Typography, TextField, Button, CssBaseline, Divi
 
 const useStyles = makeStyles( theme => ({
     containerTweaks: {
-        marginTop: theme.spacing(10),
+        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         fontFamily: '"ProximaNova"', //Not sure how to change font
+
     },
     pageInfoTweaks: {
         margin: theme.spacing(1),
-        border: '2px solid red'
     },
    
     dividerTweaks: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles( theme => ({
     button: {
         backgroundColor: '#69E781',
         margin: theme.spacing(3, 0, 2),
-        color: 'white'
+        color: 'white',
     }
 
 }));
@@ -40,12 +40,12 @@ function Login() {
     })
 
     return(
-        <Container component="main" maxWidth='xs' style={{border: '2px solid red'}} > 
+        <Container component="main" maxWidth='xs' className={classes.containerTweaks}> 
         <CssBaseline/>
         
-        <div className={classes.containerTweaks}>
+        <div>
             <div className={classes.pageInfoTweaks}>
-                <Typography variant="h4">Member login</Typography>
+                <Typography variant="h4" align="center">Member login</Typography>
                 <Divider variant="fullWidth" className={classes.dividerTweaks}/>
                 <Typography align="center">New here? <Link to="/signup">Sign Up</Link></Typography>
                 

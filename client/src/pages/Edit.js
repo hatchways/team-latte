@@ -13,8 +13,6 @@ const EditPageStyling = makeStyles(theme => ({
         firstColumn: {
             marginLeft: theme.spacing(0)
         }
-
-
     
 })
 );
