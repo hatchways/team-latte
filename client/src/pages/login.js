@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {Link } from 'react-router-dom';
-import { makeStyles, Container, Typography, TextField, Button, CssBaseline, Divider, FormControlLabel, Checkbox } from '@material-ui/core';
+import { makeStyles, Container, Typography, TextField, Button, CssBaseline, Divider, FormControlLabel, Checkbox, Snackbar } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 //Comment for observing testing
 
@@ -37,11 +39,52 @@ function Login() {
     const classes= useStyles();
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [visible, setVisible] = useState(false)
+    const [error, setError] = useState('')
+
+
+    const backendLogin = ((user) =>{
+
+        console.log(user)
+        fetch("/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+          })
+            .then(res => {
+                const response = res.json()
+                if (res.status > 499) throw Error("Server error");
+                else return response;
+            }).then(res => {
+                if (res.status > 299) throw Error(res.message+'')
+                window.sessionStorage.setItem('AuthToken', res.token)
+                window.location.replace("/profile/"+res.user._id)
+            }).catch(err => {
+              setVisible(true)
+              setError(err+'')
+            });
+        });
+
+
 
     const handleSubmit = ( (e) => {
         e.preventDefault();
-        alert(`Submitting ${email} & ${password}`);
+        const newUser = {
+            email,
+            password
+        }
+        backendLogin(newUser)
     })
+
+    function handleClose(event, reason) {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setVisible(false);
+      }
 
     return(
         <Container component="main" maxWidth='xs' className={classes.containerTweaks} style={{border: '2px solid red'}} > 
@@ -82,11 +125,35 @@ function Login() {
                 Login
             </Button>  
             </form>
+
             </div> 
         </div>
+        <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={visible}
+        autoHideDuration={6000}
+        
+        message={error}
+        action={
+            <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick= {handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        }
+      />
         </Container>
         )
 }
+
+
+  
 
 
 export default Login;
