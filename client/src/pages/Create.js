@@ -5,17 +5,8 @@ import { Container, Typography, CssBaseline, Divider, FormControl,
 import { makeStyles } from '@material-ui/styles';
 
 const StylingCreateForm = makeStyles( theme => ({
-    containerTweaks: {
-        paddingTop: 60
-    },
-
-    firstColumn: {
-        padding: theme.spacing(4)
-    }
-
-    }
-    )
-);
+    //...
+}));
 
 //A form containing 
     //main header, 
@@ -27,8 +18,6 @@ const StylingCreateForm = makeStyles( theme => ({
     //button to continue to Edit page (hint: route it to /Edit.js)
 
 function CreateForm() {
-
-    const classes = StylingCreateForm();
 
     return(
         <Container component="main" maxWidth="sm">

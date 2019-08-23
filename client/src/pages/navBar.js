@@ -1,42 +1,64 @@
 import React from 'react';
 import { NavLink} from 'react-router-dom'
-import {AppBar, Typography, makeStyles, Avatar, CssBaseline, Button} from '@material-ui/core'
+import {AppBar, Toolbar, Typography, makeStyles, Avatar, CssBaseline, Button, } from '@material-ui/core'
 import Launch from  '../themes/ic-logo.png'
 
 const NavBarStyles = makeStyles(theme=>({
+   
+    toolbar: {
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        background: theme.bgcolor,
+        fontFamily: theme.typography, //Font is still NOT configured to Proxima Nova
+        color: theme.typography.color,
+        display: 'flex',
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        height: 60
+    },
  
     companyLogo: { // logo is 
+        margin: 1,
         height: 30,
         width:30,
-        borderRadius: '0',
+        borderRadius: '0'
     },
 
     separation: {
         display: 'flex',
         flexDirection: "row",
-        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        alignItems: 'center'
+        
     },
 
     rightButtons: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'space-evenly',
     },
 
-    button: {
+    link: {
         margin: theme.spacing(0,2,0,2),
-        fontSize: 14,
-        color: 'black'
+        fontSize: theme.typography.fontSize
     }
 }));
 
+/*
+//This is a styled-component API... similar to creating a custom component
+const LoginButton = styled(Button) ({    
+    background: 'red',
+    color: 'white'
+});
+*/
 function NavBar () {
-    const classes = NavBarStyles();
+    const classes=NavBarStyles();
 return(
    
 <React.Fragment>
         <CssBaseline/>
-          
-        <AppBar >
+        
+        <AppBar style={{background: "white"}}>
+        <Toolbar className={classes.toolbar}>
             <div className={classes.separation}>
             
                 <Avatar className={classes.companyLogo} alt="Company Logo" src={Launch}/>
@@ -47,37 +69,35 @@ return(
             <div className={classes.rightButtons}>
                 <Button 
                     variant="Button" 
-                    className={classes.button}>
-                        <NavLink to='/explore' 
+                    className={classes.link}>
+                    <NavLink to='/explore' 
                         activeStyle={{
                             textUnderlinePosition: 'under',
                             textDecorationColor: "#69E781",
-                            color: 'black'
                         }}>EXPLORE</NavLink>
                 </Button>
 
                 <Button
-                    className={classes.button}>
+                    className={classes.link}>
                     <NavLink to='/launch' 
                         activeStyle={{
                             textUnderlinePosition: 'under',
                             textDecorationColor: "#69E781",
-                            color: 'black'
                     }}>LAUNCH</NavLink>
                 </Button>
                 
                 <Button 
-                    className={classes.button}>
+                    className={classes.link}>
                     <NavLink to='/login' 
                         activeStyle={{
                             textUnderlinePosition: 'under',
                             textDecorationColor: "#69E781",
-                            color: 'black'
                     }}>LOGIN</NavLink>
                 </Button>
-            </div>         
+            </div>            
+        </Toolbar>
         </AppBar>
-        
+ 
     </React.Fragment>
     
 )
