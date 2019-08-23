@@ -15,6 +15,7 @@ import CreateForm from "./pages/Create";
 import EditForm from "./pages/Edit";
 import Explore from "./pages/explore";
 import Launch from "./pages/launch"
+import ProfilePage from "./pages/Profile"
 
 function App() {
   return (
