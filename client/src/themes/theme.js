@@ -1,34 +1,40 @@
 import { createMuiTheme } from "@material-ui/core";
 
-//This is creating a custom theme...
 export const theme = createMuiTheme({
+  spacing: 10, //Use according for multiples
+
   typography: {
-    fontFamily: 'Proxima Nova',
-    fontSize: 16,
-    color: "rgb(0,0,0)"
+    fontFamily: 'Roboto',
+    fontSize: 16
   },
-  primary: 'rgba(0, 0, 0, 0.1)',
-  secondary: "#1f1f1f",
-  error: "#d8000c",
-  bgcolor: 'rgba(255, 255, 255, 0.1)',
-  
+
   palette: {
     main:{
-    primary: "#69E781"
+    primary: "#ff0000",
+    secondary: '#69E781'
     }
   },
                                     
   overrides: {
-    MuiButton: {
-      text: {
-        color: '#0066ff'
-    }
-  },
     MuiAppBar: {
-      text: {
-        fontSize: 16
+      colorPrimary:{    //Shouldn't that be only allowing edits to colors-related property? Ho
+        backgroundColor: '#fff',
+        color: 'color',
+        minHeight: '60px',
+        display: 'flex',
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        paddingLeft: '40px',
+        position:'absolute'
+
+      }
+    },
+    MuiButton: {
+      root:{
+        minHeight: '60px',
+      }
     }
-  }
+
   }
   
 });
