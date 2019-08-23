@@ -32,15 +32,16 @@ export const theme = createMuiTheme({
     MuiButton: {
       root:{
         minHeight: '60px',
+
       }
     },
 
     MuiFormControlLabel: {
       root: {
-        '&:hover': {
+        /*'&:hover': {
           backgroundColor: 'blue',
           
-        }
+        }*/
       }
     }
 

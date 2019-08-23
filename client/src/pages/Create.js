@@ -1,16 +1,36 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { Container, Typography, CssBaseline, Divider, FormControl,
-    Select, MenuItem, FormControlLabel, Checkbox, FormGroup, Button } from '@material-ui/core';
+    Select, MenuItem, FormControlLabel, Checkbox, FormGroup, Button, InputLabel, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 const StylingCreateForm = makeStyles( theme => ({
     containerTweaks: {
-        paddingTop: 60
+        fontsize: 8
+    },
+    dividerTweaks: {
+        margin: theme.spacing(3),
+
     },
 
-    firstColumn: {
-        padding: theme.spacing(4)
+    formControl: {
+        width: '75%',
+        margin: theme.spacing(2),
+        fontSize: '16'
+        
+    },
+
+    textField: {
+        width: '75%',
+        margin: theme.spacing(2),
+    },
+    
+    button: {
+        backgroundColor: '#69E781',
+        color: 'white',
+        margin: theme.spacing(3, 0, 2),
+        minHeight: 80,
+        minWidth: 250
     }
 
     }
@@ -29,29 +49,35 @@ const StylingCreateForm = makeStyles( theme => ({
 function CreateForm() {
 
     const classes = StylingCreateForm();
+    const handleSubmit = ( (e) => {
+        e.preventDefault();
+    })
 
     return(
-        <Container component="main" maxWidth="sm">
+        <Container component="main" maxWidth="sm" style={{marginTop: '70px'}}>
            <CssBaseline />
-            <form style={{textAlign: 'center'}}>
+            <form onSubmit={handleSubmit} style={{textAlign: 'center'}}>
                 <Typography variant="h4">Let's get Started</Typography>
-                <Divider variant='middle'/>
-                <Typography variant="body1">Pick a project industry to connect with a community.</Typography>
-                <Typography variant="body1">You can always update this later.</Typography>
-                <FormControl>
-                    <Select autoWidth>
+                <Divider variant='fullWidth' className={classes.dividerTweaks}/>
+                
+                <Typography variant="body2">Pick a project industry to connect with a community.<br/>You can always update this later.</Typography>
+                <FormControl variant='outlined' className={classes.formControl}>
+                    <InputLabel>Select Industry</InputLabel>
+                    <Select>
                         <MenuItem value="">Select Industry</MenuItem>
                         <MenuItem value={1}>Industry 1</MenuItem>
                         <MenuItem value={2}>Industry 2</MenuItem>
                         <MenuItem value={3}>Industry 3</MenuItem>
                         <MenuItem value={4}>Industry 4</MenuItem>
                     </Select>
-                </FormControl>
-                <Typography variant="body1">Describe what you'll be creating</Typography>
+                </FormControl >
                 
-                <Typography variant="body1">Tell us where you're based 
-                    and confirm a few other details before we proceed.</Typography>
-                    <FormControl>
+                <Typography variant="body2">Describe what you'll be creating.</Typography>
+                    <TextField variant="outlined" label="Describe your project" multiline rows="4" 
+                                className={classes.textField} fullWidth></TextField>
+                <Typography variant='body2'>Tell us where you're based and confirm a few other<br/> details before we proceed.</Typography>
+                <FormControl variant="filled"className={classes.formControl}>
+                    <InputLabel>Select Location</InputLabel>
                     <Select autoWidth>
                         <MenuItem value="">Select Location</MenuItem>
                         <MenuItem value={1}>Location 1</MenuItem>
@@ -60,6 +86,7 @@ function CreateForm() {
                         <MenuItem value={4}>Location 4</MenuItem>
                     </Select>
                 </FormControl>
+
                 <FormGroup>
                     <FormControlLabel
                         control={<Checkbox value='age'/>} label="I'm at least 18 years old"/>
@@ -68,10 +95,10 @@ function CreateForm() {
                     <FormControlLabel
                         control={<Checkbox value='money'/>}  label="I have a debit and/or credit card"/>
                 </FormGroup>
-                <Button type="submit">
-                    <Link to='/edit'>Continue</Link>
-                </Button>
+
+                <Link to='/edit'><Button className={classes.button}>Continue</Button></Link>
             </form>
+    
         </Container>
     )
 }
