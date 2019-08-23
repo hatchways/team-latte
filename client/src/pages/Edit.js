@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Grid, Paper, CssBaseline, Typography, makeStyles, 
     Button, Stepper, Step, StepLabel, TextField, FormControl, 
     MenuItem, Select } from '@material-ui/core';
@@ -14,8 +15,6 @@ const EditPageStyling = makeStyles(theme => ({
             marginLeft: theme.spacing(0)
         }
 
-
-    
 })
 );
 
@@ -36,7 +35,6 @@ const EditPageStyling = makeStyles(theme => ({
         //description of + textfield for funding goal amount
         //Button to save progress
         //This should progress user to the next step
-
 
 function EditForm() {
     const classes = EditPageStyling();
