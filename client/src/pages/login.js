@@ -18,8 +18,6 @@ const useStyles = makeStyles( theme => ({
     },
     pageInfoTweaks: {
         margin: theme.spacing(1),
-        border: '2px solid red'
-
     },
    
     dividerTweaks: {
@@ -87,7 +85,7 @@ function Login() {
       }
 
     return(
-        <Container component="main" maxWidth='xs' className={classes.containerTweaks} style={{border: '2px solid red'}} > 
+        <Container component="main" maxWidth='xs' className={classes.containerTweaks}> 
         <CssBaseline/>
         
         <div>

@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core";
+import { fade } from "@material-ui/core/styles";
 
 export const theme = createMuiTheme({
 
@@ -9,7 +10,7 @@ export const theme = createMuiTheme({
 
   palette: {
     main:{
-    primary: "#ff0000",
+    primary: "green",
     secondary: '#69E781'
     }
   },
@@ -31,6 +32,15 @@ export const theme = createMuiTheme({
     MuiButton: {
       root:{
         minHeight: '60px',
+      }
+    },
+
+    MuiFormControlLabel: {
+      root: {
+        '&:hover': {
+          backgroundColor: 'blue',
+          
+        }
       }
     }
 
