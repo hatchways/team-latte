@@ -1,7 +1,9 @@
 /* eslint-disable no-useless-constructor */
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
-import { Typography, Container, TextField, Button,CssBaseline,makeStyles, Divider } from '@material-ui/core';
+import { Typography, Container, TextField, Button,CssBaseline,makeStyles, Divider, Snackbar } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles( theme => ({
     containerTweaks: {
@@ -29,13 +31,54 @@ function Signup () {
 
     const classes = useStyles();
 
+    const [name, setName] = useState('')
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [visible, setVisible] = useState(false)
+    const [error, setError] = useState('')
     
     const handleSubmit = ( (e) => {
         e.preventDefault();
+        backendRegister({
+            name,
+            email,
+            password
+        })
         alert(`Submitting ${email} & ${password}`);
     });
+
+
+    const backendRegister = ((newUser) =>{
+
+        console.log(newUser)
+        fetch("/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newUser)
+          })
+          .then(res => {
+            const response = res.json()
+            if (res.status > 499) throw Error("Server error");
+            else return response;
+        }).then(res => {
+            if (res.status > 299) throw Error(res.message+'')
+            window.sessionStorage.setItem('AuthToken', res.token)
+            window.location.replace("/profile/"+res.user._id)
+        }).catch(err => {
+          setVisible(true)
+          setError(err+'')
+        });
+    });
+
+        function handleClose(event, reason) {
+            if (reason === 'clickaway') {
+              return;
+            }
+        
+            setVisible(false);
+          }
 
     return( 
 
@@ -57,13 +100,13 @@ function Signup () {
                         id='name'
                         variant="outlined"
                         margin="normal"
-                        onChange={e =>setEmail(e.target.value)} 
+                        onChange={e =>setName(e.target.value)} 
                         label="Name" fullWidth required />
             
             <TextField
                         type="email" 
                         name="email" 
-                        id='password'
+                        id='email'
                         variant="outlined"
                         margin="normal"
                         onChange={e =>setEmail(e.target.value)} 
@@ -82,6 +125,7 @@ function Signup () {
                         id="confirm"
                         margin='normal' 
                         variant="outlined" 
+                        //onChange={e => comparePassword(e.target.value)}
                         label="Confirm Password" fullWidth required />
             <Button className={classes.button}
                 type='submit'
@@ -93,6 +137,26 @@ function Signup () {
             </form>
             </div>
         </div>
+        <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={visible}
+        autoHideDuration={6000}
+        
+        message={error}
+        action={
+            <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick= {handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        }
+      />
         </Container>
 
     )
