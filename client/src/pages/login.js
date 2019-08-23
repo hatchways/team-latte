@@ -6,6 +6,7 @@ import { makeStyles, Container, Typography, TextField, Button, CssBaseline, Divi
 
 const useStyles = makeStyles( theme => ({
     containerTweaks: {
+
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
@@ -15,6 +16,7 @@ const useStyles = makeStyles( theme => ({
     },
     pageInfoTweaks: {
         margin: theme.spacing(1),
+
     },
    
     dividerTweaks: {
@@ -23,7 +25,9 @@ const useStyles = makeStyles( theme => ({
     button: {
         backgroundColor: '#69E781',
         margin: theme.spacing(3, 0, 2),
+
         color: 'white',
+
     }
 
 }));
@@ -40,6 +44,7 @@ function Login() {
     })
 
     return(
+
         <Container component="main" maxWidth='xs' className={classes.containerTweaks}> 
         <CssBaseline/>
         
