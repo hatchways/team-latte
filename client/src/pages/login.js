@@ -5,9 +5,9 @@ import { makeStyles, Container, Typography, TextField, Button, CssBaseline, Divi
 //Comment for observing testing
 
 const useStyles = makeStyles( theme => ({
+    
     containerTweaks: {
-
-        marginTop: theme.spacing(10),
+        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -25,7 +25,7 @@ const useStyles = makeStyles( theme => ({
     },
     button: {
         backgroundColor: '#69E781',
-        margin: theme.spacing(3, 0, 2),
+        margin: theme.spacing(2, 0, 2),
         color: 'white'
 
     }
@@ -44,7 +44,7 @@ function Login() {
     })
 
     return(
-        <Container component="main" maxWidth='xs' style={{border: '2px solid red'}} > 
+        <Container component="main" maxWidth='xs' className={classes.containerTweaks} style={{border: '2px solid red'}} > 
         <CssBaseline/>
         
         <div>
@@ -79,7 +79,7 @@ function Login() {
                 variant='contained'
                 fullWidth
                 >
-                Submit
+                Login
             </Button>  
             </form>
             </div> 
