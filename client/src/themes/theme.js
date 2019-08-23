@@ -1,11 +1,42 @@
 import { createMuiTheme } from "@material-ui/core";
 
 export const theme = createMuiTheme({
+
   typography: {
-    fontFamily: '"Roboto"'
+    fontFamily: 'Roboto',
+    fontSize: 16
   },
-  primary: "#f04040",
-  secondary: "#1f1f1f",
-  error: "#d8000c",
-  bgcolor: "#f6f6f6"
+
+  palette: {
+    main:{
+    primary: "#ff0000",
+    secondary: '#69E781'
+    }
+  },
+                                    
+  overrides: {
+    MuiAppBar: {
+      colorPrimary:{    //Shouldn't that be only allowing edits to colors-related property? Ho
+        backgroundColor: '#fff',
+        color: 'color',
+        minHeight: '60px',
+        display: 'flex',
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        paddingLeft: '40px',
+        position:'absolute'
+
+      }
+    },
+    MuiButton: {
+      root:{
+        minHeight: '60px',
+      }
+    }
+
+  }
+  
 });
+
+export default theme;
+

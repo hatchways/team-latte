@@ -29,8 +29,13 @@ const userSchema = new mongoose.Schema({
     }],
 })
 
+userSchema.virtual('Projects', {
+    ref: 'Project',
+    localField: '_id',
+    foreignField: 'author'
+})
+
 userSchema.methods.generateAuthToken = async function () {
-    console.log('hello')
     const token = jwt.sign({_id: this.id.toString()},process.env.JWT_SECRET)
 
     this.tokens = this.tokens.concat({ token })
@@ -43,6 +48,8 @@ userSchema.methods.toJSON = function() {
     const userObject = this.toObject()
 
     delete userObject.password
+    delete userObject.tokens
+    delete userObject.__v
 
     return userObject
 }
@@ -54,7 +61,6 @@ userSchema.statics.checkCredentials = async(email, password) =>{
     }
     const pCompare = await bcrypt.compare(password, user.password)
     if(pCompare){
-        console.log(user)
         return user
     }else {
         throw new Error('Login credentials are incorrect.')
