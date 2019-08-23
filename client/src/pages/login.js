@@ -6,15 +6,15 @@ import { makeStyles, Container, Typography, TextField, Button, CssBaseline, Divi
 
 const useStyles = makeStyles( theme => ({
     containerTweaks: {
-        marginTop: theme.spacing(4),
+        marginTop: theme.spacing(10),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         fontFamily: '"ProximaNova"', //Not sure how to change font
-        paddingTop: 60
     },
     pageInfoTweaks: {
-        margin: theme.spacing(1)
+        margin: theme.spacing(1),
+        border: '2px solid red'
     },
    
     dividerTweaks: {
@@ -23,6 +23,7 @@ const useStyles = makeStyles( theme => ({
     button: {
         backgroundColor: '#69E781',
         margin: theme.spacing(3, 0, 2),
+        color: 'white'
     }
 
 }));
@@ -39,7 +40,7 @@ function Login() {
     })
 
     return(
-        <Container component="main" maxWidth='xs'> 
+        <Container component="main" maxWidth='xs' style={{border: '2px solid red'}} > 
         <CssBaseline/>
         
         <div className={classes.containerTweaks}>
