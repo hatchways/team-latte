@@ -21,6 +21,31 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    profilePic: {
+        key: {
+            type: String,
+            required: true
+        },
+        link: {
+            type: String,
+            required: true
+        }
+    },
+    location: {
+        type: String
+    },
+    expertise: [{
+        type: String
+    }],
+    description: {
+        type: String
+    },
+    linkedIn: {
+        type: String
+    },
+    angelList: {
+        type: String
+    },
     tokens: [{
         token: {
             type: String,
