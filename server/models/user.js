@@ -21,31 +21,6 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    profilePic: {
-        key: {
-            type: String,
-            required: true
-        },
-        link: {
-            type: String,
-            required: true
-        }
-    },
-    location: {
-        type: String
-    },
-    expertise: [{
-        type: String
-    }],
-    description: {
-        type: String
-    },
-    linkedIn: {
-        type: String
-    },
-    angelList: {
-        type: String
-    },
     tokens: [{
         token: {
             type: String,
@@ -79,7 +54,7 @@ userSchema.methods.toJSON = function() {
     return userObject
 }
 
-userSchema.statics.checkCredentials = async(email, password) =>{
+userSchema.statics.checkCredentials = async(email, password) => {
     const user = await User.findOne({email})
     if(!user){
         throw new Error('Login credentials are incorrect.')
