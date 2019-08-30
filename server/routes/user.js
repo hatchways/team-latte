@@ -36,28 +36,24 @@ router.post("/register", async (req, res) => {
       );
       res.status(400).send({ status: 400, message: errors[0] });
     } else if (e.errmsg.includes("duplicate"))
-      res
-        .status(400)
-        .send({
-          status: 400,
-          message: "Account already exists using that email."
-        });
+      res.status(400).send({
+        status: 400,
+        message: "Account already exists using that email."
+      });
     else
-      res
-        .status(400)
-        .send({
-          status: 400,
-          message: "There was an error creating the account."
-        });
+      res.status(400).send({
+        status: 400,
+        message: "There was an error creating the account."
+      });
   }
 });
 
 router.post("/login", async (req, res) => {
   try {
-    console.log(res)
+    console.log(res);
     const user = await User.checkCredentials(req.body.email, req.body.password); //Checking credentials with provided email and password (located in req.body)
     const token = await user.generateAuthToken();
-    res.status(200).send({ user, token});
+    res.status(200).send({ user, token });
   } catch (err) {
     console.log(err.message);
     res.status(401).send({ status: 401, message: err.message });

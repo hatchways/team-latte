@@ -7,7 +7,7 @@ import logger from "morgan";
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import userRouter from "./routes/user";
-import projectRouter from "./routes/project"
+import projectRouter from "./routes/project";
 
 var app = express();
 
@@ -18,13 +18,12 @@ app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
 // start up mongoose db
-require('./database/mongoose')
+require("./database/mongoose");
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
-app.use(userRouter)
-app.use(projectRouter)
-
+app.use(userRouter);
+app.use(projectRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

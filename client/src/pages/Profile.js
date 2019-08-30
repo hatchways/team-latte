@@ -73,7 +73,7 @@ const projectData = [
 ];
 
 // Purposely didn't put the following as a part of a function's body
-fetch('/profile/:id')
+fetch("/profile/:id")
   .then(res => {
     const response = res.json();
     if (res.status > 499) throw Error("Server error");
@@ -84,7 +84,6 @@ fetch('/profile/:id')
     console.log(res);
   })
   .catch(err => console.log(err));
-
 
 export default function ProfilePage() {
   const classes = useStyles();
