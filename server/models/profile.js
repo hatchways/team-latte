@@ -35,12 +35,7 @@ const profileSchema = new mongoose.Schema({
   }
 });
 
-userSchema.virtual("User", {
-  ref: "User",
-  localField: "_id",
-  foreignField: "_id"
-});
 
-const Profile = mongoose.model("Profile", profileSchema);
+const Profile = mongoose.model('Profile',profileSchema)
 
-module.exports = Profile;
+module.exports = Profile

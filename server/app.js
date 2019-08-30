@@ -7,7 +7,8 @@ import logger from "morgan";
 import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import userRouter from "./routes/user";
-import projectRouter from "./routes/project";
+import projectRouter from "./routes/project"
+import profileRouter from "./routes/profile"
 
 var app = express();
 
@@ -22,8 +23,9 @@ require("./database/mongoose");
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
-app.use(userRouter);
-app.use(projectRouter);
+app.use(userRouter)
+app.use(projectRouter)
+app.use(profileRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
