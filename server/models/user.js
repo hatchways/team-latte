@@ -37,14 +37,14 @@ userSchema.virtual("Projects", {
   foreignField: "author"
 });
 
-userSchema.virtual('Profiles', {
-    ref: 'Profile',
-    localField: '_id',
-    foreignField: '_id'
-})
+userSchema.virtual("Profiles", {
+  ref: "Profile",
+  localField: "_id",
+  foreignField: "_id"
+});
 
-userSchema.methods.generateAuthToken = async function () {
-    const token = jwt.sign({_id: this.id.toString()},process.env.JWT_SECRET)
+userSchema.methods.generateAuthToken = async function() {
+  const token = jwt.sign({ _id: this.id.toString() }, process.env.JWT_SECRET);
 
   this.tokens = this.tokens.concat({ token });
   await this.save();
@@ -81,7 +81,6 @@ userSchema.pre("save", async function(next) {
   }
   next();
 });
-
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

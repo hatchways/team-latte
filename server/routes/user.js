@@ -19,11 +19,24 @@ router.post("/register", async (req, res) => {
     res.status(201).send({ user, token });
   } catch (e) {
     if (e.errors) {
-      const errors = Object.keys(e.errors).map(error => e.errors[error].message);
+      const errors = Object.keys(e.errors).map(
+        error => e.errors[error].message
+      );
       res.status(400).send({ status: 400, message: errors[0] });
     } else if (e.errmsg.includes("duplicate"))
-      res.status(400).send({ status: 400, message: "Account already exists using that email." });
-    else res.status(400).send({ status: 400, message: "There was an error creating the account." });
+      res
+        .status(400)
+        .send({
+          status: 400,
+          message: "Account already exists using that email."
+        });
+    else
+      res
+        .status(400)
+        .send({
+          status: 400,
+          message: "There was an error creating the account."
+        });
   }
 });
 
