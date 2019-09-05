@@ -110,10 +110,6 @@ function EditDialog() {
                   </Typography>
                 </Grid>
 
-                <Grid item>
-                  <EditDialog />
-                </Grid>
-
                 <Fields fieldsData={fieldsData} />
 
                 <Grid container justify="center">
@@ -208,7 +204,7 @@ export default function ProfilePage(props) {
           <Typography variant="h3" gutterBottom className={classes.projectTitle}>
             Projects
           </Typography>
-          <ProjectList projectData={projects} /> {/*the prop would be changed with projects state */}
+          <ProjectList projectData={projectData} /> {/*the prop would be changed with projects state */}
           <h1>Column 2</h1>
           <h1>new line</h1>
           <h1>new line</h1>
