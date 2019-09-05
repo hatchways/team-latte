@@ -20,15 +20,17 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-        <Route exact path="/" component={Landing} />
-        <Route path="/" component={Navbar} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/profile/" component={ProfilePage} />
-        <Route path="/create" component={CreateForm} />
-        <Route path="/edit" component={EditForm} />
-        <Route path="/explore" component={Explore} />
-        <Route path="/launch" component={Launch} />
+
+          <Route exact path="/" component={Landing}/>
+          <Route path="/" component={Navbar}/> 
+          <Route path='/login' component={Login} />
+          <Route path='/signup' component={Signup} />
+          <Route path="/profile/" component={ProfilePage} />
+          <Route path="/create" component={CreateForm} />
+          <Route path="/edit" component={EditForm} />
+          <Route path="/explore" component={Explore} />
+          <Route path="/launch" component={Launch} />
+
       </BrowserRouter>
     </MuiThemeProvider>
   );

@@ -49,11 +49,9 @@ export function ProjectCard(props) {
             {props.project.title}
           </Typography>
           <Typography variant="body2" color="textPrimary" component="h2">
-            ${props.project.raised} /
-            <Typography variant="body2" color="textSecondary" display="inline">
-              {props.project.goal}
-            </Typography>
+            ${props.project.raised} / ${props.project.goal}
           </Typography>
+        
           <Typography variant="body2" color="textSecondary" component="h2">
             Equity exchange: {props.project.equity} | {props.project.daysToGo} days to go
           </Typography>
