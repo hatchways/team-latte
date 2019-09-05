@@ -4,6 +4,7 @@ import { Grid, Paper, CssBaseline, Typography, makeStyles,
     Button, Stepper, Step, StepLabel, TextField, FormControl, 
     MenuItem, Select } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FileUpload from '../components/FileUpload'
 
 const EditPageStyling = makeStyles(theme => ({
         containerTweaks: {
@@ -38,7 +39,7 @@ const EditPageStyling = makeStyles(theme => ({
 
 function EditForm() {
     const classes = EditPageStyling();
-
+    const numberOfPictures = 5;
 
     return(
         <Grid container component='main' spacing={7} className={classes.containerTweaks} > 
@@ -101,6 +102,11 @@ function EditForm() {
                             <MenuItem value={3}>Location 3</MenuItem>
                             <MenuItem value={4}>Location 4</MenuItem>
                         </Select>
+                        </FormControl>
+
+                        <Typography variant="body1" >Project Pictures</Typography>
+                        <FormControl variant="outlined" required>
+                        <FileUpload fileNumber={numberOfPictures} />
                         </FormControl>
 
                 </div>
