@@ -1,86 +1,79 @@
-const express = require('express')
-const router = new express.Router()
-const User = require('../models/user')
-const auth = require('../middleware/auth')
-const Profile = require('../models/profile')
+const express = require("express");
+const router = new express.Router();
+const User = require("../models/user");
+const auth = require("../middleware/auth");
+const Profile = require("../models/profile");
 
+router.post("/register", async (req, res) => {
+  try {
+    const user = new User({
+      ...req.body
+    });
+    const profile = new Profile({
+      name: req.body.name,
+      _id: user._id
+    });
+    await user.save();
+    await profile.save();
+    const token = await user.generateAuthToken();
+    res.status(201).send({ user, token });
+  } catch (e) {
+    if (e.errors) {
+      const errors = Object.keys(e.errors).map(error => e.errors[error].message);
+      res.status(400).send({ status: 400, message: errors[0] });
+    } else if (e.errmsg.includes("duplicate"))
+      res.status(400).send({ status: 400, message: "Account already exists using that email." });
+    else res.status(400).send({ status: 400, message: "There was an error creating the account." });
+  }
+});
 
-router.post('/register', async (req, res) => {
-    console.log(req.body)
+router.post("/login", async (req, res) => {
+  try {
+    console.log(req.body);
+    const user = await User.checkCredentials(req.body.email, req.body.password);
+    const token = await user.generateAuthToken();
+    res.status(200).send({ user, token });
+  } catch (err) {
+    console.log(err.message);
+    res.status(401).send({ status: 401, message: err.message });
+  }
+});
 
-    try {
-        const user = new User({
-            ...req.body
-        })
-        const profile = new Profile({
-            name: req.body.name,
-            _id: user._id
-        })
-        await user.save()
-        await profile.save()
-        const token = await user.generateAuthToken()
-        res.status(201).send({ user, token })
-    } catch (e) {
-        console.log(e)
-        if (e.errors) {
-            const errors = Object.keys(e.errors).map(error => e.errors[error].message);
-            res.status(400).send({ status: 400, message: errors[0] })
-        }
-        else if (e.errmsg.includes('duplicate'))
-            res.status(400).send({ status: 400, message: 'Account already exists using that email.' })
-        else
-            res.status(400).send({ status: 400, message: 'There was an error creating the account.' })
-    }
-})
+router.post("/user/logout", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => {
+      return token.token !== req.token;
+    });
+    await req.user.save();
 
-router.post('/login', async (req, res) => {
-    try {
-        const user = await User.checkCredentials(req.body.email, req.body.password)
-        const token = await user.generateAuthToken()
-        res.status(200).send({ user, token })
-    } catch (err) {
-        console.log(err.message)
-        res.status(401).send({ status: 401, message: err.message })
-    }
-})
+    res.send();
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 
-router.post('/user/logout', auth, async (req, res) => {
-    try {
-        req.user.tokens = req.user.tokens.filter((token) => {
-            return token.token !== req.token
-        })
-        await req.user.save()
+router.put("/user/:id", auth, async (req, res) => {
+  //create a new user object based off the original
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return res.status(404).send("User not found.");
+  }
 
-        res.send()
-    } catch (e) {
-        res.status(500).send(e)
-    }
-})
+  //get any updated user info
+  const { email, name, password } = req.body;
 
-router.put('/user/:id', auth, async (req, res) => {
+  //update user info on new user object
+  if (email) user.email = email;
+  if (name) user.name = name;
+  if (password) user.password = password;
+});
 
-    //create a new user object based off the original
-    const user = await User.findById(req.params.id)
-    if (!user) {
-        return res.status(404).send("User not found.")
-    }
-
-    //get any updated user info
-    const { email, name, password} = req.body
-
-    //update user info on new user object
-    if (email) user.email = email
-    if (name) user.name = name
-    if (password) user.password = password
-})
-
-router.get('/user/:id',auth, async (req, res) => {
-    try {
-      await user.save();
-      res.status(200).send(user);
-    } catch (e) {
-      res.status(400).send(e);
-    }
+router.get("/user/:id", auth, async (req, res) => {
+  try {
+    await user.save();
+    res.status(200).send(user);
+  } catch (e) {
+    res.status(400).send(e);
   }
 });
 

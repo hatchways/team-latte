@@ -133,19 +133,10 @@ router.put("/project/:id", auth, upload.array("images", 5), async (req, res) => 
 });
 
 router.get("/project", auth, async (req, res) => {
-  //This is desigining what will be  if GET request is made to this URL:
-
   const author = req.user._id;
   const user = await User.findById(author);
-  console.log(req.user);
-
-  //console.log('user id AKA author is ' + author)
-  //console.log(token); ------------>>>>>>> won't work here as 'token' (actually in auth.js) is outta scope
 
   res.status(200).send("OK");
 });
-
-//Once function is called through a fetch API (which is a fancy way of saying that
-//it's a method). It returns a promise that RESOLVES TO the response in that request
 
 module.exports = router;

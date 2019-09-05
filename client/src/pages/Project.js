@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 export default function ProjectList(props) {
   const classes = useStyles();
   const projects = props.projectData;
+  console.log(projects);
 
   return (
     <GridList cols={2} spacing={5} className={classes.gridlist}>
@@ -42,11 +43,7 @@ export function ProjectCard(props) {
   return (
     <Card className={classes.card}>
       <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={props.project.img}
-          title={props.project.alt}
-        />
+        <CardMedia className={classes.media} image={props.project.img} title={props.project.alt} />
         <CardContent>
           <Typography variant="h6" component="h2" gutterBottom>
             {props.project.title}
@@ -58,8 +55,7 @@ export function ProjectCard(props) {
             </Typography>
           </Typography>
           <Typography variant="body2" color="textSecondary" component="h2">
-            Equity exchange: {props.project.equity} | {props.project.daysToGo}{" "}
-            days to go
+            Equity exchange: {props.project.equity} | {props.project.daysToGo} days to go
           </Typography>
         </CardContent>
       </CardActionArea>

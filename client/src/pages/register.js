@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2)
   }
 }));
-
+//try pushing a 'props' arugment for router history...
 function Signup() {
   const classes = useStyles();
 
@@ -55,7 +55,7 @@ function Signup() {
   };
 
   const backendRegister = newUser => {
-    console.log(newUser);
+    
     fetch("/register", {
       method: "POST",
       headers: {
@@ -64,6 +64,7 @@ function Signup() {
       body: JSON.stringify(newUser)
     })
       .then(res => {
+        
         const response = res.json();
         if (res.status > 499) throw Error("Server error");
         else return response;
@@ -74,6 +75,7 @@ function Signup() {
         window.location.replace("/profile/" + res.user._id);
       })
       .catch(err => {
+        console.log(err)
         setVisible(true);
         setError(err + "");
       });

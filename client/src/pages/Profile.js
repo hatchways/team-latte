@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -37,8 +37,8 @@ const useStyles = makeStyles({
   }
 });
 
-const fieldsData = ["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"];
-
+//const fieldsData = ["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"];
+/*
 const projectData = [
   {
     img: coffeeCup,
@@ -71,56 +71,63 @@ const projectData = [
     daysToGo: "5"
   }
 ];
+*/
 
-// Purposely didn't put the following as a part of a function's body
-fetch("/profile/:id")
-  .then(res => {
-    const response = res.json();
-    if (res.status > 499) throw Error("Server error");
-    else return response;
-  })
-  .then(res => {
-    if (res.status > 299) throw Error(res.message);
-    console.log(res);
-  })
-  .catch(err => console.log(err));
+export default function ProfilePage(props) {
+  const [profile, setProfile] = useState(""); //Replaced initial state from null to '' b/c it was
+  const [projects, setProjects] = useState("");
 
-export default function ProfilePage() {
+  useEffect(() => {
+    //fetch(`/profile/${props.match.params.id}`)
+    fetch(`${props.location.pathname}`) // ** URL is equivalent to /profile/:id
+      .then(res => {
+        const response = res.json();
+        if (res.status > 499) throw Error("Server error");
+        else return response;
+      })
+      .then(res => {
+        // console.log(res);
+        // console.log(res.profile);
+        // console.log(res.projects);
+
+        setProfile(res.profile);
+        setProjects(res.projects);
+        if (res.status > 299) throw Error(res.message);
+        // else return { setProfile, setProjects };
+      })
+      .catch(err => console.log(err));
+  }, [props.location, props.match]);
+
+  //console.log(profile.name);
+  //console.log(projects);
+  //console.log(profile.expertise);
+
+  const fieldsData = profile.expertise;
+  console.log(fieldsData);
+
   const classes = useStyles();
+
   return (
+    //set up a condition to render only if profile and project isn't null
     <React.Fragment>
-      <Grid container spacing={2} className="flexsection">
+      <Grid container spacing={2} className="flexsection" style={{ marginTop: "90px" }}>
         {/* Left part */}
         <Grid item xs={3} justify="center" className={"flex-col-scroll"}>
           <Grid container direction="column" spacing={3}>
             <Grid container justify="center" alignItems="center">
-              <Avatar
-                alt="James Hampton"
-                src={JHAvatar}
-                className={classes.bigAvatar}
-              />
+              <Avatar alt="James Hampton" src={JHAvatar} className={classes.bigAvatar} />
             </Grid>
 
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className="full-name"
-            >
+            <Grid container justify="center" alignItems="center" className="full-name">
               <Typography variant="h4" gutterBottom>
-                James Hampton
+                {profile.name}
               </Typography>
             </Grid>
 
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.location}
-            >
+            <Grid container justify="center" alignItems="center" className={classes.location}>
               <Typography variant="body2" color="textSecondary" gutterBottom>
                 <LocationOnIcon />
-                Toronto, Canada
+                {profile.location}
               </Typography>
             </Grid>
 
@@ -136,16 +143,10 @@ export default function ProfilePage() {
 
         {/* Right part*/}
         <Grid item xs={9} className={"flex-col-scroll"}>
-          <Typography
-            variant="h3"
-            gutterBottom
-            className={classes.projectTitle}
-          >
+          <Typography variant="h3" gutterBottom className={classes.projectTitle}>
             Projects
           </Typography>
-
-          <ProjectList projectData={projectData} />
-
+          <ProjectList projectData={projects} /> {/*the prop would be changed with projects state */}
           <h1>Column 2</h1>
           <h1>new line</h1>
           <h1>new line</h1>
