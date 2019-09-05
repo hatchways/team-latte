@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Dialog, DialogContent, DialogActions, DialogTitle, DialogContentText } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
@@ -19,7 +20,6 @@ import espresso2 from "../assets/espresso2.jpg";
 import pouringCoffee from "../assets/pouring-coffee.jpg";
 import "./Profile.css";
 
-
 const useStyles = makeStyles({
   avatar: {
     margin: 10
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
   }
 });
 
-//const fieldsData = ["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"];
+const fieldsData = ["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"];
 
 const projectData = [
   {
@@ -72,7 +72,64 @@ const projectData = [
     daysToGo: "5"
   }
 ];
-*/
+
+function EditDialog() {
+  const [open, setOpen] = useState(false);
+  function handleOpenClick() {
+    setOpen(true);
+  }
+  function handleCloseClick() {
+    setOpen(false);
+  }
+
+  return (
+    <div>
+      <Button onClick={handleOpenClick} variant="outlined">
+        Edit info
+      </Button>
+      <Dialog open={open} close={handleCloseClick}>
+        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText>
+            <Grid item xs={12} justify="center" className={"flex-col-scroll"}>
+              <Grid container direction="column" spacing={3}>
+                <Grid container justify="center" alignItems="center">
+                  <Avatar alt="James Hampton" src={JHAvatar} />
+                </Grid>
+
+                <Grid container justify="center" alignItems="center" className="full-name">
+                  <Typography variant="h4" gutterBottom>
+                    James Hampton
+                  </Typography>
+                </Grid>
+
+                <Grid container justify="center" alignItems="center">
+                  <Typography variant="body2" color="textSecondary" gutterBottom>
+                    <LocationOnIcon />
+                    Toronto, Canada
+                  </Typography>
+                </Grid>
+
+                <Grid item>
+                  <EditDialog />
+                </Grid>
+
+                <Fields fieldsData={fieldsData} />
+
+                <Grid container justify="center">
+                  <Button variant="outlined">Send Message</Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </DialogContentText>
+          <DialogActions>
+            <Button onClick={handleCloseClick}>Submit Changes</Button>
+          </DialogActions>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
 
 export default function ProfilePage(props) {
   const [profile, setProfile] = useState(""); //Replaced initial state from null to '' b/c it was
@@ -108,81 +165,10 @@ export default function ProfilePage(props) {
 
   const classes = useStyles();
 
-
-function EditDialog() {
-
-  const [open, setOpen] = useState(false);
-  function handleOpenClick() {
-    setOpen(true);
-  };
-  function handleCloseClick() {
-    setOpen(false);
-  };
-
-  return(
-    <div>
-      <Button onClick={handleOpenClick} variant="outlined">Edit info</Button>
-      <Dialog open={open} close={handleCloseClick}>
-        <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent dividers>
-          <DialogContentText>
-           
-          <Grid item xs={12} justify="center" className={"flex-col-scroll"}>
-          <Grid container direction="column" spacing={3}>
-            <Grid container justify="center" alignItems="center">
-              <Avatar alt="James Hampton"  src={JHAvatar} />
-            </Grid>
-
-            <Grid container justify="center" alignItems="center" className="full-name">
-              <Typography variant="h4" gutterBottom>
-                James Hampton
-              </Typography>
-            </Grid>
-
-          
-            <Grid container justify="center" alignItems="center" > 
-              <Typography variant="body2" color="textSecondary" gutterBottom >
-                <LocationOnIcon/>
-                Toronto, Canada
-              </Typography>
-            </Grid>
-
-            <Grid item >
-              <EditDialog />
-            </Grid>
-
-            <Fields fieldsData={fieldsData} />
-            
-            <Grid container justify="center" >
-              <Button variant="outlined" >
-                Send Message
-              </Button>
-            </Grid>
-            </Grid>
-            </Grid>
-
-          </DialogContentText>
-          <DialogActions>
-            <Button onClick={handleCloseClick}>Submit Changes</Button>
-          </DialogActions>
-        </DialogContent>
-    
-      </Dialog>
-    </div>
-  )
-
-};
-
-
-export default function ProfilePage() {
-  const classes = useStyles()
-
   return (
     //set up a condition to render only if profile and project isn't null
     <React.Fragment>
-
-      <Grid container spacing={2} className="flexsection" style={{marginTop: '80px'}}>
-
+      <Grid container spacing={2} className="flexsection" style={{ marginTop: "80px" }}>
         {/* Left part */}
         <Grid item xs={2} justify="center" className={"flex-col-scroll"}>
           <Grid container direction="column" spacing={3}>
@@ -200,18 +186,16 @@ export default function ProfilePage() {
               <Typography variant="body2" color="textSecondary" gutterBottom>
                 <LocationOnIcon />
                 {profile.location}
-
               </Typography>
             </Grid>
 
-            <Grid item >
+            <Grid item>
               <EditDialog />
             </Grid>
 
             <Fields fieldsData={fieldsData} />
 
             <Grid container justify="center" alignItems="center">
-
               <Button variant="outlined" className={classes.messageButton}>
                 Send Message
               </Button>

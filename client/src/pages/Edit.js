@@ -121,6 +121,7 @@ function EditForm() {
                     </Step>
                 </Stepper>
                 <Button><DeleteIcon></DeleteIcon>Delete Project</Button>
+           </div>
             </Grid>
             
             <Grid item xs={false} md={9} >
