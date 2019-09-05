@@ -1,11 +1,11 @@
-import React from "react"
+import React, { useState } from "react"
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip';
 import Container from '@material-ui/core/Container';
-import { Typography } from "@material-ui/core"
+import { Typography, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions, TextField } from "@material-ui/core"
 import Button from '@material-ui/core/Button';
 
 import Fields from './Fields'
@@ -37,7 +37,6 @@ const useStyles = makeStyles({
     padding:20,
   }
 });
-
 const fieldsData = ["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"]
 
 const projectData = [
@@ -73,18 +72,29 @@ const projectData = [
   }
 ] 
 
-export default function ProfilePage() {
-  const classes = useStyles()
-  return (
-    <React.Fragment>
-      <Grid container spacing={2} className="flexsection">
-        {/* Left part */}
-        <Grid item xs={3} justify="center" className={"flex-col-scroll"}>
+function EditDialog() {
+
+  const [open, setOpen] = useState(false);
+  function handleOpenClick() {
+    setOpen(true);
+  };
+  function handleCloseClick() {
+    setOpen(false);
+  };
+
+  return(
+    <div>
+      <Button onClick={handleOpenClick} variant="outlined">Edit info</Button>
+      <Dialog open={open} close={handleCloseClick}>
+        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText>
+           
+          <Grid item xs={12} justify="center" className={"flex-col-scroll"}>
           <Grid container direction="column" spacing={3}>
             <Grid container justify="center" alignItems="center">
-              <Avatar alt="James Hampton"  src={JHAvatar} className={classes.bigAvatar} />
+              <Avatar alt="James Hampton"  src={JHAvatar} />
             </Grid>
-
 
             <Grid container justify="center" alignItems="center" className="full-name">
               <Typography variant="h4" gutterBottom>
@@ -92,6 +102,60 @@ export default function ProfilePage() {
               </Typography>
             </Grid>
 
+          
+            <Grid container justify="center" alignItems="center" > 
+              <Typography variant="body2" color="textSecondary" gutterBottom >
+                <LocationOnIcon/>
+                Toronto, Canada
+              </Typography>
+            </Grid>
+
+            <Grid item >
+              <EditDialog />
+            </Grid>
+
+            <Fields fieldsData={fieldsData} />
+            
+            <Grid container justify="center" >
+              <Button variant="outlined" >
+                Send Message
+              </Button>
+            </Grid>
+            </Grid>
+            </Grid>
+
+          </DialogContentText>
+          <DialogActions>
+            <Button onClick={handleCloseClick}>Submit Changes</Button>
+          </DialogActions>
+        </DialogContent>
+    
+      </Dialog>
+    </div>
+  )
+
+};
+
+
+export default function ProfilePage() {
+  const classes = useStyles()
+  return (
+    <React.Fragment>
+      <Grid container spacing={2} className="flexsection" style={{marginTop: '80px'}}>
+        {/* Left part */}
+        <Grid item xs={2} justify="center" className={"flex-col-scroll"}>
+          <Grid container direction="column" spacing={3}>
+            <Grid container justify="center" alignItems="center">
+              <Avatar alt="James Hampton"  src={JHAvatar} className={classes.bigAvatar} />
+            </Grid>
+
+            <Grid container justify="center" alignItems="center" className="full-name">
+              <Typography variant="h4" gutterBottom>
+                James Hampton
+              </Typography>
+            </Grid>
+
+          
             <Grid container justify="center" alignItems="center" className={classes.location}> 
               <Typography variant="body2" color="textSecondary" gutterBottom >
                 <LocationOnIcon/>
@@ -99,9 +163,13 @@ export default function ProfilePage() {
               </Typography>
             </Grid>
 
+            <Grid item >
+              <EditDialog />
+            </Grid>
+
             <Fields fieldsData={fieldsData} />
             
-            <Grid container justify="center" alignItems="center">
+            <Grid container justify="center" >
               <Button variant="outlined" className={classes.messageButton}>
                 Send Message
               </Button>

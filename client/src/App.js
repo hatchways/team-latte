@@ -24,8 +24,8 @@ function App() {
        
       <BrowserRouter>
 
-          <Route exact path="/" component={Landing} />
-          <Route path="/" component={Navbar} /> 
+          <Route exact path="/" component={Landing}/>
+          <Route path="/" component={Navbar}/> 
           <Route path='/login' component={Login} />
           <Route path='/signup' component={Signup} />
           <Route path="/profile/" component={ProfilePage} />

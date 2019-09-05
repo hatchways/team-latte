@@ -2,8 +2,18 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import NewMemberInfo from './register'
 import Login from './login'
+import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField } from '@material-ui/core';
 
 function Landing() {
+    const [open, setOpen] = React.useState(false);
+
+    function handleClickOpen() {
+      setOpen(true);
+    }
+  
+    function handleClose() {
+      setOpen(false);
+    }
     return(
         <div>
             <h1>Landing Page</h1>

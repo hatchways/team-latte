@@ -72,7 +72,7 @@ function EditForm() {
             </Grid>
             
             <Grid item xs={false} md={9} >
-                <div component={Paper}>
+                <div component={Paper} >
                     <Typography variant="h5">Let's start with basics</Typography>
                     
                     <Typography variant="body1">Project Title</Typography>
