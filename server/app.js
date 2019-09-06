@@ -19,14 +19,13 @@ app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
 // start up mongoose db
-require('./database/mongoose')
+require("./database/mongoose");
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use(userRouter)
 app.use(projectRouter)
 app.use(profileRouter)
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
