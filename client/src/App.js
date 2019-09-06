@@ -29,15 +29,18 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
+
         <ProtectedRoute exact path="/" component={ProfilePage} />
         <Route path="/" component={Navbar} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/profile/" component={ProfilePage} />
+        <Route path="/profile/:id" component={ProfilePage} />
+        {/* <Route path="/profile" component={ProfilePage} /> */}
         <Route path="/create" component={CreateForm} />
         <ProtectedRoute path="/edit" component={EditForm} />
         <Route path="/explore" component={Explore} />
         <Route path="/launch" component={Launch} />
+    
       </BrowserRouter>
     </MuiThemeProvider>
   );

@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 export default function ProjectList(props) {
   const classes = useStyles();
   const projects = props.projectData;
-  console.log(projects);
+ // console.log(projects);
 
   return (
     <GridList cols={2} spacing={5} className={classes.gridlist}>

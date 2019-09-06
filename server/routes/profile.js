@@ -60,7 +60,7 @@ router.put("/profile/:id", auth, upload.single("profile"), async (req, res) => {
   if (angelList) profile.angelList = angelList;
 
   //remove from s3 if profile pic exists
-  if (profile.profilePic.key && req.file.originalname) {
+  if (profile.profilePic && req.file) {
     const params = {
       Bucket: process.env.aws_bucket,
       Key: profile.profilePic.key
@@ -70,7 +70,7 @@ router.put("/profile/:id", auth, upload.single("profile"), async (req, res) => {
     });
   }
   //add profile pic to s3 then update user and send
-  if (req.file.originalname) {
+  if (req.file) {
     console.log(profile._id);
     const params = {
       Bucket: process.env.aws_bucket,

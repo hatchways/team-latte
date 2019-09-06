@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 export default function Fields(props) {
   const classes = useStyles();
   const fields = props.fieldsData;
-  console.log(fields);
+  //console.log(fields);
 
   /*
    This component should be receiving profile.expertise (which is an array) and then proceed to show each expertise in a Chip BUT it fails to iterate over 'fields'

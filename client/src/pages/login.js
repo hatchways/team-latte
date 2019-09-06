@@ -90,11 +90,7 @@ function Login() {
   }
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      className={classes.containerTweaks}
-    >
+    <Container component="main" maxWidth="xs" className={classes.containerTweaks}>
       <CssBaseline />
 
       <div>
@@ -131,17 +127,8 @@ function Login() {
               fullWidth
               required
             />
-            <FormControlLabel
-              label="Remember me"
-              control={<Checkbox value="remember" />}
-            />
-            <Button
-              className={classes.button}
-              type="submit"
-              name="password"
-              variant="contained"
-              fullWidth
-            >
+            <FormControlLabel label="Remember me" control={<Checkbox value="remember" />} />
+            <Button className={classes.button} type="submit" name="password" variant="contained" fullWidth>
               Login
             </Button>
           </form>
@@ -156,12 +143,7 @@ function Login() {
         autoHideDuration={6000}
         message={error}
         action={
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            onClick={handleClose}
-          >
+          <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         }
