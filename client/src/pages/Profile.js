@@ -71,46 +71,47 @@ const projectData = [
 ];
 
 function EditDialog(props) {
-  const profile = props.profile;
+ console.log(props.profile._id);
+  const [profile, setProfile] = useState(props.profile)
   //console.log(profile.name)
   const [name, setCurrentName] = useState("");
   const [location, setCurrentLocation] = useState("");
   const [open, setOpen] = useState(false);
 
-  const modifyProfileInfo = profileInfo => {
-    console.log(profileInfo);
-   // fetch(`${props.location.pathname}`, {
-     fetch(`/profile/${profile._id}` , {
-       method: "PUT",
-       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("AuthToken")}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(profileInfo)
-    })
-      .then(res => {
-        const response = res.json();
-        if (res.status > 499) throw Error("Server error");
-        else return response;
+    const modifyProfileInfo = profileInfo => {
+      console.log(profileInfo);
+      // fetch(`${props.location.pathname}`, {
+      console.log('/profile/' + props.profile._id)
+      fetch('/profile/' + props.profile._id, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("AuthToken")}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(profileInfo)
       })
-       .then(res => {
-        console.log(res.profile)
-        if (res.status > 299) throw Error(res.message + "");
-      })
-      .catch(err => console.log(err));
-  };
+        .then(res => {
+          const response = res.json();
+          if (res.status > 499) throw Error("Server error");
+          else return response;
+        })
+        .then(res => {
+          console.log(res.profile)
+         props.setProfile(res)
+          if (res.status > 299) throw Error(res.message + "");
+        })
+        .catch(err => console.log(err));
+    };
+  
 
   const handleSubmit = e => {
     e.preventDefault();
-    const updatedInfo = {
-      name,
-      location
-    };
+    const updatedInfo = profile;
     console.log("test");
     // console.log(JSON.stringify(updatedInfo));
     console.log(updatedInfo)
+    
     modifyProfileInfo(updatedInfo);
-
     handleCloseClick();
   };
 
@@ -152,7 +153,11 @@ function EditDialog(props) {
                   variant="standard"
                   label="Name"
                   value={profile.name}
-                  onChange={e => setCurrentName(e.target.value)}
+                  onChange={e => {
+                    const val = e.target.value; setProfile(prevState => {
+                      return { ...prevState, name: val}
+                    })
+                  }}
                   fullWidth
                   required
                 />
@@ -166,16 +171,21 @@ function EditDialog(props) {
                   margin="normal"
                   variant="standard"
                   label="Location"
-                  value={location}
-                  onChange={e => setCurrentLocation(e.target.value)}
+                  value={profile.location}
+                  onChange={e => {
+                    const val = e.target.value; setProfile(prevState => {
+                      return { ...prevState, location: val}
+                    })
+                  }}
                   fullWidth
                   required
                 />
               </Grid>
 
-              <Grid container justify="center" alignItems="center">
+              {/*  <Grid container justify="center" alignItems="center">
                 <TextField type="text" value={fieldsData} />
               </Grid>
+               */}  
             </Grid>
           </DialogContentText>
 
@@ -202,7 +212,7 @@ export default function ProfilePage(props) {
       })
       .then(res => {
         // console.log(res);
-        console.log(res.profile.params);
+       // console.log(res.profile.params);
         // console.log(res.projects);
 
         setProfile(res.profile);
@@ -211,13 +221,13 @@ export default function ProfilePage(props) {
         // else return { setProfile, setProjects };
       })
       .catch(err => console.log(err));
-  }, [props.location, props.match]);
+  }, [props.location, props.profile]);
 
   //console.log(profile.name);
   //console.log(projects);
   //console.log(profile.expertise);
 
-  const fieldsData = profile.expertise;
+  //const fieldsData = profile.expertise;
   console.log(profile);
 
   const classes = useStyles();
@@ -247,7 +257,7 @@ export default function ProfilePage(props) {
             </Grid>
 
             <Grid container justify="center">
-              <EditDialog profile={profile} />
+              <EditDialog profile={profile} setProfile={setProfile} />
             </Grid>
 
             <Grid container justify="center" alignItems="center">
