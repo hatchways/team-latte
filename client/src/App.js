@@ -24,7 +24,8 @@ function App() {
         <Route path="/" component={Navbar} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/profile/" component={ProfilePage} />
+        <Route path="/profile/:id" component={ProfilePage} />
+        {/* <Route path="/profile" component={ProfilePage} /> */}
         <Route path="/create" component={CreateForm} />
         <Route path="/edit" component={EditForm} />
         <Route path="/explore" component={Explore} />
