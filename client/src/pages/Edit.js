@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Grid,
   Paper,
@@ -16,6 +15,7 @@ import {
   Select
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import FileUpload from "../components/FileUpload";
 
 const EditPageStyling = makeStyles(theme => ({
   containerTweaks: {
@@ -47,6 +47,7 @@ const EditPageStyling = makeStyles(theme => ({
 //This should progress user to the next step
 
 function EditForm() {
+  const numberOfPictures = 5;
   const classes = EditPageStyling();
 
   return (
@@ -99,52 +100,6 @@ function EditForm() {
         <div component={Paper}>
           <Typography variant="h5">Let's start with basics</Typography>
 
-                <Button>Preview</Button>
-                <Stepper orientation='vertical'>
-                    <Step >
-                        <StepLabel>Basics</StepLabel>
-                    </Step>
-                    <Step >
-                        <StepLabel>Rewards</StepLabel>
-                    </Step>
-                    <Step >
-                        <StepLabel>Rewards</StepLabel>
-                    </Step>
-                    <Step >
-                        <StepLabel>Story</StepLabel>
-                    </Step>
-                    <Step >
-                        <StepLabel>People</StepLabel>
-                    </Step>
-                    <Step >
-                        <StepLabel>Payment</StepLabel>
-                    </Step>
-                </Stepper>
-                <Button><DeleteIcon></DeleteIcon>Delete Project</Button>
-           </div>
-            </Grid>
-            
-            <Grid item xs={false} md={9} >
-                <div component={Paper} >
-                    <Typography variant="h5">Let's start with basics</Typography>
-                    
-                    <Typography variant="body1">Project Title</Typography>
-                        <TextField variant="outlined" label="Name of your awesome project" required />
-                    
-                    <Typography variant="body1">Subtitle</Typography>
-                        <TextField variant="outlined" label="Tell us more about your project..."/>
-                    
-                    <Typography variant="body1">Industry</Typography>
-                        <FormControl  variant="outlined" required>
-                        <Select autoWidth>
-                            <MenuItem value="">Select Industry</MenuItem>
-                            <MenuItem value={1}>Industry 1</MenuItem>
-                            <MenuItem value={2}>Industry 2</MenuItem>
-                            <MenuItem value={3}>Industry 3</MenuItem>
-                            <MenuItem value={4}>Industry 4</MenuItem>
-                        </Select>
-                    </FormControl>
-
           <Typography variant="body1">Project Title</Typography>
           <TextField
             variant="outlined"
@@ -169,6 +124,13 @@ function EditForm() {
             </Select>
           </FormControl>
 
+          <Typography variant="body1">Project Title</Typography>
+          <TextField
+            variant="outlined"
+            label="Name of your awesome project"
+            required
+          />
+
           <Typography variant="body1">Project Location</Typography>
           <FormControl variant="outlined" required>
             <Select autoWidth>
@@ -178,6 +140,11 @@ function EditForm() {
               <MenuItem value={3}>Location 3</MenuItem>
               <MenuItem value={4}>Location 4</MenuItem>
             </Select>
+          </FormControl>
+
+          <Typography variant="body1">Project Pictures</Typography>
+          <FormControl variant="outlined" required>
+            <FileUpload fileNumber={numberOfPictures} />
           </FormControl>
         </div>
       </Grid>
