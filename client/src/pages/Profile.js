@@ -138,7 +138,7 @@ function EditDialog(props) {
       >
         <DialogTitle>Edit Profile</DialogTitle>
         <DialogContent dividers>
-          <DialogContentText style={{ border: "2px solid red" }}>
+          <DialogContentText>
             <Grid container xs={12} justify="center">
               <Grid container justify="center" alignItems="center">
                 <Avatar alt="James Hampton" src={JHAvatar} className={classes.bigAvatar} />
@@ -237,7 +237,7 @@ export default function ProfilePage(props) {
     <React.Fragment>
       <Grid container justify="center" spacing={3} style={{ marginTop: "80px" }}>
         {/* Left part */}
-        <Grid item xs={3} style={{ border: "2px solid red", minHeight: "200px" }}>
+        <Grid item xs={3} style={{ minHeight: "200px" }}>
           <Grid container direction="column" spacing={3}>
             <Grid container justify="center" alignItems="center">
               <Avatar alt="James Hampton" src={JHAvatar} className={classes.bigAvatar} />
@@ -275,7 +275,7 @@ export default function ProfilePage(props) {
         </Grid>
 
         {/* Right part*/}
-        <Grid item xs={8} style={{ border: "2px solid red" }}>
+        <Grid item xs={8} >
           <Typography variant="h3" gutterBottom className={classes.projectTitle}>
             Projects
           </Typography>
