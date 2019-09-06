@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Grid,
   Paper,
@@ -47,6 +46,7 @@ const EditPageStyling = makeStyles(theme => ({
 //This should progress user to the next step
 
 function EditForm() {
+  const numberOfPictures = 5;
   const classes = EditPageStyling();
 
   return (
@@ -152,11 +152,21 @@ function EditForm() {
             required
           />
 
+
+          <Typography variant="body1" >Project Pictures</Typography>
+          <FormControl variant="outlined" required>
+          <FileUpload 
+            fileNumber={numberOfPictures} 
+          />
+          </FormControl>
+
+
           <Typography variant="body1">Subtitle</Typography>
           <TextField
             variant="outlined"
             label="Tell us more about your project..."
           />
+
 
           <Typography variant="body1">Industry</Typography>
           <FormControl variant="outlined" required>
