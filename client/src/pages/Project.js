@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import GridList from "@material-ui/core/GridList";
 import { fieldsStyle } from "./Fields";
 import classNames from "classnames";
 import {
@@ -93,6 +92,7 @@ export function ProjectCard(props) {
               {props.project.goal}
             </Typography>
           </Typography>
+
           <Typography variant="body2" color="textSecondary" component="h2">
             Equity exchange: {props.project.equity} | {props.project.daysToGo}{" "}
             days to go
