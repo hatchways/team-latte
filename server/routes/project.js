@@ -9,11 +9,7 @@ const User = require("../models/user");
 //set up image upload paramaters
 const upload = multer({
   limits: {
-<<<<<<< HEAD
-    fileSize: 1000000
-=======
     fileSize: 10000000
->>>>>>> dev
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
@@ -34,11 +30,8 @@ router.post("/project", auth, upload.array("images", 5), async (req, res) => {
     author: req.user._id
   });
 
-<<<<<<< HEAD
-=======
   // console.log(project.author);
 
->>>>>>> dev
   //upload photos to aws s3
   const promises = req.files.map(file => {
     const params = {
@@ -148,7 +141,6 @@ router.put(
 router.get("/projects", auth, async (req, res) => {
   const projects = await Project.find({});
   res.status(200).send({ projects });
-
 });
 
 router.get("/project", auth, async (req, res) => {
