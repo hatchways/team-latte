@@ -36,7 +36,7 @@ const mockProjectData = [
     img: coffeeCup,
     category: "Food and Craft",
     alt: "Coffee Cup",
-    field: "Customer Service",
+    industry: "Customer Service",
     title: "Urban Jungle: eco-friendly coffee shop",
     raised: "23,874",
     goal: "40,000",
@@ -49,7 +49,7 @@ const mockProjectData = [
     img: espresso,
     category: "Food and Craft",
     alt: "Espresso",
-    field: "Coffee",
+    industry: "Coffee",
     title: "Energy Run: the quickest coffee experience",
     raised: "7,257",
     goal: "12,383",
@@ -62,7 +62,7 @@ const mockProjectData = [
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
-    field: "Restaurant",
+    industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
     raised: "34,912",
     goal: "50,000",
@@ -75,7 +75,7 @@ const mockProjectData = [
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
-    field: "Restaurant",
+    industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
     raised: "34,912",
     goal: "50,000",
@@ -88,7 +88,7 @@ const mockProjectData = [
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
-    field: "Restaurant",
+    industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
     raised: "34,912",
     goal: "50,000",
@@ -136,7 +136,7 @@ function Explore() {
     const uniqueIndustries = new Set();
 
     projects.forEach(project => {
-      uniqueIndustries.add(project.field);
+      uniqueIndustries.add(project.industry);
     });
     console.log(setIndustries);
     setIndustries(Array.from(uniqueIndustries));
@@ -152,7 +152,8 @@ function Explore() {
 
     return projects.filter(
       project =>
-        project.field.includes(industry) && project.location.includes(location)
+        project.industry.includes(industry) &&
+        project.location.includes(location)
     );
   };
   return (
@@ -195,10 +196,11 @@ function Explore() {
           label="Deadline"
         />
       </Grid>
-
-      <div className={classes.flexContainer}>
-        <ProjectList withAuthor projectData={filterProjects(projects)} />
-      </div>
+      {projects && (
+        <div className={classes.flexContainer}>
+          <ProjectList withAuthor projectData={filterProjects(projects)} />
+        </div>
+      )}
     </div>
   );
 }
