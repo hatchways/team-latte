@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
-import { Typography } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+  makeStyles,
+  Paper,
+  Grid,
+  DialogContentText,
+  TextField,
+  Button,
+  Typography
+} from "@material-ui/core";
 import Fields from "./Fields";
 import ProjectList from "./Project";
 import EditDialog from './Dialog';
@@ -38,19 +47,33 @@ const useStyles = makeStyles({
 });
 
 const fieldsData = ["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"];
+
 const projectData = [
   {
     img: coffeeCup,
+    category: "Food and Craft",
     alt: "Coffee Cup",
     field: "Customer Service",
     title: "Urban Jungle: eco-friendly coffee shop",
     raised: "23,874",
     goal: "40,000",
     equity: "10%",
-    daysToGo: "44 days to go"
+    daysToGo: "44"
   },
   {
     img: espresso,
+    category: "Food and Craft",
+    alt: "Espresso",
+    field: "Coffee",
+    title: "Energy Run: the quickest coffee experience",
+    raised: "7,257",
+    goal: "12,383",
+    equity: "13%",
+    daysToGo: "19"
+  },
+  {
+    img: espresso,
+    category: "Food and Craft",
     alt: "Espresso",
     field: "Coffee",
     title: "Energy Run: the quickest coffee experience",
@@ -61,6 +84,7 @@ const projectData = [
   },
   {
     img: pouringCoffee,
+    category: "Life Hacks",
     alt: "Pouring Coffee",
     field: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
@@ -71,8 +95,9 @@ const projectData = [
   }
 ];
 
-
 export default function ProfilePage(props) {
+  const classes = useStyles();
+
   const [profile, setProfile] = useState(""); //Replaced initial state from null to '' b/c it was
   const [projects, setProjects] = useState("");
 
@@ -104,26 +129,43 @@ export default function ProfilePage(props) {
   //const fieldsData = profile.expertise;
   console.log(profile);
 
-  const classes = useStyles();
-
   return (
     //set up a condition to render only if profile and project isn't null
     <React.Fragment>
-      <Grid container justify="center" spacing={3} style={{ marginTop: "80px" }}>
+      <Grid
+        container
+        justify="center"
+        spacing={3}
+        style={{ marginTop: "80px" }}
+      >
         {/* Left part */}
         <Grid item xs={3} style={{ minHeight: "200px" }}>
           <Grid container direction="column" spacing={3}>
             <Grid container justify="center" alignItems="center">
-              <Avatar alt="James Hampton" src={JHAvatar} className={classes.bigAvatar} />
+              <Avatar
+                alt="James Hampton"
+                src={JHAvatar}
+                className={classes.bigAvatar}
+              />
             </Grid>
 
-            <Grid container justify="center" alignItems="center" className="full-name">
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className="full-name"
+            >
               <Typography variant="h4" gutterBottom>
                 {profile.name}
               </Typography>
             </Grid>
 
-            <Grid container justify="center" alignItems="center" className={classes.location}>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.location}
+            >
               <Typography variant="body2" color="textSecondary" gutterBottom>
                 <LocationOnIcon />
                 {profile.location}
@@ -140,17 +182,23 @@ export default function ProfilePage(props) {
 
             <Grid container justify="center" alignItems="center">
               <MessageDialog />
-              {/*Add another dialog box for messaging feature - low priority */}
+  
             </Grid>
           </Grid>
         </Grid>
 
         {/* Right part*/}
         <Grid item xs={8}>
-          <Typography variant="h3" gutterBottom className={classes.projectTitle}>
+
+          <Typography
+            variant="h3"
+            gutterBottom
+            className={classes.projectTitle}
+          >
             Projects
           </Typography>
-          <ProjectList projectData={projectData} /> {/*the prop would be changed with projects state */}
+          <ProjectList projectData={projectData} />{" "}
+          {/*the prop would be changed with projects state */}
           <h1>Column 2</h1>
           <h1>new line</h1>
           <h1>new line</h1>
