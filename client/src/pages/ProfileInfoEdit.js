@@ -22,17 +22,15 @@ const useStyles = makeStyles({
 });
 
 export default function EditDialog(props) {
-  console.log(props.profile._id);
+  //console.log(props.profile._id);
   const [profile, setProfile] = useState(props.profile);
-  //console.log(profile.name)
-  const [name, setCurrentName] = useState("");
-  const [location, setCurrentLocation] = useState("");
+console.log(profile.name)
   const [open, setOpen] = useState(false);
 
   const modifyProfileInfo = profileInfo => {
-    console.log(profileInfo);
+    //console.log(profileInfo);
     // fetch(`${props.location.pathname}`, {
-    console.log("/profile/" + props.profile._id);
+    //console.log("/profile/" + props.profile._id);
     fetch("/profile/" + props.profile._id, {
       method: "PUT",
       headers: {
@@ -47,7 +45,6 @@ export default function EditDialog(props) {
         else return response;
       })
       .then(res => {
-        console.log(res.profile);
         props.setProfile(res);
         if (res.status > 299) throw Error(res.message + "");
       })
@@ -57,8 +54,6 @@ export default function EditDialog(props) {
   const handleSubmit = e => {
     e.preventDefault();
     const updatedInfo = profile;
-    console.log("test");
-    // console.log(JSON.stringify(updatedInfo));
     console.log(updatedInfo);
 
     modifyProfileInfo(updatedInfo);
@@ -89,12 +84,10 @@ export default function EditDialog(props) {
         <DialogTitle>Edit Profile</DialogTitle>
         <DialogContent dividers>
           <DialogContentText>
-            <Grid container xs={12} justify="center">
-              <Grid container justify="center" alignItems="center">
+            <Grid container xs={12} alignContent="center" alignItems="center"  direction="column" style={{border: '2px solid red'}}>
+              <Grid item style={{border: '2px solid red'}} >
                 <Avatar alt="James Hampton" src={JHAvatar} className={classes.bigAvatar} />
-              </Grid>
-
-              <Grid container justify="center" alignItems="center" className="full-name">
+    
                 <TextField
                   type="text"
                   name="name"
@@ -112,9 +105,7 @@ export default function EditDialog(props) {
                   fullWidth
                   required
                 />
-              </Grid>
-
-              <Grid container justify="center" alignItems="center" className="full-name">
+            
                 <TextField
                   type="text"
                   name="location"
@@ -132,12 +123,13 @@ export default function EditDialog(props) {
                   fullWidth
                   required
                 />
-              </Grid>
+             
 
               {/*  <Grid container justify="center" alignItems="center">
                 <TextField type="text" value={fieldsData} />
               </Grid>
                */}
+                </Grid>
             </Grid>
           </DialogContentText>
 

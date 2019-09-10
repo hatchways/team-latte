@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 
 import Fields from "./Fields";
 import ProjectList from "./Project";
-import EditDialog from './Dialog';
+import EditDialog from './ProfileInfoEdit';
 import MessageDialog from './Message'
 
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -73,7 +73,7 @@ const projectData = [
 
 
 export default function ProfilePage(props) {
-  const [profile, setProfile] = useState(""); //Replaced initial state from null to '' b/c it was
+  const [profile, setProfile] = useState("");
   const [projects, setProjects] = useState("");
 
   useEffect(() => {
@@ -85,10 +85,6 @@ export default function ProfilePage(props) {
         else return response;
       })
       .then(res => {
-        // console.log(res);
-        // console.log(res.profile.params);
-        // console.log(res.projects);
-
         setProfile(res.profile);
         setProjects(res.projects);
         if (res.status > 299) throw Error(res.message);
@@ -97,13 +93,7 @@ export default function ProfilePage(props) {
       .catch(err => console.log(err));
   }, [props.location, props.profile]);
 
-  //console.log(profile.name);
-  //console.log(projects);
-  //console.log(profile.expertise);
-
-  //const fieldsData = profile.expertise;
-  console.log(profile);
-
+  console.log(profile)
   const classes = useStyles();
 
   return (
@@ -114,7 +104,7 @@ export default function ProfilePage(props) {
         <Grid item xs={3} style={{ minHeight: "200px" }}>
           <Grid container direction="column" spacing={3}>
             <Grid container justify="center" alignItems="center">
-              <Avatar alt="James Hampton" src={JHAvatar} className={classes.bigAvatar} />
+              <Avatar alt={profile.name} src={JHAvatar} className={classes.bigAvatar} />
             </Grid>
 
             <Grid container justify="center" alignItems="center" className="full-name">
