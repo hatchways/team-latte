@@ -1,17 +1,17 @@
 import { createMuiTheme } from "@material-ui/core";
-import { fade } from "@material-ui/core/styles";
+import { fade, rgbToHex } from "@material-ui/core/styles";
+import { green, purple } from "@material-ui/core/colors";
 
 export const theme = createMuiTheme({
   typography: {
     fontFamily: "Roboto",
-    fontSize: 16
+    fontSize: 16,
+    fontWeightRegular: 500
   },
 
   palette: {
-    main: {
-      primary: "green",
-      secondary: "#69E781"
-    }
+    primary: { main: "rgb(79 199 116)" },
+    secondary: { main: green[300] }
   },
 
   overrides: {
@@ -24,8 +24,7 @@ export const theme = createMuiTheme({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingLeft: "40px",
-        position: "absolute"
+        paddingLeft: "40px"
       }
     },
     MuiButton: {

@@ -137,6 +137,12 @@ router.put(
   }
 );
 
+//TODO implement this method such that it uses pagination and returns 20 projects at a time, ordered by date
+router.get("/projects", auth, async (req, res) => {
+  const projects = await Project.find({});
+  res.status(200).send({ projects });
+});
+
 router.get("/project", auth, async (req, res) => {
   const author = req.user._id;
   const user = await User.findById(author);

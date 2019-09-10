@@ -29,7 +29,6 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-
         <ProtectedRoute exact path="/" component={ProfilePage} />
         <Route path="/" component={Navbar} />
         <Route path="/login" component={Login} />
@@ -40,7 +39,6 @@ function App() {
         <ProtectedRoute path="/edit" component={EditForm} />
         <Route path="/explore" component={Explore} />
         <Route path="/launch" component={Launch} />
-    
       </BrowserRouter>
     </MuiThemeProvider>
   );
