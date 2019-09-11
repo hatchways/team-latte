@@ -19,6 +19,11 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    description: {
+      type: String,
+      required: true,
+      maxlength: 500
+    },
     photos: [
       {
         photo: {
@@ -33,6 +38,10 @@ const projectSchema = new mongoose.Schema(
         }
       }
     ],
+    launch: {
+      type: Boolean,
+      required: true
+    },
     funding_goal: {
       type: Number,
       required: true
