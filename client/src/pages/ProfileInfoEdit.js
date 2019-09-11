@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 export default function EditDialog(props) {
   //console.log(props.profile._id);
   const [profile, setProfile] = useState(props.profile);
-console.log(profile.name)
   const [open, setOpen] = useState(false);
 
   const modifyProfileInfo = profileInfo => {

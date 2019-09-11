@@ -12,6 +12,7 @@ import coffeeCup from "../assets/coffee-cup.jpg";
 import espresso from "../assets/espresso.jpg";
 import pouringCoffee from "../assets/pouring-coffee.jpg";
 import ProjectList from "./Project";
+
 const useStyles = makeStyles(theme => ({
   container: {
     marginTop: theme.spacing(5),
@@ -135,24 +136,27 @@ function Explore() {
   useEffect(() => {
     const uniqueIndustries = new Set();
 
-    projects.forEach(project => {
-      uniqueIndustries.add(project.industry);
+    projects.forEach(project => {             //REMEMBER forEach is for arrays (for each element)
+      uniqueIndustries.add(project.industry); //Adding each project's industry in the Set 
     });
     console.log(setIndustries);
-    setIndustries(Array.from(uniqueIndustries));
-  }, [projects]);
+    setIndustries(Array.from(uniqueIndustries)); //This adds to 'industry' state hook by forming an array by iterating over an OBJECT because the initial includes an empty array!!
+  }, [projects]); //THIS MEANS if projects array changes, it will render
 
-  const onChangeFilter = event => {
-    const { value, name } = event.target;
-    setFilterQuery({ ...filterQuery, [name]: value });
+  const onChangeFilter = event => { //This is used in the Select element for industry... think 'event' for 'e'
+    const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create an object of 2 props from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
+    setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>  
   };
 
   const filterProjects = projects => {
     const { industry, deadline, location } = filterQuery; //TODO using deadline yet, it should the project timestamp and subtract dates
+    //Shouldn't deadline's & location's positions be FLIPPED??
 
-    return projects.filter(
+    //Check issue # ...
+
+    return projects.filter( // for each array's element (which are objects for project info)
       project =>
-        project.industry.includes(industry) &&
+        project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry 
         project.location.includes(location)
     );
   };
