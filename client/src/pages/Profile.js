@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< Updated upstream
 import Avatar from "@material-ui/core/Avatar";
 import {
   Dialog,
@@ -15,6 +16,15 @@ import {
 } from "@material-ui/core";
 import Fields from "./Fields";
 import ProjectList from "./Project";
+=======
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography, Avatar, Button } from "@material-ui/core";
+import Fields from "./Fields";
+import ProjectList from "./Project";
+import EditDialog from "./ProfileInfoEdit";
+import MessageDialog from "./Message";
+import { Redirect } from 'react-router-dom';
+>>>>>>> Stashed changes
 
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import JHAvatar from "../assets/jh-avatar.jpg";
@@ -235,14 +245,22 @@ function EditDialog(props) {
 }
 
 export default function ProfilePage(props) {
+<<<<<<< Updated upstream
   const classes = useStyles();
 
   const [profile, setProfile] = useState(""); //Replaced initial state from null to '' b/c it was
   const [projects, setProjects] = useState("");
+=======
+  const [profile, setProfile] = useState(null); //Reason why it renders empty for profile for a short time
+  const [projects, setProjects] = useState(null);
+>>>>>>> Stashed changes
 
   useEffect(() => {
-    //fetch(`/profile/${props.match.params.id}`)
-    fetch(`${props.location.pathname}`) // ** URL is equivalent to /profile/:id
+    //const user = localStorage.get(...checkout what the method is)
+    //Check if empty, match.params.id
+
+    fetch(`/profile/${props.match.params.id}`)
+      //fetch(`/profile/${props.location.pathname}`) // ** URL is equivalent to /profile/:id
       .then(res => {
         const response = res.json();
         if (res.status > 499) throw Error("Server error");
@@ -259,24 +277,30 @@ export default function ProfilePage(props) {
         // else return { setProfile, setProjects };
       })
       .catch(err => console.log(err));
-  }, [props.location, props.profile]);
+  }, [props.match.params.id]);
 
+<<<<<<< Updated upstream
   //console.log(profile.name);
   //console.log(projects);
   //console.log(profile.expertise);
 
   //const fieldsData = profile.expertise;
   console.log(profile);
+=======
+  //console.log(profile)
+  const classes = useStyles();
+>>>>>>> Stashed changes
 
-  return (
+  const clearing = () => {
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+    window.location.replace("/login");
+  };
+
+  return profile && projects ? (
     //set up a condition to render only if profile and project isn't null
     <React.Fragment>
-      <Grid
-        container
-        justify="center"
-        spacing={3}
-        style={{ marginTop: "80px" }}
-      >
+      <Grid container justify="center" spacing={3}>
         {/* Left part */}
         <Grid item xs={3} style={{ minHeight: "200px" }}>
           <Grid container direction="column" spacing={3}>
@@ -288,23 +312,13 @@ export default function ProfilePage(props) {
               />
             </Grid>
 
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className="full-name"
-            >
+            <Grid container justify="center" alignItems="center" className="full-name">
               <Typography variant="h4" gutterBottom>
                 {profile.name}
               </Typography>
             </Grid>
 
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.location}
-            >
+            <Grid container justify="center" alignItems="center" className={classes.location}>
               <Typography variant="body2" color="textSecondary" gutterBottom>
                 <LocationOnIcon />
                 {profile.location}
@@ -320,26 +334,34 @@ export default function ProfilePage(props) {
             </Grid>
 
             <Grid container justify="center" alignItems="center">
+<<<<<<< Updated upstream
               <Button variant="outlined" className={classes.messageButton}>
                 Send Message
               </Button>
 
               {/*Add another dialog box for messaging feature - low priority */}
+=======
+              <MessageDialog />
+>>>>>>> Stashed changes
             </Grid>
+            <Button onClick={clearing}>Logout</Button>
           </Grid>
         </Grid>
 
         {/* Right part*/}
         <Grid item xs={8}>
+<<<<<<< Updated upstream
           <Typography
             variant="h3"
             gutterBottom
             className={classes.projectTitle}
           >
+=======
+          <Typography variant="h3" gutterBottom className={classes.projectTitle}>
+>>>>>>> Stashed changes
             Projects
           </Typography>
-          <ProjectList projectData={projectData} />{" "}
-          {/*the prop would be changed with projects state */}
+          <ProjectList projectData={projectData} /> {/*the prop would be changed with projects state */}
           <h1>Column 2</h1>
           <h1>new line</h1>
           <h1>new line</h1>
@@ -359,5 +381,10 @@ export default function ProfilePage(props) {
         </Grid>
       </Grid>
     </React.Fragment>
-  );
+  ) : <div>Error</div>
+    /*(
+    <div>
+      <Redirect to="/launch" />
+    </div> */
+  ;
 }

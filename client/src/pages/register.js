@@ -51,7 +51,7 @@ function Signup() {
       email,
       password
     });
-    alert(`Submitting ${email} & ${password}`);
+    //alert(`Submitting ${email} & ${password}`);
   };
 
   const backendRegister = newUser => {
@@ -72,6 +72,7 @@ function Signup() {
       .then(res => {
         if (res.status > 299) throw Error(res.message + "");
         window.sessionStorage.setItem("AuthToken", res.token);
+        window.sessionStorage.setItem("userID", JSON.stringify(res.user))
         window.location.replace("/profile/" + res.user._id);
       })
       .catch(err => {

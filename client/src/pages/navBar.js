@@ -42,7 +42,7 @@ function NavBar() {
     <React.Fragment>
       <CssBaseline />
 
-      <AppBar position="sticky">
+      <AppBar position="sticky" style={{marginBottom: '10px'}}>
         <div className={classes.separation}>
           <Avatar
             className={classes.companyLogo}
