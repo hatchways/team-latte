@@ -63,6 +63,7 @@ function Login() {
       .then(res => {
         if (res.status > 299) throw Error(res.message + "");
         window.sessionStorage.setItem("AuthToken", res.token);
+        window.sessionStorage.setItem("user", JSON.stringify(res.user));
         window.location.replace("/profile/" + res.user._id);
       })
       .catch(err => {
