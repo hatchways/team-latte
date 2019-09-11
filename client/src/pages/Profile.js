@@ -1,22 +1,4 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< Updated upstream
-import Avatar from "@material-ui/core/Avatar";
-import {
-  Dialog,
-  DialogContent,
-  DialogActions,
-  DialogTitle,
-  makeStyles,
-  Paper,
-  Grid,
-  DialogContentText,
-  TextField,
-  Button,
-  Typography
-} from "@material-ui/core";
-import Fields from "./Fields";
-import ProjectList from "./Project";
-=======
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Avatar, Button } from "@material-ui/core";
 import Fields from "./Fields";
@@ -24,7 +6,6 @@ import ProjectList from "./Project";
 import EditDialog from "./ProfileInfoEdit";
 import MessageDialog from "./Message";
 import { Redirect } from 'react-router-dom';
->>>>>>> Stashed changes
 
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import JHAvatar from "../assets/jh-avatar.jpg";
@@ -101,159 +82,9 @@ const projectData = [
   }
 ];
 
-function EditDialog(props) {
-  console.log(props.profile._id);
-  const [profile, setProfile] = useState(props.profile);
-  //console.log(profile.name)
-  const [name, setCurrentName] = useState("");
-  const [location, setCurrentLocation] = useState("");
-  const [open, setOpen] = useState(false);
-
-  const modifyProfileInfo = profileInfo => {
-    console.log(profileInfo);
-    // fetch(`${props.location.pathname}`, {
-    console.log("/profile/" + props.profile._id);
-    fetch("/profile/" + props.profile._id, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("AuthToken")}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(profileInfo)
-    })
-      .then(res => {
-        const response = res.json();
-        if (res.status > 499) throw Error("Server error");
-        else return response;
-      })
-      .then(res => {
-        console.log(res.profile);
-        props.setProfile(res);
-        if (res.status > 299) throw Error(res.message + "");
-      })
-      .catch(err => console.log(err));
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    const updatedInfo = profile;
-    console.log("test");
-    // console.log(JSON.stringify(updatedInfo));
-    console.log(updatedInfo);
-
-    modifyProfileInfo(updatedInfo);
-    handleCloseClick();
-  };
-
-  function handleOpenClick() {
-    setOpen(true);
-  }
-  function handleCloseClick() {
-    setOpen(false);
-  }
-
-  const classes = useStyles();
-
-  return (
-    <React.Fragment>
-      <Button onClick={handleOpenClick} variant="outlined">
-        Edit info
-      </Button>
-      <Dialog
-        open={open}
-        close={handleCloseClick}
-        onBackdropClick={handleCloseClick}
-        onEscapeKeyDown={handleCloseClick}
-        fullWidth
-      >
-        <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent dividers>
-          <DialogContentText>
-            <Grid container xs={12} justify="center">
-              <Grid container justify="center" alignItems="center">
-                <Avatar
-                  alt="James Hampton"
-                  src={JHAvatar}
-                  className={classes.bigAvatar}
-                />
-              </Grid>
-
-              <Grid
-                container
-                justify="center"
-                alignItems="center"
-                className="full-name"
-              >
-                <TextField
-                  type="text"
-                  name="name"
-                  id="name"
-                  margin="normal"
-                  variant="standard"
-                  label="Name"
-                  value={profile.name}
-                  onChange={e => {
-                    const val = e.target.value;
-                    setProfile(prevState => {
-                      return { ...prevState, name: val };
-                    });
-                  }}
-                  fullWidth
-                  required
-                />
-              </Grid>
-
-              <Grid
-                container
-                justify="center"
-                alignItems="center"
-                className="full-name"
-              >
-                <TextField
-                  type="text"
-                  name="location"
-                  id="location"
-                  margin="normal"
-                  variant="standard"
-                  label="Location"
-                  value={profile.location}
-                  onChange={e => {
-                    const val = e.target.value;
-                    setProfile(prevState => {
-                      return { ...prevState, location: val };
-                    });
-                  }}
-                  fullWidth
-                  required
-                />
-              </Grid>
-
-              {/*  <Grid container justify="center" alignItems="center">
-                <TextField type="text" value={fieldsData} />
-              </Grid>
-               */}
-            </Grid>
-          </DialogContentText>
-
-          <DialogActions>
-            <Button onClick={handleSubmit}>Submit Changes</Button>
-          </DialogActions>
-        </DialogContent>
-      </Dialog>
-    </React.Fragment>
-  );
-}
-
 export default function ProfilePage(props) {
-<<<<<<< Updated upstream
-  const classes = useStyles();
-
-  const [profile, setProfile] = useState(""); //Replaced initial state from null to '' b/c it was
-  const [projects, setProjects] = useState("");
-=======
   const [profile, setProfile] = useState(null); //Reason why it renders empty for profile for a short time
   const [projects, setProjects] = useState(null);
->>>>>>> Stashed changes
 
   useEffect(() => {
     //const user = localStorage.get(...checkout what the method is)
@@ -279,17 +110,8 @@ export default function ProfilePage(props) {
       .catch(err => console.log(err));
   }, [props.match.params.id]);
 
-<<<<<<< Updated upstream
-  //console.log(profile.name);
-  //console.log(projects);
-  //console.log(profile.expertise);
-
-  //const fieldsData = profile.expertise;
-  console.log(profile);
-=======
   //console.log(profile)
   const classes = useStyles();
->>>>>>> Stashed changes
 
   const clearing = () => {
     window.localStorage.clear();
@@ -334,15 +156,7 @@ export default function ProfilePage(props) {
             </Grid>
 
             <Grid container justify="center" alignItems="center">
-<<<<<<< Updated upstream
-              <Button variant="outlined" className={classes.messageButton}>
-                Send Message
-              </Button>
-
-              {/*Add another dialog box for messaging feature - low priority */}
-=======
               <MessageDialog />
->>>>>>> Stashed changes
             </Grid>
             <Button onClick={clearing}>Logout</Button>
           </Grid>
@@ -350,15 +164,11 @@ export default function ProfilePage(props) {
 
         {/* Right part*/}
         <Grid item xs={8}>
-<<<<<<< Updated upstream
           <Typography
             variant="h3"
             gutterBottom
             className={classes.projectTitle}
           >
-=======
-          <Typography variant="h3" gutterBottom className={classes.projectTitle}>
->>>>>>> Stashed changes
             Projects
           </Typography>
           <ProjectList projectData={projectData} /> {/*the prop would be changed with projects state */}
