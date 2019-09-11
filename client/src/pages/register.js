@@ -55,7 +55,6 @@ function Signup() {
   };
 
   const backendRegister = newUser => {
-    
     fetch("/register", {
       method: "POST",
       headers: {
@@ -64,7 +63,6 @@ function Signup() {
       body: JSON.stringify(newUser)
     })
       .then(res => {
-        
         const response = res.json();
         if (res.status > 499) throw Error("Server error");
         else return response;
@@ -72,11 +70,11 @@ function Signup() {
       .then(res => {
         if (res.status > 299) throw Error(res.message + "");
         window.sessionStorage.setItem("AuthToken", res.token);
-        window.sessionStorage.setItem("userID", JSON.stringify(res.user))
+        window.sessionStorage.setItem("user", JSON.stringify(res.user));
         window.location.replace("/profile/" + res.user._id);
       })
       .catch(err => {
-        console.log(err)
+        console.log(err);
         setVisible(true);
         setError(err + "");
       });
@@ -151,13 +149,7 @@ function Signup() {
               fullWidth
               required
             />
-            <Button
-              className={classes.button}
-              type="submit"
-              name="password"
-              variant="contained"
-              fullWidth
-            >
+            <Button className={classes.button} type="submit" name="password" variant="contained" fullWidth>
               Create Account
             </Button>
           </form>
@@ -172,12 +164,7 @@ function Signup() {
         autoHideDuration={6000}
         message={error}
         action={
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            onClick={handleClose}
-          >
+          <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         }
