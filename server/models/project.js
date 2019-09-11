@@ -33,6 +33,10 @@ const projectSchema = new mongoose.Schema(
         }
       }
     ],
+    launch: {
+      type: Boolean,
+      required: true
+    },
     funding_goal: {
       type: Number,
       required: true
