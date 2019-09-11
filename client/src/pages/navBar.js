@@ -55,7 +55,7 @@ function NavBar() {
         </div>
 
         <div className={classes.rightButtons}>
-          <Button variant="Button" className={classes.button}>
+          <Button className={classes.button}>
             <NavLink
               to="/explore"
               activeStyle={{

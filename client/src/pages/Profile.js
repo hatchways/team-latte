@@ -98,10 +98,6 @@ export default function ProfilePage(props) {
         else return response;
       })
       .then(res => {
-        // console.log(res);
-        // console.log(res.profile.params);
-        // console.log(res.projects);
-
         setProfile(res.profile);
         setProjects(res.projects);
         if (res.status > 299) throw Error(res.message);
@@ -127,11 +123,7 @@ export default function ProfilePage(props) {
         <Grid item xs={3} style={{ minHeight: "200px" }}>
           <Grid container direction="column" spacing={3}>
             <Grid container justify="center" alignItems="center">
-              <Avatar
-                alt="James Hampton"
-                src={JHAvatar}
-                className={classes.bigAvatar}
-              />
+              <Avatar alt={profile.name} src={JHAvatar} className={classes.bigAvatar} />
             </Grid>
 
             <Grid container justify="center" alignItems="center" className="full-name">
@@ -157,6 +149,7 @@ export default function ProfilePage(props) {
 
             <Grid container justify="center" alignItems="center">
               <MessageDialog />
+
             </Grid>
             <Button onClick={clearing}>Logout</Button>
           </Grid>
@@ -164,6 +157,7 @@ export default function ProfilePage(props) {
 
         {/* Right part*/}
         <Grid item xs={8}>
+
           <Typography
             variant="h3"
             gutterBottom
