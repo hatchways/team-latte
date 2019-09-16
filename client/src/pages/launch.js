@@ -14,6 +14,7 @@ import {
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import theme from "../themes/theme";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -31,10 +32,11 @@ const useStyles = makeStyles(theme => ({
     border: "none",
     width: "80px",
     borderRadius: "5px",
-    borderTop: "5px solid #69E781"
+    borderTop: "5px solid",
+    borderColor: theme.palette.primary.main
   },
   button: {
-    backgroundColor: "#69E781",
+    backgroundColor: theme.palette.primary.main,
     margin: theme.spacing(2, 0, 2),
     color: "white"
   }
@@ -42,9 +44,9 @@ const useStyles = makeStyles(theme => ({
 
 const CustomCheckbox = withStyles({
   root: {
-    colorPrimary: "69E781",
+    colorPrimary: theme.palette.primary.main,
     "&$checked": {
-      colorPrimary: "69E781"
+      colorPrimary: theme.palette.primary.main
     }
   },
   checked: {}
@@ -92,7 +94,6 @@ function Launch() {
       type="button"
       variant="contained"
       size="large"
-      type="button"
       onClick={() => {
         const { industry, description, location } = project;
         const { is18, hasID, hasBankCard } = verified;

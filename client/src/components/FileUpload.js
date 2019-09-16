@@ -1,5 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import React, { useState, useMemo } from "react";
+import theme from "../themes/theme";
 
 const baseStyle = {
   flex: 1,
@@ -9,7 +10,7 @@ const baseStyle = {
   padding: "20px",
   borderWidth: 2,
   borderRadius: 2,
-  borderColor: "#69E781",
+  borderColor: theme.colorPrimary,
   borderStyle: "dashed",
   backgroundColor: "#fafafa",
   color: "#bdbdbd",

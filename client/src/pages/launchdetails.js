@@ -11,19 +11,20 @@ import {
 } from "@material-ui/core";
 import classNames from "classnames";
 import FileUpload from "../components/FileUpload";
+import theme from "../themes/theme";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(createTheme => ({
   container: {
-    marginTop: theme.spacing(5),
+    marginTop: createTheme.spacing(5),
     paddingLeft: "20px"
   },
   select: {
-    marginBottom: theme.spacing(3),
+    marginBottom: createTheme.spacing(3),
     minWidth: 415,
     maxWidth: 700
   },
   textField: {
-    marginBottom: theme.spacing(3),
+    marginBottom: createTheme.spacing(3),
     minWidth: 415,
     maxWidth: 700
   },
@@ -31,17 +32,18 @@ const useStyles = makeStyles(theme => ({
     border: "none",
     width: "80px",
     borderRadius: "5px",
-    borderTop: "5px solid #69E781"
+    borderTop: "5px solid",
+    borderColor: theme.palette.primary.main
   },
   button: {
-    backgroundColor: "#69E781",
-    margin: theme.spacing(2, 0, 2),
+    backgroundColor: theme.palette.primary.main,
+    margin: createTheme.spacing(2, 0, 2),
     color: "white",
     maxWdith: "200px",
     width: "200px"
   },
   leftSection: {
-    paddingTop: theme.spacing(5),
+    paddingTop: createTheme.spacing(5),
     paddingLeft: "20px",
     borderRight: "10px solid",
     borderImage: "linear-gradient(to right, #CCCCCC, rgba(0, 0, 0, 0)) 1 100%;",
@@ -55,7 +57,7 @@ const useStyles = makeStyles(theme => ({
     padding: "20px",
     borderTop: "1px solid #CCCCCC",
     borderBottom: "1px solid #CCCCCC",
-    color: "#69E781"
+    color: theme.palette.primary.main
   },
   listItemActiveText: {
     color: "black"
@@ -132,9 +134,8 @@ function LaunchDetails(props) {
             className={classes.button}
             type="button"
             variant="contained"
-            type="button"
             onClick={() => {
-              alert("Preview showing...");
+              //preview launch
             }}
           >
             Preview
@@ -294,9 +295,8 @@ function LaunchDetails(props) {
             className={classes.button}
             type="button"
             variant="contained"
-            type="button"
             onClick={() => {
-              alert("Submitting project...");
+              //submit data to server
             }}
           >
             Save
