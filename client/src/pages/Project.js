@@ -99,6 +99,7 @@ export function ProjectCard(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
+     
       {props.withAuthor && (
         <div className={mainClasses.cardFooter}>
           <div className={mainClasses.cardFooterContent}>

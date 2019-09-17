@@ -11,6 +11,7 @@ import EditForm from "./pages/Edit";
 import Explore from "./pages/explore";
 import Launch from "./pages/launch";
 import ProfilePage from "./pages/Profile";
+import DetailProjectView from "./pages/DetailedProjectView"
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -39,6 +40,9 @@ function App() {
         <ProtectedRoute path="/edit" component={EditForm} />
         <Route path="/explore" component={Explore} />
         <Route path="/launch" component={Launch} />
+
+        <Route path="/detailed" component={DetailProjectView} />
+
       </BrowserRouter>
     </MuiThemeProvider>
   );

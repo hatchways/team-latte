@@ -144,7 +144,7 @@ function Explore() {
   }, [projects]); //THIS MEANS if projects array changes, it will render
 
   const onChangeFilter = event => { //This is used in the Select element for industry... think 'event' for 'e'
-    const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create an object of 2 props from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
+    const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create 2 variables using destructuring from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
     setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>  
   };
 
@@ -152,7 +152,7 @@ function Explore() {
     const { industry, deadline, location } = filterQuery; //TODO using deadline yet, it should the project timestamp and subtract dates
     //Shouldn't deadline's & location's positions be FLIPPED??
 
-    //Check issue # ...
+    //Check issue #...
 
     return projects.filter( // for each array's element (which are objects for project info)
       project =>
@@ -202,7 +202,7 @@ function Explore() {
       </Grid>
       {projects && (
         <div className={classes.flexContainer}>
-          <ProjectList withAuthor projectData={filterProjects(projects)} />
+          <ProjectList withAuthor projectData={filterProjects(projects)} /> {/*This will pass projects that passed filterProjects */}
         </div>
       )}
     </div>
