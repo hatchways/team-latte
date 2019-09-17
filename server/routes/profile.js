@@ -39,6 +39,10 @@ router.put("/profile/:id", auth, upload.single("profile"), async (req, res) => {
     return res.status(404).send("Profile not found.");
   }
 
+  if (!(req.user._id.toString() === profile._id.toString())) {
+    return res.status(403).send("Wrong user.");
+  }
+
   const {
     name,
     location,

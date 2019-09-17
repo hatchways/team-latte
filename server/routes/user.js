@@ -24,19 +24,15 @@ router.post("/register", async (req, res) => {
       );
       res.status(400).send({ status: 400, message: errors[0] });
     } else if (e.errmsg.includes("duplicate"))
-      res
-        .status(400)
-        .send({
-          status: 400,
-          message: "Account already exists using that email."
-        });
+      res.status(400).send({
+        status: 400,
+        message: "Account already exists using that email."
+      });
     else
-      res
-        .status(400)
-        .send({
-          status: 400,
-          message: "There was an error creating the account."
-        });
+      res.status(400).send({
+        status: 400,
+        message: "There was an error creating the account."
+      });
   }
 });
 
@@ -70,6 +66,9 @@ router.put("/user/:id", auth, async (req, res) => {
   const user = await User.findById(req.params.id);
   if (!user) {
     return res.status(404).send("User not found.");
+  }
+  if (!(req.user._id.toString() === user._id.toString())) {
+    return res.status(403).send("Wrong user.");
   }
 
   //get any updated user info

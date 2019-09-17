@@ -8,20 +8,21 @@ const auth = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET); //Note 'token' is defined up there
 
     const user = await User.findOne({
-      _id: decoded._id,
-      "tokens.token": token
+      _id: decoded._id
     });
 
     if (!user) {
-      throw new Error();
+      throw new Error("Not logged in");
     }
+
+    //create token for found user, then compare and make sure they are the same. if not, return wrong user 4** error
 
     req.token = token;
     req.user = user;
     //console.log('-------token is '+ token)
     next();
   } catch (e) {
-    res.status(401).send({ error: "Please authenticate." });
+    res.status(401).send({ error: e });
   }
 };
 
