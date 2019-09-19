@@ -80,6 +80,11 @@ router.put(
       res.status(404).send();
     }
 
+    //make sure project owner is the person updating
+    if (!(req.user._id.toString() === project.author.toString())) {
+      return res.status(403).send("Wrong user.");
+    }
+
     //setting the updated project data sans images
     const { title, funding_goal, location, industry, subtitle } = req.body;
     if (title) project.title = title;

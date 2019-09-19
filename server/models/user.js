@@ -20,15 +20,7 @@ const userSchema = new mongoose.Schema({
         throw new Error("password length too short");
       }
     }
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true
-      }
-    }
-  ]
+  }
 });
 
 userSchema.virtual("Projects", {
@@ -45,9 +37,6 @@ userSchema.virtual("Profiles", {
 
 userSchema.methods.generateAuthToken = async function() {
   const token = jwt.sign({ _id: this.id.toString() }, process.env.JWT_SECRET);
-
-  this.tokens = this.tokens.concat({ token });
-  await this.save();
 
   return token;
 };

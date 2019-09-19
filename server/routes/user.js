@@ -67,6 +67,9 @@ router.put("/user/:id", auth, async (req, res) => {
     res.statusMessage = "User not found.";
     return res.status(404).send("User not found.");
   }
+  if (!(req.user._id.toString() === user._id.toString())) {
+    return res.status(403).send("Wrong user.");
+  }
 
   //get any updated user info
   const { email, name, password } = req.body;

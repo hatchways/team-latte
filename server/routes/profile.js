@@ -37,15 +37,16 @@ router.get("/profile/:id", async (req, res) => {
   }
 });
 
-router.put("/profile/:id", auth, upload.single("profile"), async (req, res) => {
-  if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+
+router.put("/profile", auth, upload.single("profile"), async (req, res) => {
+  if (!req.user._id.match(/^[0-9a-fA-F]{24}$/)) {
     res.statusMessage = "Not a valid ID";
     res.status(404).send("Not a valid Id");
   }
   const s3 = new AWS.S3();
 
   //create a new profile object based off the original
-  const profile = await Profile.findById(req.params.id);
+  const profile = await Profile.findById(req.user._id);
   if (!profile) {
     res.statusMessage = "Profile not found.";
     return res.status(404).send("Profile not found.");
