@@ -30,11 +30,11 @@ router.get("/profile/:id", async (req, res) => {
   }
 });
 
-router.put("/profile/:id", auth, upload.single("profile"), async (req, res) => {
+router.put("/profile", auth, upload.single("profile"), async (req, res) => {
   const s3 = new AWS.S3();
 
   //create a new profile object based off the original
-  const profile = await Profile.findById(req.params.id);
+  const profile = await Profile.findById(req.user._id);
   if (!profile) {
     return res.status(404).send("Profile not found.");
   }
