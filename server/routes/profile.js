@@ -79,7 +79,10 @@ router.put("/profile/:id", auth, upload.single("profile"), async (req, res) => {
     };
     s3.deleteObject(params, (err, data) => {
       res.statusMessage = err;
-      if (err) res.status(503).send(err);
+      if (err) {
+        res.statusMessage = "Server Error.";
+        res.status(503).send(err);
+      }
     });
   }
   //add profile pic to s3 then update user and send
@@ -93,8 +96,10 @@ router.put("/profile/:id", auth, upload.single("profile"), async (req, res) => {
       ACL: "public-read"
     };
     s3.upload(params, (err, data) => {
-      if (err) res.status(503).send(err);
-      else {
+      if (err) {
+        res.statusMessage = "Server Error.";
+        res.status(503).send(err);
+      } else {
         profile.profilePic.link = data.Location;
         profile.profilePic.key = data.Key;
         profile.save();
@@ -108,7 +113,7 @@ router.put("/profile/:id", auth, upload.single("profile"), async (req, res) => {
       await profile.save();
       res.status(200).send(profile);
     } catch (e) {
-      res.statusMessage = e;
+      res.statusMessage = e.message;
       res.status(400).send(e);
     }
   }

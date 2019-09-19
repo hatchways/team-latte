@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
       const errors = Object.keys(e.errors).map(
         error => e.errors[error].message
       );
-      res.statusMessage = errors[0];
+      res.statusMessage = errors[0].message;
       res.status(400).send();
     } else if (e.errmsg.includes("duplicate")) {
       res.statusMessage = "Account already exists using that email.";
@@ -55,7 +55,7 @@ router.post("/user/logout", auth, async (req, res) => {
     await req.user.save();
     res.send();
   } catch (e) {
-    res.statusMessage = e;
+    res.statusMessage = "Server Error";
     res.status(500).send(e);
   }
 });
@@ -77,22 +77,12 @@ router.put("/user/:id", auth, async (req, res) => {
   if (password) user.password = password;
 });
 
-router.get("/user/:id", auth, async (req, res) => {
-  try {
-    await user.save();
-    res.status(200).send(user);
-  } catch (e) {
-    res.statusMessage = e;
-    res.status(400).send(e);
-  }
-});
-
 router.get("/user/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.status(200).send(user);
   } catch (e) {
-    res.statusMessage = e;
+    res.statusMessage = "User not found.";
     res.status(404).send(e);
   }
 });
