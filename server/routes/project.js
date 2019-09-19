@@ -61,6 +61,7 @@ router.post("/project", auth, upload.array("images", 5), async (req, res) => {
       res.send(project);
     })
     .catch(e => {
+      res.statusMessage = e;
       res.status(503).send(e);
     });
 });
@@ -132,6 +133,7 @@ router.put(
         res.status(200).send(project);
       })
       .catch(e => {
+        res.statusMessage = e;
         res.status(503).send(e);
       });
   }
