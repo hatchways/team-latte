@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  makeStyles,
-  Grid,
-  Select,
-  TextField,
-  MenuItem
-} from "@material-ui/core";
+import { Typography, makeStyles, Grid, Select, TextField, MenuItem } from "@material-ui/core";
 import classNames from "classnames";
 import coffeeCup from "../assets/coffee-cup.jpg";
 import espresso from "../assets/espresso.jpg";
@@ -34,10 +27,11 @@ const useStyles = makeStyles(theme => ({
 
 const mockProjectData = [
   {
+    deadline: "2019-09-22",
     img: coffeeCup,
     category: "Food and Craft",
     alt: "Coffee Cup",
-    industry: "Customer Service",
+    industry: "Tester Industry",
     title: "Urban Jungle: eco-friendly coffee shop",
     raised: "23,874",
     goal: "40,000",
@@ -47,6 +41,7 @@ const mockProjectData = [
     location: "Pripyat, Ukraine"
   },
   {
+    deadline: "2019-09-21",
     img: espresso,
     category: "Food and Craft",
     alt: "Espresso",
@@ -60,6 +55,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
+    deadline: "2019-09-23",
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -73,6 +69,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
+    deadline: "2019-09-24",
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -86,6 +83,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
+    deadline: "2019-09-29",
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -112,6 +110,8 @@ function Explore() {
     deadline: ""
   });
 
+  console.log(filterQuery.deadline);
+
   //It would be nice if this is run everytime the user hit the bottom of the page and fetches 20 new projects each time
   //look up 'react infinite scroll' for that
   useEffect(() => {
@@ -136,30 +136,35 @@ function Explore() {
   useEffect(() => {
     const uniqueIndustries = new Set();
 
-    projects.forEach(project => {             //REMEMBER forEach is for arrays (for each element)
-      uniqueIndustries.add(project.industry); //Adding each project's industry in the Set 
+    projects.forEach(project => {
+      //REMEMBER forEach is for arrays (for each element)
+      uniqueIndustries.add(project.industry); //1. Adding each project's industry in the 'Set'
     });
-    console.log(setIndustries);
-    setIndustries(Array.from(uniqueIndustries)); //This adds to 'industry' state hook by forming an array by iterating over an OBJECT because the initial includes an empty array!!
-  }, [projects]); //THIS MEANS if projects array changes, it will render
+    //console.log(setIndustries);
+    setIndustries(Array.from(uniqueIndustries)); //2. Updating 'industry' state hook by forming an array (by iterating over an OBJECT) because the initial includes an empty array!!
+  }, [projects]); //THIS MEANS if projects array changes, it will re-render
 
-  const onChangeFilter = event => { //This is used in the Select element for industry... think 'event' for 'e'
+  const onChangeFilter = event => {
+    //This is used in the Select element for industry... think 'event' for 'e'
     const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create an object of 2 props from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
-    setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>  
+    setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>
   };
+
 
   const filterProjects = projects => {
-    const { industry, deadline, location } = filterQuery; //TODO using deadline yet, it should the project timestamp and subtract dates
-    //Shouldn't deadline's & location's positions be FLIPPED??
+    const { industry, location, deadline } = filterQuery; //TODO using deadline yet, it should the project timestamp and subtract dates
 
-    //Check issue # ...
-
-    return projects.filter( // for each array's element (which are objects for project info)
+    const AfterDeadline = projects.filter(project => project.deadline >= filterQuery.deadline);
+    //const BeforeDeadline = projects.filter(project => project.deadline < filterQuery.deadline);
+  
+    return projects.filter(
       project =>
-        project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry 
-        project.location.includes(location)
-    );
+        project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
+        project.location.includes(location) &&
+        project.deadline.includes(deadline)
+    ) && AfterDeadline;
   };
+
   return (
     <div className={classes.container}>
       <Typography gutterBottom variant="h4">
@@ -172,9 +177,7 @@ function Explore() {
           value={filterQuery.industry}
           className={classNames(classes.select)}
           variant="outlined"
-          input={
-            <TextField variant="outlined" margin="normal" label="Industries" />
-          }
+          input={<TextField variant="outlined" margin="normal" label="Industries" />}
         >
           <MenuItem value={""}>{}</MenuItem>
           {industries.map(industry => (
@@ -194,6 +197,7 @@ function Explore() {
           onChange={onChangeFilter}
           value={filterQuery.deadline}
           name="deadline"
+          type="date"
           className={classes.fieldText}
           variant="outlined"
           margin="normal"
