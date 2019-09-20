@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import authFetch from "../utilities/auth";
 
 const useStyles = makeStyles(theme => ({
   containerTweaks: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2)
   }
 }));
+
 //try pushing a 'props' arugment for router history...
 function Signup() {
   const classes = useStyles();
@@ -51,33 +53,23 @@ function Signup() {
       email,
       password
     });
-    //alert(`Submitting ${email} & ${password}`);
   };
 
   const backendRegister = newUser => {
-    fetch("/register", {
+    authFetch({
+      url: "/register",
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: JSON.stringify(newUser)
-    })
-      .then(res => {
-        const response = res.json();
-        if (res.status > 499) throw Error("Server error");
-        else return response;
-      })
-      .then(res => {
-        if (res.status > 299) throw Error(res.message + "");
+    }).then(res => {
+      if (res.error) {
+        setVisible(true);
+        setError(res.error + "");
+      } else {
         window.sessionStorage.setItem("AuthToken", res.token);
         window.sessionStorage.setItem("user", JSON.stringify(res.user));
         window.location.replace("/profile/" + res.user._id);
-      })
-      .catch(err => {
-        console.log(err);
-        setVisible(true);
-        setError(err + "");
-      });
+      }
+    });
   };
 
   function handleClose(event, reason) {
@@ -149,7 +141,13 @@ function Signup() {
               fullWidth
               required
             />
-            <Button className={classes.button} type="submit" name="password" variant="contained" fullWidth>
+            <Button
+              className={classes.button}
+              type="submit"
+              name="password"
+              variant="contained"
+              fullWidth
+            >
               Create Account
             </Button>
           </form>
@@ -164,7 +162,12 @@ function Signup() {
         autoHideDuration={6000}
         message={error}
         action={
-          <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
+          <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
             <CloseIcon />
           </IconButton>
         }

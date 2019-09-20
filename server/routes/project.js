@@ -61,6 +61,7 @@ router.post("/project", auth, upload.array("images", 5), async (req, res) => {
       res.send(project);
     })
     .catch(e => {
+      res.statusMessage = "Server Error.";
       res.status(503).send(e);
     });
 });
@@ -74,7 +75,10 @@ router.put(
 
     //find project to update
     const project = await Project.findById(req.params.id);
-    if (!project) res.status(404).send("Project not found.");
+    if (!project) {
+      res.statusMessage = "Project not found.";
+      res.status(404).send();
+    }
 
     //make sure project owner is the person updating
     if (!(req.user._id.toString() === project.author.toString())) {
@@ -106,7 +110,10 @@ router.put(
         }
       };
       s3.deleteObjects(params, (err, data) => {
-        if (err) res.status(503).send(err);
+        if (err) {
+          res.statusMessage = "Server Error";
+          res.status(503).send(err);
+        }
       });
     }
 
@@ -137,6 +144,7 @@ router.put(
         res.status(200).send(project);
       })
       .catch(e => {
+        res.statusMessage = "Server Error";
         res.status(503).send(e);
       });
   }
