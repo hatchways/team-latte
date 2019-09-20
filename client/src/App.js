@@ -40,7 +40,13 @@ function App() {
         <ProtectedRoute path="/edit" component={EditForm} />
         <Route path="/explore" component={Explore} />
         <Route path="/launch" component={Launch} />
+<<<<<<< Updated upstream
         <Route path="/launchDetails" component={LaunchDetails} />
+=======
+
+        {/*<Route path="/detailed" component={DetailProjectView} />*/}
+
+>>>>>>> Stashed changes
       </BrowserRouter>
     </MuiThemeProvider>
   );
