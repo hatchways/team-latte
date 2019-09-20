@@ -161,7 +161,7 @@ function Explore() {
     //This is used in the Select element for industry... think 'event' for 'e'
     const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create an object of 2 props from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
     setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>
-
+  }
 
   const clearing = () => {
     window.localStorage.clear();
