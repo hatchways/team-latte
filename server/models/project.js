@@ -49,6 +49,10 @@ const projectSchema = new mongoose.Schema(
     author: {
       type: String,
       required: true
+    },
+    authorName: {
+      type: String,
+      required: true
     }
   },
   {

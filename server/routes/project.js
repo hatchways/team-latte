@@ -27,7 +27,8 @@ router.post("/project", auth, upload.array("images", 5), async (req, res) => {
   const project = new Project({
     ...req.body,
     photos: [],
-    author: req.user._id
+    author: req.user._id,
+    authorName: req.user.name
   });
 
   // console.log(project.author);
@@ -86,12 +87,20 @@ router.put(
     }
 
     //setting the updated project data sans images
-    const { title, funding_goal, location, industry, subtitle } = req.body;
+    const {
+      title,
+      funding_goal,
+      location,
+      industry,
+      subtitle,
+      authorName
+    } = req.body;
     if (title) project.title = title;
     if (funding_goal) project.funding_goal = funding_goal;
     if (location) project.location = location;
     if (industry) project.industry = industry;
     if (subtitle) project.subtitle = subtitle;
+    if (authorName) project.authorName = authorname;
 
     //removing photos if needed
     if (req.body.removals) {
@@ -151,9 +160,28 @@ router.put(
 );
 
 //TODO implement this method such that it uses pagination and returns 20 projects at a time, ordered by date
-router.get("/projects", auth, async (req, res) => {
-  const projects = await Project.find({});
-  res.status(200).send({ projects });
+router.get("/projects", async (req, res) => {
+  const pageNo = req.query.pageNo;
+  const size = req.query.size;
+  try {
+    const projects = await Project.find({}, [], {
+      skip: pageNo * size,
+      limit: parseInt(size),
+      sort: {
+        createdAt: -1
+      }
+    });
+    if (projects.length == 0) {
+      res.status(404).send();
+    } else {
+      res.status(200);
+
+      res.send(projects);
+    }
+  } catch (e) {
+    res.statusMessage = "Server Error";
+    res.status(504).send();
+  }
 });
 
 router.get("/project", auth, async (req, res) => {

@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ProjectList(props) {
+  console.log(props.project);
   const classes = useStyles();
 
   const projects = props.projectData;
@@ -69,17 +70,20 @@ export default function ProjectList(props) {
 export function ProjectCard(props) {
   const mainClasses = useStyles();
   const fieldsClasses = fieldsStyle();
+  const imgCard = props.project.photos
+    ? props.project.photos[0].photo.link
+    : props.project.img;
   return (
     <Card className={mainClasses.card} raised>
       <CardActionArea>
         <Chip
           color="primary"
-          label={props.project.category}
+          label={props.project.industry}
           className={classNames(mainClasses.chipPosition, fieldsClasses.chip)}
         ></Chip>
         <CardMedia
           className={mainClasses.media}
-          image={props.project.img}
+          image={imgCard}
           title={props.project.alt}
         />
         <CardContent>
@@ -89,7 +93,7 @@ export function ProjectCard(props) {
           <Typography variant="body2" color="textPrimary" component="h2">
             ${props.project.raised} /
             <Typography variant="body2" color="textSecondary" display="inline">
-              {props.project.goal}
+              {props.project.funding_goal}
             </Typography>
           </Typography>
 
@@ -103,7 +107,7 @@ export function ProjectCard(props) {
         <div className={mainClasses.cardFooter}>
           <div className={mainClasses.cardFooterContent}>
             <Typography variant="body2" color="textPrimary">
-              {props.project.author}
+              {props.project.authorName}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {props.project.location}
