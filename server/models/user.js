@@ -35,6 +35,12 @@ userSchema.virtual("Profiles", {
   foreignField: "_id"
 });
 
+userSchema.virtual("Investments", {
+  ref: "Investment",
+  localField: "_id",
+  foreignField: "investorID"
+});
+
 userSchema.methods.generateAuthToken = async function() {
   const token = jwt.sign({ _id: this.id.toString() }, process.env.JWT_SECRET);
 
