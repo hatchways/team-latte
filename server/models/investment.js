@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const investmentSchema = new mongoose.Schema({
   investorID: {
-    type: String,
+    type: { type: Schema.Types.ObjectId, ref: "User" },
     required: true
   },
   amount: {
@@ -10,7 +10,7 @@ const investmentSchema = new mongoose.Schema({
     required: true
   },
   projectID: {
-    type: String,
+    type: { type: Schema.Types.ObjectId, ref: "Project" },
     required: true
   }
 });
