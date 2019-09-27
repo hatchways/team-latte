@@ -44,10 +44,20 @@ const projectSchema = new mongoose.Schema(
     },
     funding_goal: {
       type: Number,
-      required: true
+      required: true,
+      default: 0
     },
+    raised_amount: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+   /* investment: {
+      type: { type: mongoose.Types.Number, ref: "Investment"}
+    },
+    */
     author: {
-      type: String,
+      type: String ,
       required: true
     }
   },
