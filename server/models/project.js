@@ -56,6 +56,12 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
+projectSchema.virtual("Investments", {
+  ref: "Investment",
+  localField: "_id",
+  foreignField: "projectID"
+});
+
 const Project = mongoose.model("Project", projectSchema);
 
 module.exports = Project;
