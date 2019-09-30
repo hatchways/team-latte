@@ -148,7 +148,11 @@ export default function ProfilePage(props) {
               </Typography>
             </Grid>
 
-            {window.sessionStorage.getItem("AuthToken") ? (
+            { window.sessionStorage.getItem("AuthToken") && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id ) ? (
+              
+              //&& window.sessionStorage.getItem('user')._id === props.match.params.id 
+              //JSON.parse(window.sesssionStorage.getItem('user))._id 
+
               <Grid container justify="center" className={checkToken}>
                 <EditDialog profile={profile} setProfile={setProfile} />
               </Grid>
@@ -156,7 +160,7 @@ export default function ProfilePage(props) {
               <Grid container justify="center" className={checkToken}>
                 <Button variant="outlined">Add Friend</Button>
             </Grid>
-            )}
+            ) }
 
             <Grid container justify="center" alignItems="center">
               <MessageDialog />
@@ -175,7 +179,7 @@ export default function ProfilePage(props) {
               </IconButton>
             </Grid>
 
-            {window.sessionStorage.getItem('AuthToken') ? (
+            {window.sessionStorage.getItem('AuthToken') && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id )  ? (
             <Grid container justify="center">
               <Button onClick={clearing} variant="outlined">
                 Logout
