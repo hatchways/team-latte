@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { Route, Link } from "react-router-dom";
+import authFetch from "../utilities/auth";
 
 import Ping from "./Ping";
 
@@ -19,19 +20,14 @@ class LandingPage extends Component {
   };
 
   componentDidMount() {
-    fetch("/welcome")
-      .then(res => {
-        console.log(res);
-        if (res.status === 200) return res.json();
-        else throw Error("Couldn't connect to the server");
-      })
-      .then(res => {
+    authFetch("/welcome").then(res => {
+      if (res.error) {
+        console.log(res.error);
+      } else {
         this.setState({ welcomeMessage: res.welcomeMessage });
         this.incrementStep();
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+      }
+    });
   }
 
   incrementStep = () => {

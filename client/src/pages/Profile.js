@@ -5,7 +5,6 @@ import Fields from "./Fields";
 import ProjectList from "./Project";
 import EditDialog from "./ProfileInfoEdit";
 import MessageDialog from "./Message";
-import { Redirect } from "react-router-dom";
 
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import JHAvatar from "../assets/jh-avatar.jpg";
@@ -16,6 +15,7 @@ import pouringCoffee from "../assets/pouring-coffee.jpg";
 import angellist from "../assets/angellist.png";
 import linkedin from "../assets/linkedin.png";
 import "./Profile.css";
+import authFetch from "../utilities/auth";
 
 const useStyles = makeStyles({
   avatar: {
@@ -93,23 +93,14 @@ export default function ProfilePage(props) {
   const [projects, setProjects] = useState(null);
 
   useEffect(() => {
-    //const user = localStorage.get(...checkout what the method is)
-    //Check if empty, match.params.id
-
-    fetch(`/profile/${props.match.params.id}`)
-      //fetch(`/profile/${props.location.pathname}`) // ** URL is equivalent to /profile/:id
-      .then(res => {
-        const response = res.json();
-        if (res.status > 499) throw Error("Server error");
-        else return response;
-      })
-      .then(res => {
+    authFetch({ url: `/profile/${props.match.params.id}` }).then(res => {
+      if (res.error) {
+        clearing();
+      } else {
         setProfile(res.profile);
         setProjects(res.projects);
-        if (res.status > 299) throw Error(res.message);
-        // else return { setProfile, setProjects };
-      })
-      .catch(err => console.log(err));
+      }
+    });
   }, [props.match.params.id]);
 
   //console.log(profile)
@@ -132,16 +123,30 @@ export default function ProfilePage(props) {
         <Grid item xs={3} style={{ minHeight: "200px" }}>
           <Grid container direction="column" spacing={3}>
             <Grid container justify="center" alignItems="center">
-              <Avatar alt={profile.name} src={JHAvatar} className={classes.bigAvatar} />
+              <Avatar
+                alt={profile.name}
+                src={JHAvatar}
+                className={classes.bigAvatar}
+              />
             </Grid>
 
-            <Grid container justify="center" alignItems="center" className="full-name">
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className="full-name"
+            >
               <Typography variant="h4" gutterBottom>
                 {profile.name}
               </Typography>
             </Grid>
 
-            <Grid container justify="center" alignItems="center" className={classes.location}>
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              className={classes.location}
+            >
               <Typography variant="body2" color="textSecondary" gutterBottom>
                 <LocationOnIcon />
                 {profile.location}
@@ -167,6 +172,7 @@ export default function ProfilePage(props) {
             </Grid>
 
             <Grid container justify="center" alignItems="center">
+
               <Fields fieldsData={fieldsData} />
             </Grid>
 
@@ -177,6 +183,7 @@ export default function ProfilePage(props) {
               <IconButton size="small">
                 <Avatar src={linkedin} />
               </IconButton>
+
             </Grid>
 
             {window.sessionStorage.getItem('AuthToken') && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id )  ? (
@@ -191,10 +198,17 @@ export default function ProfilePage(props) {
 
         {/* Right part*/}
         <Grid item xs={8}>
-          <Typography variant="h3" gutterBottom className={classes.projectTitle}>
+
+          <Typography
+            variant="h3"
+            gutterBottom
+            className={classes.projectTitle}
+          >
+
             Projects
           </Typography>
-          <ProjectList projectData={projectData} /> {/*the prop would be changed with projects state */}
+          <ProjectList projectData={projectData} />{" "}
+          {/*the prop would be changed with projects state */}
           <h1>Column 2</h1>
           <h1>new line</h1>
           <h1>new line</h1>

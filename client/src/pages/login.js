@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import authFetch from "../utilities/auth";
 
 //Comment for observing testing
 
@@ -48,6 +49,7 @@ function Login() {
 
   const backendLogin = user => {
     // console.log(user) -->> This shows user = { email: '...', password: '...'}
+    /*
     fetch("/login", {
       method: "POST",
       headers: {
@@ -69,7 +71,21 @@ function Login() {
       .catch(err => {
         setVisible(true);
         setError(err + "");
-      });
+      });*/
+    authFetch({
+      url: "/login",
+      method: "POST",
+      body: JSON.stringify(user)
+    }).then(res => {
+      if (res.error) {
+        setVisible(true);
+        setError(res.error + "");
+      } else {
+        window.sessionStorage.setItem("AuthToken", res.token);
+        window.sessionStorage.setItem("user", JSON.stringify(res.user));
+        window.location.replace("/profile/" + res.user._id);
+      }
+    });
   };
 
   const handleSubmit = e => {
@@ -91,7 +107,11 @@ function Login() {
   }
 
   return (
-    <Container component="main" maxWidth="xs" className={classes.containerTweaks}>
+    <Container
+      component="main"
+      maxWidth="xs"
+      className={classes.containerTweaks}
+    >
       <CssBaseline />
 
       <div>
@@ -128,8 +148,17 @@ function Login() {
               fullWidth
               required
             />
-            <FormControlLabel label="Remember me" control={<Checkbox value="remember" />} />
-            <Button className={classes.button} type="submit" name="password" variant="contained" fullWidth>
+            <FormControlLabel
+              label="Remember me"
+              control={<Checkbox value="remember" />}
+            />
+            <Button
+              className={classes.button}
+              type="submit"
+              name="password"
+              variant="contained"
+              fullWidth
+            >
               Login
             </Button>
           </form>
@@ -144,7 +173,12 @@ function Login() {
         autoHideDuration={6000}
         message={error}
         action={
-          <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
+          <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
             <CloseIcon />
           </IconButton>
         }
