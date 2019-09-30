@@ -66,6 +66,7 @@ router.post("/project", auth, upload.array("images", 5), async (req, res) => {
     });
 });
 
+
 router.put("/project/:id", auth, upload.array("images", 5), async (req, res) => {
   const s3 = new AWS.S3();
 
@@ -148,6 +149,10 @@ router.put("/project/:id", auth, upload.array("images", 5), async (req, res) => 
 //TODO implement this method such that it uses pagination and returns 20 projects at a time, ordered by date
 router.get("/projects", auth, async (req, res) => {
   const projects = await Project.find({});
+
+  // const projeectsWithInvestments = await Project.find({})
+  //                                  .populate("raised_amount", "amount investorID")
+
   res.status(200).send({ projects });
 });
 
