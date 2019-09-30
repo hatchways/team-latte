@@ -53,38 +53,13 @@ const projectSchema = new mongoose.Schema(
       required: true,
       default: 0
     },
-  
-  //**************
-  /*
-  raised_amount: [ 
-     {  type: { 
-          type: mongoose.Schema.Types.ObjectID, 
-          ref: "Investment" 
-        }
-      } 
-    ],
-*/
- /* This is to provide an array of objects which contain amount invested and investor ID. 
-
-  Using .populate( "Property name TO BE populated in the document", "List of the properties of the populated object you want to fetch"  ) in PROJECT ROUTES that show investments for specific projects, use  "  'raised_amount', 'investorID, amount'  " to get invester ID & Amount   
-
-  **************
-  */
-
-   /* investment: {
-      type: { type: mongoose.Types.Number, ref: "Investment"}
-    },
-    */
-    
-  /*
+    investments:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Investment'
+    }],
     author: {
-      type: String ,
-      required: true
-    } */
-    
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
+      type: Schema.Types.ObjectId,
+      ref: "User"
     }
   },
   {
