@@ -13,18 +13,16 @@ import Launch from "./pages/launch";
 import ProfilePage from "./pages/Profile";
 import LaunchDetails from "./pages/launchdetails";
 
-const ProtectedRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      window.sessionStorage.getItem("AuthToken") ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        window.sessionStorage.getItem("AuthToken") ? <Component {...props} /> : <Redirect to="/login" />
+      }
+    />
+  );
+};
 
 function App() {
   return (
