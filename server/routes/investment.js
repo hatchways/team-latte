@@ -32,8 +32,10 @@ router.post("/invest", auth, async (req, res) => {
     res.status(200).send(investment);
   } catch (e) {
     if (e.status) {
+      res.statusMessage = e.message;
       res.status(e.status).send(e.message);
     } else {
+      res.statusMessage = "Server Error";
       res.status(503).send(e);
     }
   }
@@ -51,8 +53,10 @@ router.get("/projectInvestments/:projectID", async (req, res) => {
     res.status(200).send(project.investments);
   } catch (e) {
     if (e.status) {
+      res.statusMessage = e.message;
       res.status(e.status).send(e.message);
     } else {
+      res.statusMessage = "Server Error";
       res.status(503).send(e);
     }
   }
@@ -71,8 +75,10 @@ router.get("/userInvestments/:userID", async (req, res) => {
     res.status(200).send(profile.investments);
   } catch (e) {
     if (e.status) {
-      res.status(e.status).send(e.message);
+      res.statusMessage = e.message;
+      res.status(e.status).send(e);
     } else {
+      res.statusMessage = "Server Error";
       res.status(503).send(e);
     }
   }
