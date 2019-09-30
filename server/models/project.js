@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const projectSchema = new mongoose.Schema(
+const projectSchema = new Schema(
   {
     title: {
       type: String,
@@ -53,10 +54,12 @@ const projectSchema = new mongoose.Schema(
       required: true,
       default: 0
     },
-    investments:[{
+    investments: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'Investment'
-    }],
+        ref: "Investment"
+      }
+    ],
     author: {
       type: Schema.Types.ObjectId,
       ref: "User"
