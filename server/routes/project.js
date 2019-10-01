@@ -80,6 +80,7 @@ router.put(
       res.statusMessage = "Project not found.";
       res.status(404).send();
     }
+
     //setting the updated project data sans images
     const {
       title,
