@@ -27,7 +27,8 @@ router.post("/project", auth, upload.array("images", 5), async (req, res) => {
   const project = new Project({
     ...req.body,
     photos: [],
-    author: req.user._id
+    author: req.user._id,
+    authorName: req.user.name
   });
 
   // console.log(project.author);
@@ -80,18 +81,21 @@ router.put(
       res.status(404).send();
     }
 
-    //make sure project owner is the person updating
-    if (!(req.user._id.toString() === project.author.toString())) {
-      return res.status(403).send("Wrong user.");
-    }
-
     //setting the updated project data sans images
-    const { title, funding_goal, location, industry, subtitle } = req.body;
+    const {
+      title,
+      funding_goal,
+      location,
+      industry,
+      subtitle,
+      authorName
+    } = req.body;
     if (title) project.title = title;
     if (funding_goal) project.funding_goal = funding_goal;
     if (location) project.location = location;
     if (industry) project.industry = industry;
     if (subtitle) project.subtitle = subtitle;
+    if (authorName) project.authorName = authorname;
 
     //removing photos if needed
     if (req.body.removals) {
@@ -99,6 +103,11 @@ router.put(
       project.photos = project.photos.filter(photo => {
         return !req.body.removals.includes(photo.photo.key);
       });
+
+      //make sure project owner is the person updating
+      if (!(req.user._id.toString() === project.author.toString())) {
+        return res.status(403).send("Wrong user.");
+      }
 
       //delete photos from aws s3 that need to be removed
       const deletePhoto = req.body.removals.map(removal => ({ Key: removal }));
@@ -151,13 +160,28 @@ router.put(
 );
 
 //TODO implement this method such that it uses pagination and returns 20 projects at a time, ordered by date
-router.get("/projects", auth, async (req, res) => {
-  const projects = await Project.find({});
+router.get("/projects", async (req, res) => {
+  const pageNo = req.query.pageNo;
+  const size = req.query.size;
+  try {
+    const projects = await Project.find({}, [], {
+      skip: pageNo * size,
+      limit: parseInt(size),
+      sort: {
+        createdAt: -1
+      }
+    });
+    if (projects.length == 0) {
+      res.status(404).send();
+    } else {
+      res.status(200);
 
-  // const projeectsWithInvestments = await Project.find({})
-  //                                  .populate("raised_amount", "amount investorID")
-
-  res.status(200).send({ projects });
+      res.send(projects);
+    }
+  } catch (e) {
+    res.statusMessage = "Server Error";
+    res.status(504).send();
+  }
 });
 
 router.get("/project", auth, async (req, res) => {
