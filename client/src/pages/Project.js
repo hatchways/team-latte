@@ -70,7 +70,7 @@ export function ProjectCard(props) {
   const mainClasses = useStyles();
   const fieldsClasses = fieldsStyle();
   const imgCard =
-    props.project.photos && props.project.photos.length > 1
+    props.project.photos && props.project.photos.length > 0
       ? props.project.photos[0].photo.link
       : props.project.img;
   return (
