@@ -51,7 +51,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ProjectList(props) {
-  console.log(props.project);
   const classes = useStyles();
 
   const projects = props.projectData;
@@ -70,9 +69,11 @@ export default function ProjectList(props) {
 export function ProjectCard(props) {
   const mainClasses = useStyles();
   const fieldsClasses = fieldsStyle();
-  const imgCard = props.project.photos
-    ? props.project.photos[0].photo.link
-    : props.project.img;
+  console.log("testing..");
+  const imgCard =
+    props.project.photos && props.project.photos.length > 1
+      ? props.project.photos[0].photo.link
+      : props.project.img;
   return (
     <Card className={mainClasses.card} raised>
       <CardActionArea>
