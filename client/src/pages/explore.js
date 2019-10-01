@@ -41,7 +41,7 @@ const mockProjectData = [
     alt: "Coffee Cup",
     industry: "Customer Service",
     title: "Urban Jungle: eco-friendly coffee shop",
-    raised: "23,874",
+    raised_amount: "23,874",
     funding_goal: "40,000",
     equity: "10%",
     daysToGo: "44",
@@ -55,7 +55,7 @@ const mockProjectData = [
     alt: "Espresso",
     industry: "Coffee",
     title: "Energy Run: the quickest coffee experience",
-    raised: "7,257",
+    raised_amount: "7,257",
     funding_goal: "12,383",
     equity: "13%",
     daysToGo: "19",
@@ -69,21 +69,7 @@ const mockProjectData = [
     alt: "Pouring Coffee",
     industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
-    gfunding_oal: "50,000",
-    equity: "5%",
-    daysToGo: "5",
-    authorName: "Jerry",
-    location: "NYC, NY",
-    src: ""
-  },
-  {
-    img: pouringCoffee,
-    category: "Life Hacks",
-    alt: "Pouring Coffee",
-    industry: "Restaurant",
-    title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
+    raised_amount: "34,912",
     funding_goal: "50,000",
     equity: "5%",
     daysToGo: "5",
@@ -97,7 +83,35 @@ const mockProjectData = [
     alt: "Pouring Coffee",
     industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
+    equity: "5%",
+    daysToGo: "5",
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
+  },
+  {
+    img: pouringCoffee,
+    category: "Life Hacks",
+    alt: "Pouring Coffee",
+    industry: "Restaurant",
+    title: "Energy Rush: an even quicker coffee experience",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
+    equity: "5%",
+    daysToGo: "5",
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
+  },
+  {
+    img: pouringCoffee,
+    category: "Life Hacks",
+    alt: "Pouring Coffee",
+    industry: "Restaurant",
+    title: "Energy Rush: an even quicker coffee experience",
+    raised_amount: "34,912",
     funding_goal: "50,000",
     equity: "5%",
     daysToGo: "5",
@@ -113,7 +127,7 @@ function Explore() {
   const [projects, setProjects] = useState(mockProjectData); //initialize it with mock data for demo
   const [industries, setIndustries] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [cursor, setCursor] = useState(1);
+  const [cursor, setCursor] = useState(0);
 
   const [filterQuery, setFilterQuery] = useState({
     industry: "",
@@ -123,33 +137,6 @@ function Explore() {
 
   //It would be nice if this is run everytime the user hit the bottom of the page and fetches 20 new projects each time
   //look up 'react infinite scroll' for that
-  useEffect(() => {
-    /*
-    fetch("/projects", {
-      headers: {
-        //TODO instead of setting to token here, create a wrapper fetch function called 'authFetch' that sets the headers with the token
-        Authorization: `Bearer ${sessionStorage.getItem("AuthToken")}`
-      }
-    })
-      .then(res => {
-        //TODO verify status of request, catch errors
-        return res.json();
-      })
-      .then(res => {
-        setProjects(projects.concat(res.projects));
-      });*/
-    authFetch({
-      url: "/projects?pageNo=0&size=3"
-    }).then(res => {
-      if (res.error) {
-        clearing();
-      } else {
-        setProjects(projects.concat(res));
-      }
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   //This loads the industries from projects
   useEffect(() => {

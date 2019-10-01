@@ -91,7 +91,7 @@ export function ProjectCard(props) {
             {props.project.title}
           </Typography>
           <Typography variant="body2" color="textPrimary" component="h2">
-            ${props.project.raised} /
+            ${props.project.raised_amount} /
             <Typography variant="body2" color="textSecondary" display="inline">
               {props.project.funding_goal}
             </Typography>
