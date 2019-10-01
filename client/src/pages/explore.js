@@ -13,6 +13,7 @@ import espresso from "../assets/espresso.jpg";
 import pouringCoffee from "../assets/pouring-coffee.jpg";
 import ProjectList from "./Project";
 import authFetch from "../utilities/auth";
+import InfiniteScroll from "react-infinite-scroller";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -40,12 +41,13 @@ const mockProjectData = [
     alt: "Coffee Cup",
     industry: "Customer Service",
     title: "Urban Jungle: eco-friendly coffee shop",
-    raised: "23,874",
-    goal: "40,000",
+    raised_amount: "23,874",
+    funding_goal: "40,000",
     equity: "10%",
     daysToGo: "44",
-    author: "John Snow",
-    location: "Pripyat, Ukraine"
+    authorName: "John Snow",
+    location: "Pripyat, Ukraine",
+    src: ""
   },
   {
     img: espresso,
@@ -53,12 +55,13 @@ const mockProjectData = [
     alt: "Espresso",
     industry: "Coffee",
     title: "Energy Run: the quickest coffee experience",
-    raised: "7,257",
-    goal: "12,383",
+    raised_amount: "7,257",
+    funding_goal: "12,383",
     equity: "13%",
     daysToGo: "19",
-    author: "Jerry",
-    location: "NYC, NY"
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
   },
   {
     img: pouringCoffee,
@@ -66,12 +69,13 @@ const mockProjectData = [
     alt: "Pouring Coffee",
     industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
-    goal: "50,000",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
     equity: "5%",
     daysToGo: "5",
-    author: "Jerry",
-    location: "NYC, NY"
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
   },
   {
     img: pouringCoffee,
@@ -79,12 +83,13 @@ const mockProjectData = [
     alt: "Pouring Coffee",
     industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
-    goal: "50,000",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
     equity: "5%",
     daysToGo: "5",
-    author: "Jerry",
-    location: "NYC, NY"
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
   },
   {
     img: pouringCoffee,
@@ -92,12 +97,27 @@ const mockProjectData = [
     alt: "Pouring Coffee",
     industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
-    goal: "50,000",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
     equity: "5%",
     daysToGo: "5",
-    author: "Jerry",
-    location: "NYC, NY"
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
+  },
+  {
+    img: pouringCoffee,
+    category: "Life Hacks",
+    alt: "Pouring Coffee",
+    industry: "Restaurant",
+    title: "Energy Rush: an even quicker coffee experience",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
+    equity: "5%",
+    daysToGo: "5",
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
   }
 ];
 
@@ -106,6 +126,8 @@ function Explore() {
 
   const [projects, setProjects] = useState(mockProjectData); //initialize it with mock data for demo
   const [industries, setIndustries] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [cursor, setCursor] = useState(0);
 
   const [filterQuery, setFilterQuery] = useState({
     industry: "",
@@ -115,33 +137,6 @@ function Explore() {
 
   //It would be nice if this is run everytime the user hit the bottom of the page and fetches 20 new projects each time
   //look up 'react infinite scroll' for that
-  useEffect(() => {
-    /*
-    fetch("/projects", {
-      headers: {
-        //TODO instead of setting to token here, create a wrapper fetch function called 'authFetch' that sets the headers with the token
-        Authorization: `Bearer ${sessionStorage.getItem("AuthToken")}`
-      }
-    })
-      .then(res => {
-        //TODO verify status of request, catch errors
-        return res.json();
-      })
-      .then(res => {
-        setProjects(projects.concat(res.projects));
-      });*/
-    authFetch({
-      url: "/projects"
-    }).then(res => {
-      if (res.error) {
-        clearing();
-      } else {
-        setProjects(projects.concat(res.projects));
-      }
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   //This loads the industries from projects
   useEffect(() => {
@@ -151,7 +146,6 @@ function Explore() {
       //REMEMBER forEach is for arrays (for each element)
       uniqueIndustries.add(project.industry); //Adding each project's industry in the Set
     });
-    console.log(setIndustries);
     setIndustries(Array.from(uniqueIndustries)); //This adds to 'industry' state hook by forming an array by iterating over an OBJECT because the initial includes an empty array!!
   }, [projects]); //THIS MEANS if projects array changes, it will render
 
@@ -172,14 +166,32 @@ function Explore() {
     //Shouldn't deadline's & location's positions be FLIPPED??
 
     //Check issue # ...
-
     return projects.filter(
       // for each array's element (which are objects for project info)
-      project =>
-        project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
-        project.location.includes(location)
+      project => {
+        return (
+          project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
+          project.location.includes(location)
+        );
+      }
     );
   };
+
+  const loadMore = () => {
+    console.log("/projects?pageNo=" + cursor + "&size=3");
+    authFetch({
+      url: "/projects?pageNo=" + cursor + "&size=3"
+    }).then(res => {
+      if (res.error) {
+        console.log(res);
+        setHasMore(false);
+      } else {
+        setProjects(projects.concat(res));
+        setCursor(cursor + 1);
+      }
+    });
+  };
+
   return (
     <div className={classes.container}>
       <Typography gutterBottom variant="h4">
@@ -222,7 +234,18 @@ function Explore() {
       </Grid>
       {projects && (
         <div className={classes.flexContainer}>
-          <ProjectList withAuthor projectData={filterProjects(projects)} />
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            loader={
+              <div className="loader" key={0}>
+                Loading ...
+              </div>
+            }
+          >
+            <ProjectList withAuthor projectData={filterProjects(projects)} />
+          </InfiniteScroll>
         </div>
       )}
     </div>
