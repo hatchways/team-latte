@@ -69,7 +69,6 @@ export default function ProjectList(props) {
 export function ProjectCard(props) {
   const mainClasses = useStyles();
   const fieldsClasses = fieldsStyle();
-  console.log("testing..");
   const imgCard =
     props.project.photos && props.project.photos.length > 1
       ? props.project.photos[0].photo.link
