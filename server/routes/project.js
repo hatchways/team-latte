@@ -80,12 +80,6 @@ router.put(
       res.statusMessage = "Project not found.";
       res.status(404).send();
     }
-
-    //make sure project owner is the person updating
-    if (!(req.user._id.toString() === project.author.toString())) {
-      return res.status(403).send("Wrong user.");
-    }
-
     //setting the updated project data sans images
     const {
       title,
@@ -108,6 +102,11 @@ router.put(
       project.photos = project.photos.filter(photo => {
         return !req.body.removals.includes(photo.photo.key);
       });
+
+      //make sure project owner is the person updating
+      if (!(req.user._id.toString() === project.author.toString())) {
+        return res.status(403).send("Wrong user.");
+      }
 
       //delete photos from aws s3 that need to be removed
       const deletePhoto = req.body.removals.map(removal => ({ Key: removal }));

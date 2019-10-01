@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Avatar, Button } from "@material-ui/core";
+import { Grid, Typography, Avatar, Button, IconButton } from "@material-ui/core";
 import Fields from "./Fields";
 import ProjectList from "./Project";
 import EditDialog from "./ProfileInfoEdit";
@@ -12,6 +12,8 @@ import coffeeCup from "../assets/coffee-cup.jpg";
 import espresso from "../assets/espresso.jpg";
 import espresso2 from "../assets/espresso2.jpg";
 import pouringCoffee from "../assets/pouring-coffee.jpg";
+import angellist from "../assets/angellist.png";
+import linkedin from "../assets/linkedin.png";
 import "./Profile.css";
 import authFetch from "../utilities/auth";
 
@@ -24,7 +26,11 @@ const useStyles = makeStyles({
     width: 60,
     height: 60
   },
-
+  smallAvatar: {
+    margin: 10,
+    width: 30,
+    height: 30
+  },
   projectTitle: {
     padding: 20
   },
@@ -101,9 +107,12 @@ export default function ProfilePage(props) {
   const classes = useStyles();
 
   const clearing = () => {
-    window.localStorage.clear();
     window.sessionStorage.clear();
     window.location.replace("/login");
+  };
+
+  const checkToken = () => {
+    window.sessionStorage.getItem("AuthToken") ? console.log("hello") : console.log("get out!");
   };
 
   return profile && projects ? (
@@ -144,28 +153,58 @@ export default function ProfilePage(props) {
               </Typography>
             </Grid>
 
-            <Grid container justify="center">
-              <EditDialog profile={profile} setProfile={setProfile} />
-            </Grid>
+            { window.sessionStorage.getItem("AuthToken") && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id ) ? (
+              
+              //&& window.sessionStorage.getItem('user')._id === props.match.params.id 
+              //JSON.parse(window.sesssionStorage.getItem('user))._id 
 
-            <Grid container justify="center" alignItems="center">
-              <Fields fieldsData={fieldsData} />
+              <Grid container justify="center" className={checkToken}>
+                <EditDialog profile={profile} setProfile={setProfile} />
+              </Grid>
+            ) : (
+              <Grid container justify="center" className={checkToken}>
+                <Button variant="outlined">Add Friend</Button>
             </Grid>
+            ) }
 
             <Grid container justify="center" alignItems="center">
               <MessageDialog />
             </Grid>
-            <Button onClick={clearing}>Logout</Button>
+
+            <Grid container justify="center" alignItems="center">
+
+              <Fields fieldsData={fieldsData} />
+            </Grid>
+
+            <Grid container justify="center">
+              <IconButton size="small">
+                <Avatar src={angellist} />
+              </IconButton>
+              <IconButton size="small">
+                <Avatar src={linkedin} />
+              </IconButton>
+
+            </Grid>
+
+            {window.sessionStorage.getItem('AuthToken') && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id )  ? (
+            <Grid container justify="center">
+              <Button onClick={clearing} variant="outlined">
+                Logout
+              </Button>
+            </Grid>) : (<div></div>)}
+      
           </Grid>
         </Grid>
 
         {/* Right part*/}
         <Grid item xs={8}>
+
           <Typography
             variant="h3"
             gutterBottom
             className={classes.projectTitle}
           >
+
             Projects
           </Typography>
           <ProjectList projectData={projectData} />{" "}
