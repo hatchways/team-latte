@@ -6,6 +6,7 @@ import espresso from "../assets/espresso.jpg";
 import pouringCoffee from "../assets/pouring-coffee.jpg";
 import ProjectList from "./Project";
 import authFetch from "../utilities/auth";
+import InfiniteScroll from "react-infinite-scroller";
 
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns/build";
@@ -39,12 +40,13 @@ const mockProjectData = [
     alt: "Coffee Cup",
     industry: "Tester Industry",
     title: "Urban Jungle: eco-friendly coffee shop",
-    raised: "23,874",
-    goal: "40,000",
+    raised_amount: "23,874",
+    funding_goal: "40,000",
     equity: "10%",
     daysToGo: "44",
-    author: "John Snow",
-    location: "Pripyat, Ukraine"
+    authorName: "John Snow",
+    location: "Pripyat, Ukraine",
+    src: ""
   },
   {
     deadline: "Tue Oct 22 2019",
@@ -53,12 +55,13 @@ const mockProjectData = [
     alt: "Espresso",
     industry: "Coffee",
     title: "Energy Run: the quickest coffee experience",
-    raised: "7,257",
-    goal: "12,383",
+    raised_amount: "7,257",
+    funding_goal: "12,383",
     equity: "13%",
     daysToGo: "19",
-    author: "Jerry",
-    location: "NYC, NY"
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
   },
   {
     deadline: "Wed Oct 23 2019",
@@ -67,12 +70,13 @@ const mockProjectData = [
     alt: "Pouring Coffee",
     industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
-    goal: "50,000",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
     equity: "5%",
     daysToGo: "5",
-    author: "Jerry",
-    location: "NYC, NY"
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
   },
   {
     deadline: "Fri Oct 25 2019",
@@ -81,12 +85,13 @@ const mockProjectData = [
     alt: "Pouring Coffee",
     industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
-    goal: "50,000",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
     equity: "5%",
     daysToGo: "5",
-    author: "Jerry",
-    location: "NYC, NY"
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
   },
   {
     deadline: "Sun Oct 27 2019",
@@ -95,12 +100,27 @@ const mockProjectData = [
     alt: "Pouring Coffee",
     industry: "Restaurant",
     title: "Energy Rush: an even quicker coffee experience",
-    raised: "34,912",
-    goal: "50,000",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
     equity: "5%",
     daysToGo: "5",
-    author: "Jerry",
-    location: "NYC, NY"
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
+  },
+  {
+    img: pouringCoffee,
+    category: "Life Hacks",
+    alt: "Pouring Coffee",
+    industry: "Restaurant",
+    title: "Energy Rush: an even quicker coffee experience",
+    raised_amount: "34,912",
+    funding_goal: "50,000",
+    equity: "5%",
+    daysToGo: "5",
+    authorName: "Jerry",
+    location: "NYC, NY",
+    src: ""
   }
 ];
 
@@ -109,6 +129,8 @@ function Explore() {
 
   const [projects, setProjects] = useState([]); //initialize it with mock data for demo
   const [industries, setIndustries] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [cursor, setCursor] = useState(0);
 
   const [filterQuery, setFilterQuery] = useState({
     industry: "",
@@ -161,6 +183,7 @@ function Explore() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   //This loads the industries from projects
   useEffect(() => {
     const uniqueIndustries = new Set();
@@ -198,19 +221,37 @@ function Explore() {
     
    //const AfterDeadline = projects.filter(project => moment(project.deadline) >= filterQuery.deadline); <<-- This assumes deadlines are integers such that they can be compared but the deaadlines either appear as strings or moments
 
-    return (
-      projects.filter(
-        project => 
-          project.industry.includes(industry) &&
+  
+  return projects.filter(
+      // for each array's element (which are objects for project info)
+      project => {
+        return (
+          project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
           project.location.includes(location)
-          // && project.deadline.includes(deadline)
+             // && project.deadline.includes(deadline)
         //  && moment(project.deadline).to(filterQuery.deadline) >= 0
 
         //Currently stuck on how to compare dates that are in an object, as part of moment
         
-      )
-    )
-  }
+        );
+      }
+    );
+  };
+
+  const loadMore = () => {
+    console.log("/projects?pageNo=" + cursor + "&size=3");
+    authFetch({
+      url: "/projects?pageNo=" + cursor + "&size=3"
+    }).then(res => {
+      if (res.error) {
+        console.log(res);
+        setHasMore(false);
+      } else {
+        setProjects(projects.concat(res));
+        setCursor(cursor + 1);
+      }
+    });
+  };
 
   return (
     <div className={classes.container}>
@@ -271,7 +312,18 @@ function Explore() {
       </Grid>
       {projects && (
         <div className={classes.flexContainer}>
-          <ProjectList withAuthor projectData={filterProjects(projects)} />
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            loader={
+              <div className="loader" key={0}>
+                Loading ...
+              </div>
+            }
+          >
+            <ProjectList withAuthor projectData={filterProjects(projects)} />
+          </InfiniteScroll>
         </div>
       )}
     </div>

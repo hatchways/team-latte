@@ -10,7 +10,7 @@ const baseStyle = {
   padding: "20px",
   borderWidth: 2,
   borderRadius: 2,
-  borderColor: theme.colorPrimary,
+  borderColor: theme.palette.primary.main,
   borderStyle: "dashed",
   backgroundColor: "#fafafa",
   color: "#bdbdbd",

@@ -1,6 +1,5 @@
 import { createMuiTheme } from "@material-ui/core";
-import { fade, rgbToHex } from "@material-ui/core/styles";
-import { green, purple } from "@material-ui/core/colors";
+import { green } from "@material-ui/core/colors";
 
 export const theme = createMuiTheme({
   typography: {
