@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+var moment = require("moment");
 
 const projectSchema = new mongoose.Schema(
   {
@@ -42,6 +43,11 @@ const projectSchema = new mongoose.Schema(
       type: Boolean,
       required: true
     },
+    deadline: {
+      type: Date,
+      required: true,
+      //default: moment(),
+    },
     funding_goal: {
       type: Number,
       required: true
@@ -55,6 +61,14 @@ const projectSchema = new mongoose.Schema(
     timestamps: true
   }
 );
+
+
+projectSchema.methods.toJSON = function () {
+  const projectObject = this.toObject();
+  moment(projectObject.deadline)
+
+  return projectObject
+}
 
 const Project = mongoose.model("Project", projectSchema);
 

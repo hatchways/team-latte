@@ -7,6 +7,11 @@ import pouringCoffee from "../assets/pouring-coffee.jpg";
 import ProjectList from "./Project";
 import authFetch from "../utilities/auth";
 
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns/build";
+import MomentUtils from "@date-io/moment";
+var moment = require("moment");
+
 const useStyles = makeStyles(theme => ({
   container: {
     marginTop: theme.spacing(5),
@@ -28,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 const mockProjectData = [
   {
-    deadline: "2019-09-22",
+    deadline: "Tue Oct 22 2019",
     img: coffeeCup,
     category: "Food and Craft",
     alt: "Coffee Cup",
@@ -42,7 +47,7 @@ const mockProjectData = [
     location: "Pripyat, Ukraine"
   },
   {
-    deadline: "2019-09-21",
+    deadline: "Tue Oct 22 2019",
     img: espresso,
     category: "Food and Craft",
     alt: "Espresso",
@@ -56,7 +61,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
-    deadline: "2019-09-23",
+    deadline: "Wed Oct 23 2019",
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -70,7 +75,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
-    deadline: "2019-09-24",
+    deadline: "Fri Oct 25 2019",
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -84,7 +89,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
-    deadline: "2019-09-29",
+    deadline: "Sun Oct 27 2019",
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -102,16 +107,24 @@ const mockProjectData = [
 function Explore() {
   const classes = useStyles();
 
-  const [projects, setProjects] = useState(mockProjectData); //initialize it with mock data for demo
+  const [projects, setProjects] = useState([]); //initialize it with mock data for demo
   const [industries, setIndustries] = useState([]);
 
   const [filterQuery, setFilterQuery] = useState({
     industry: "",
-    location: "",
-    deadline: ""
+    //deadline: new Date(),
+    deadline: moment(),
+    location: ""
   });
+  console.log(filterQuery.deadline, typeof filterQuery.deadline);
+  console.log(projects)
 
-  console.log(filterQuery.deadline);
+  // console.log(filterQuery.deadline)
+
+  const onDeadline = event => {
+    setFilterQuery({ ...filterQuery, deadline: moment(event)});
+    //setFilterQuery({ ...filterQuery, deadline: Date(event) });
+  };
 
   //It would be nice if this is run everytime the user hit the bottom of the page and fetches 20 new projects each time
   //look up 'react infinite scroll' for that
@@ -136,6 +149,11 @@ function Explore() {
       if (res.error) {
         clearing();
       } else {
+        const resJason = res.projects;
+       // resJason.map(project => console.log(project))
+       // console.log(isJsonString(resJason));
+        console.log(typeof resJason[7].deadline);
+        console.log(moment(resJason[4].deadline))
         setProjects(projects.concat(res.projects));
       }
     });
@@ -151,41 +169,48 @@ function Explore() {
       //REMEMBER forEach is for arrays (for each element)
 
       uniqueIndustries.add(project.industry); //1. Adding each project's industry in the 'Set'
-
     });
     //console.log(setIndustries);
     setIndustries(Array.from(uniqueIndustries)); //2. Updating 'industry' state hook by forming an array (by iterating over an OBJECT) because the initial includes an empty array!!
   }, [projects]); //THIS MEANS if projects array changes, it will re-render
 
   const onChangeFilter = event => {
+    //console.log(event)
+    //console.log(event.target)
+
     //This is used in the Select element for industry... think 'event' for 'e'
     const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create an object of 2 props from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
+    // console.log(name, value)
     setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>
-  }
+    //console.log(filterQuery)
+  };
 
   const clearing = () => {
     window.localStorage.clear();
     window.sessionStorage.clear();
     window.location.replace("/login");
-
   };
-
 
   const filterProjects = projects => {
-    const { industry, location, deadline } = filterQuery; //TODO using deadline yet, it should the project timestamp and subtract dates
+    const { industry, location, deadline } = filterQuery;
 
+   // const AfterDeadline = projects.filter(project => moment(project.deadline).from(filterQuery.deadline) >=  0 );
+    
+   //const AfterDeadline = projects.filter(project => moment(project.deadline) >= filterQuery.deadline); <<-- This assumes deadlines are integers such that they can be compared but the deaadlines either appear as strings or moments
 
-    const AfterDeadline = projects.filter(project => project.deadline >= filterQuery.deadline);
-    //const BeforeDeadline = projects.filter(project => project.deadline < filterQuery.deadline);
-  
-    return projects.filter(
-      project =>
-        project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
-        project.location.includes(location) &&
-        project.deadline.includes(deadline)
-    ) && AfterDeadline;
+    return (
+      projects.filter(
+        project => 
+          project.industry.includes(industry) &&
+          project.location.includes(location)
+          // && project.deadline.includes(deadline)
+        //  && moment(project.deadline).to(filterQuery.deadline) >= 0
 
-  };
+        //Currently stuck on how to compare dates that are in an object, as part of moment
+        
+      )
+    )
+  }
 
   return (
     <div className={classes.container}>
@@ -215,6 +240,7 @@ function Explore() {
           margin="normal"
           label="Location"
         />
+        {/*
         <TextField
           onChange={onChangeFilter}
           value={filterQuery.deadline}
@@ -225,6 +251,23 @@ function Explore() {
           margin="normal"
           label="Deadline"
         />
+        */}
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            autoOk
+            disableToolbar
+            variant="inline"
+            format="dd/MM/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="Deadline"
+            name="deadline"
+            inputVariant="outlined"
+            value={filterQuery.deadline}
+            onChange={date => onDeadline(date)}
+            //placeholder="___/___/______"
+          />
+        </MuiPickersUtilsProvider>
       </Grid>
       {projects && (
         <div className={classes.flexContainer}>
