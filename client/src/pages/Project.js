@@ -9,6 +9,7 @@ const useStyles = makeStyles(theme => ({
   card: {
     margin: "20px 10px 20px 10px",
     maxWidth: 320,
+    maxHeight: 500,
     borderRadius: 0
   },
 
@@ -56,12 +57,9 @@ console.log(projects)
         {projects.map((project) => (
           <Grid item xs={12} sm={6} md={4}>
             <ProjectCard  onClick={props.onClick} withAuthor={props.withAuthor} project={project}/> 
-           {/* <DetailedProjectView  open={props.open}  clickClose={props.clickClose} project1={props.projectData} />
-         */}
            
           </Grid>  
         ))}
-          <DetailedProjectView open={props.open} clickClose={props.clickClose} project1={projects}/>
 
       </Grid>
     </div>
@@ -72,6 +70,15 @@ function ProjectCard(props) {
   const mainClasses = useStyles();
   const fieldsClasses = fieldsStyle();
 
+  const [open, setOpen] = useState(false);
+  const handleOpenClick = () => {
+    setOpen(true);
+
+  };
+  const handleCloseClick = () => {
+    setOpen(false);
+  };
+
   const imgCard =
     props.project.photos && props.project.photos.length > 0
       ? props.project.photos[0].photo.link
@@ -79,13 +86,13 @@ function ProjectCard(props) {
 
   return (
     <Card  className={mainClasses.card} raised>
-      <CardActionArea onClick={props.onClick}>
+      <CardActionArea onClick={handleOpenClick}>
         <Chip
           color="primary"
           label={props.project.industry}
           className={classNames(mainClasses.chipPosition, fieldsClasses.chip)}
         ></Chip>
-        <CardMedia className={mainClasses.media} image={props.project.photos} title={props.project.title} />
+        <CardMedia className={mainClasses.media} image={imgCard} title={props.project.title} />
 
         <CardContent>
           <Typography variant="h6" component="h2" gutterBottom>
@@ -94,28 +101,32 @@ function ProjectCard(props) {
           <Typography variant="body2" color="textPrimary" component="h2">
             ${props.project.raised_amount} /
             <Typography variant="body2" color="textSecondary" display="inline">
-              {props.project.funding_goal}
+              ${props.project.funding_goal}
             </Typography>
           </Typography>
 
           <Typography variant="body2" color="textSecondary" component="h2">
-            Equity exchange: {props.project.equity * 100}% | {props.project.daysToGo} days to go
-          </Typography>
+            Equity exchange: {props.project.equity}%  </Typography>
+            <br/>
+          <Typography variant="body2" color="textSecondary" component="h2">
+          {props.project.daysToGo} days to go </Typography>
         </CardContent>
       </CardActionArea>
 
-      {props.withAuthor && (
+      
         <div className={mainClasses.cardFooter}>
           <div className={mainClasses.cardFooterContent}>
             <Typography variant="body2" color="textPrimary">
-              {props.project.authorName}
+              {props.project.author}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {props.project.location}
             </Typography>
           </div>
         </div>
-      )}
+      
+        <DetailedProjectView open={open} clickClose={handleCloseClick} project={props.project}/>
+
     </Card>
   );
 }

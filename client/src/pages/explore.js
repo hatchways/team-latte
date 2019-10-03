@@ -196,16 +196,6 @@ console.log(projects)
     });
   };
 
-  const [open, setOpen] = useState(false);
-  const handleOpenClick = index => {
-    setOpen(true);
-   // setProjects(projects[index])
-
-  };
-  const handleCloseClick = () => {
-    setOpen(false);
-  };
-
   return (
     <div className={classes.container}>
       <Typography gutterBottom variant="h4">
@@ -259,10 +249,6 @@ console.log(projects)
             }
           >
             <ProjectList
-            open={open}
-            onClick={handleOpenClick}
-            clickClose={handleCloseClick}
-            withAuthor
             projectData={filterProjects(projects)}
           />
           </InfiniteScroll>

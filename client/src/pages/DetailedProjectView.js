@@ -184,8 +184,8 @@ function DetailedProjectView(props) {
   const classes = detailedView();
   const fieldsClasses = fieldsStyle();
 
-  const projects = props.project1;
-  console.log(projects);
+  const project = props.project;
+  //console.log(projects);
 
   const [value, setValue] = useState(0);
 
@@ -193,21 +193,25 @@ function DetailedProjectView(props) {
     setValue(newValue);
   };
 
+  const raisedAmount = (project.raised_amount / project.funding_goal) * 100;
+
+
+
   return (
     <div>
       <Dialog open={props.open} onClose={props.clickClose} className={classes.dialogSize} maxWidth="lg">
         <Grid>
           <DialogTitle className={classes.dialogTitle}>
             <Chip
-              label={project.category}
+              label={ project.industry }
               color="primary"
               className={className(fieldsClasses.field, fieldsClasses.chip, classes.chipPosition)}
             />
             <Typography variant="h5" color="textPrimary">
-              {projects.title}
+              {project.title}
             </Typography>
             <Typography variant="body2" color="textSecondary">
-              Project Subtitle
+              {project.subtitle ? project.subtitle : "Our to-be-investors are too busy to read subtitles anyway..."}
             </Typography>
           </DialogTitle>
         </Grid>
@@ -220,7 +224,9 @@ function DetailedProjectView(props) {
                 <Card className={classes.leftCard}>
                   <CardContent>
                     <Grid item xs="12">
-                      <CardMedia image={coffeeCup} component="img" alt={project.alt} className={classes.media} />
+                      <CardMedia image={coffeeCup} component="img" alt={project.title} className={classes.media} />
+                      {/*How can we specify which uploaded photo be used for the card pic? */}  
+
                     </Grid>
                     <Grid item xs="12" wrap="wrap">
                       <Tabs
@@ -238,12 +244,12 @@ function DetailedProjectView(props) {
                       </Tabs>
                     </Grid>
                     <Grid>
-                      {value === 0 && <Typography>example0</Typography>}
-                      {value === 1 && <Typography>example1</Typography>}
-                      {value === 2 && <Typography>example2</Typography>}
-                      {value === 3 && <Typography>example3</Typography>}
-                      {value === 4 && <Typography>example4</Typography>}
-                      {value === 5 && <Typography>example5</Typography>}
+                      {value === 0 && <Typography>{project.description}</Typography>}
+                      {value === 1 && <Typography>{project.description.substring(0,100)}</Typography>}
+                      {value === 2 && <Typography>{project.description.substring(0,50)}</Typography>}
+                      {value === 3 && <Typography>{project.description.substring(0,150)}</Typography>}
+                      {value === 4 && <Typography>{project.description.substring(0,70)}</Typography>}
+                      {value === 5 && <Typography>{project.description.substring(0,200)}</Typography>}
                     </Grid>
                   </CardContent>
                 </Card>
@@ -254,33 +260,33 @@ function DetailedProjectView(props) {
                 <Card>
                   <CardContent>
                     <Grid container className={className(classes.rightCard)} justify="center" alignItems="center">
-                      <Typography variant="h4">${project.raised}</Typography>
-                      <Typography variant="body2" style={{ color:"gray" }} > / ${project.goal}</Typography>
+                      <Typography variant="h4">${project.raised_amount}</Typography>
+                      <Typography variant="body2" style={{ color:"gray" }} > / ${project.funding_goal}</Typography>
                     </Grid>
 
                     <Grid justify="center" alignItems="center">
-                      <BorderLinearProgress variant="determinate" value={50} />
+                      <BorderLinearProgress variant="determinate" value={raisedAmount} />
                     </Grid>
 
                     <Grid container justify="center" alignItems="center" style={{marginBottom: "10px"}}>
-                      <Typography>Equity Exchange: {project.equity}</Typography>
+                      <Typography>Equity Exchange: {project.equity}%</Typography>
                     </Grid>
 
                     <Grid container justify="center" alignItems="center" className={className(classes.countdown)}  >
                       <Grid item justify="center" alignContent="stretch"  className={className(classes.countdownBox)}>
                         <Typography variant="h6">82</Typography>
-                        <Typography variant="body2" style={{ color:"gray" }}>backers</Typography>
+                        <Typography variant="body2" color= "textSecondary">backers</Typography>
                       </Grid>
                       <Grid item justify="center" alignItems="center" className={className(classes.countdownBox)} > 
                         <Typography variant="h6">44</Typography>
-                        <Typography variant="body2" style={{ color:"gray" }}>days to go</Typography>
+                        <Typography variant="body2" color= "textSecondary">days to go</Typography>
                         </Grid>
                     </Grid>
 
                     <Grid container justify="center" alignItems="center" className={className(classes.authorInfo)}>
                       <Avatar src={coffeeCup} size />
-                      <Typography variant="p2">Author</Typography>
-                      <Typography variant="p2" style={{ color:"gray" }} >Location</Typography>
+                      <Typography variant="p2">{project.author}</Typography>
+                      <Typography variant="p2" color="textSecondary" >{project.location}</Typography>
                     </Grid>
 
                     <DialogActions>

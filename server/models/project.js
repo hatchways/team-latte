@@ -43,6 +43,11 @@ const projectSchema = new Schema(
       type: Boolean,
       required: true
     },
+    equity: {
+      type: Number,
+      required: true
+    }
+    ,
     funding_goal: {
       type: Number,
       required: true,
@@ -63,10 +68,6 @@ const projectSchema = new Schema(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User"
-    },
-    authorName: {
-      type: String,
-      required: true
     }
   },
   {
