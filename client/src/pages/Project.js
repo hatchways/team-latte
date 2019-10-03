@@ -72,6 +72,11 @@ function ProjectCard(props) {
   const mainClasses = useStyles();
   const fieldsClasses = fieldsStyle();
 
+  const imgCard =
+    props.project.photos && props.project.photos.length > 0
+      ? props.project.photos[0].photo.link
+      : props.project.img;
+
   return (
     <Card  className={mainClasses.card} raised>
       <CardActionArea onClick={props.onClick}>
@@ -81,6 +86,7 @@ function ProjectCard(props) {
           className={classNames(mainClasses.chipPosition, fieldsClasses.chip)}
         ></Chip>
         <CardMedia className={mainClasses.media} image={props.project.photos} title={props.project.title} />
+
         <CardContent>
           <Typography variant="h6" component="h2" gutterBottom>
             {props.project.title}
@@ -102,7 +108,7 @@ function ProjectCard(props) {
         <div className={mainClasses.cardFooter}>
           <div className={mainClasses.cardFooterContent}>
             <Typography variant="body2" color="textPrimary">
-              {props.project.author}
+              {props.project.authorName}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {props.project.location}

@@ -12,19 +12,19 @@ import Explore from "./pages/explore";
 import Launch from "./pages/launch";
 import ProfilePage from "./pages/Profile";
 import DetailProjectView from "./pages/DetailedProjectView"
+import LaunchDetails from "./pages/launchdetails";
 
-const ProtectedRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      window.sessionStorage.getItem("AuthToken") ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
+
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        window.sessionStorage.getItem("AuthToken") ? <Component {...props} /> : <Redirect to="/login" />
+      }
+    />
+  );
+};
 
 function App() {
   return (
@@ -35,13 +35,11 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/profile/:id" component={ProfilePage} />
-        {/* <Route path="/profile" component={ProfilePage} /> */}
         <Route path="/create" component={CreateForm} />
         <ProtectedRoute path="/edit" component={EditForm} />
         <Route path="/explore" component={Explore} />
         <Route path="/launch" component={Launch} />
-
-        {/*<Route path="/detailed" component={DetailProjectView} /> */}
+        <Route path="/launchDetails" component={LaunchDetails} />
 
       </BrowserRouter>
     </MuiThemeProvider>

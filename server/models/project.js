@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const projectSchema = new mongoose.Schema(
+const projectSchema = new Schema(
   {
     title: {
       type: String,
@@ -44,9 +45,26 @@ const projectSchema = new mongoose.Schema(
     },
     funding_goal: {
       type: Number,
-      required: true
+      required: true,
+      default: 0
     },
+
+    raised_amount: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    investments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Investment"
+      }
+    ],
     author: {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    },
+    authorName: {
       type: String,
       required: true
     }
@@ -55,6 +73,12 @@ const projectSchema = new mongoose.Schema(
     timestamps: true
   }
 );
+
+projectSchema.virtual("Investments", {
+  ref: "Investment",
+  localField: "_id",
+  foreignField: "projectID"
+});
 
 const Project = mongoose.model("Project", projectSchema);
 

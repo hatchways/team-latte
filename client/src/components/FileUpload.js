@@ -1,5 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import React, { useState, useMemo } from "react";
+import theme from "../themes/theme";
 
 const baseStyle = {
   flex: 1,
@@ -9,12 +10,13 @@ const baseStyle = {
   padding: "20px",
   borderWidth: 2,
   borderRadius: 2,
-  borderColor: "#eeeeee",
+  borderColor: theme.palette.primary.main,
   borderStyle: "dashed",
   backgroundColor: "#fafafa",
   color: "#bdbdbd",
   outline: "none",
-  transition: "border .24s ease-in-out"
+  transition: "border .24s ease-in-out",
+  maxWidth: 700
 };
 
 const activeStyle = {
@@ -76,12 +78,9 @@ function FileUpload(props) {
     },
     maxFiles: props.fileNumber,
     init: function() {
-      console.log("helooooo");
       this.on("addedfile", function(file) {
-        console.log("in addded file");
         this.removeAllFiles();
         setFiles([]);
-        //this.addFile(file);
       });
     }
   });

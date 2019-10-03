@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -20,15 +21,7 @@ const userSchema = new mongoose.Schema({
         throw new Error("password length too short");
       }
     }
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true
-      }
-    }
-  ]
+  }
 });
 
 userSchema.virtual("Projects", {
@@ -43,11 +36,14 @@ userSchema.virtual("Profiles", {
   foreignField: "_id"
 });
 
+userSchema.virtual("Investments", {
+  ref: "Investment",
+  localField: "_id",
+  foreignField: "investorID"
+});
+
 userSchema.methods.generateAuthToken = async function() {
   const token = jwt.sign({ _id: this.id.toString() }, process.env.JWT_SECRET);
-
-  this.tokens = this.tokens.concat({ token });
-  await this.save();
 
   return token;
 };
