@@ -123,7 +123,7 @@ const mockProjectData = [
 function Explore() {
   const classes = useStyles();
 
-  const [projects, setProjects] = useState([]); //initialize it with mock data for demo
+  const [projects, setProjects] = useState([]);
   const [industries, setIndustries] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [cursor, setCursor] = useState(0);
@@ -194,6 +194,16 @@ console.log(projects)
         setCursor(cursor + 1);
       }
     });
+  };
+
+  const [open, setOpen] = useState(false);
+  const handleOpenClick = index => {
+    setOpen(true);
+   // setProjects(projects[index])
+
+  };
+  const handleCloseClick = () => {
+    setOpen(false);
   };
 
   return (
