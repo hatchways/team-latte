@@ -41,7 +41,7 @@ function App() {
         <Route path="/explore" component={Explore} />
         <Route path="/launch" component={Launch} />
 
-        <Route path="/detailed" component={DetailProjectView} />
+        {/*<Route path="/detailed" component={DetailProjectView} /> */}
 
       </BrowserRouter>
     </MuiThemeProvider>

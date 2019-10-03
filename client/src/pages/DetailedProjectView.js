@@ -1,18 +1,104 @@
 import React, { useState } from "react";
 import {
-  Button, Dialog, DialogTitle, DialogActions,
-  DialogContent, DialogContentText, Typography,
-  Chip, Grid, Card, CardMedia, AppBar, Tabs, Tab, Avatar, CardContent, Divider} from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  Typography,
+  Chip,
+  Grid,
+  Card,
+  CardMedia,
+  Tabs,
+  Tab,
+  Avatar,
+  CardContent,
+  Divider,
+  Box,
+  LinearProgress
+} from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/styles";
+import { fieldsStyle } from "./Fields";
+import className from "classnames";
 
-import coffeeCup from '../assets/coffee-cup.jpg'
-import { typography } from "@material-ui/system";
+import coffeeCup from "../assets/coffee-cup.jpg";
+import { lighten } from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
+import theme from "../themes/theme";
 
 const detailedView = makeStyles({
   dialogSize: {
-    maxWidth: '900px'
+    //height: "1600px",
+    //  border: "2px solid red"
+  },
+  dialogTitle: {
+    alignItems: "center",
+    textAlign: "center"
+  },
+  chipPosition: {
+    marginBottom: 20
+  },
+  media: {
+    height: 320
+  },
+  leftCard: {
+    width: "100%"
+    // borderRadius: '0px',
+  },
+  tabBox: {
+    flexGrow: 1,
+    border: "2px solid red",
+    justifyContent: "center"
+  },
+  bothCards: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   }
-})
+  ,
+  rightCard: {
+    margin: theme.spacing(3)
+  },
+  authorInfo: {
+    flexDirection: "column",
+    margin: 10,
+  },
+  countdown: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    margin: 10
+  },
+  countdownBox: {
+    borderTop: "2px solid rgba(0,0,0,0.1)",
+   // borderRight: "1px solid rgba(0,0,0,0.5)",
+    borderBottom: "2px solid rgba(0,0,0,0.1)",
+    padding: "20px",
+    alignItems: "stretch",
+    textAlign: "center",
+    flexGrow: 1
+  },
+  buttons: {
+    flexDirection: "column"
+  },
+  fundButton: {
+    backgroundColor: "#69E781",
+    margin: theme.spacing(2, 0, 2),
+    color: "white"
+  }
+});
+
+const BorderLinearProgress = withStyles({
+  root: {
+    height: 10,
+    backgroundColor: lighten(green[300], 0.5),
+    borderRadius: 5,
+    margin: theme.spacing(3)
+  },
+  bar: {
+    borderRadius: 20,
+    backgroundColor: "rgb(79 199 116)"
+  }
+})(LinearProgress);
 
 const project = {
   category: "Life Hacks",
@@ -24,106 +110,194 @@ const project = {
   equity: "5%",
   daysToGo: "5",
   author: "Jerry",
-  location: "NYC, NY"
+  location: "NYC, NY",
+  description:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  images: "...",
+  summaryPoints: ["Lower Expenses", "Feature 2", "Feature 3"],
+  teamMembers: [
+    {
+      name: "Person A",
+      image: { coffeeCup }
+    },
+    {
+      name: "Person B",
+      image: { coffeeCup }
+    }
+  ]
 };
 
-function DetailedProjectView() {
-  const classes = detailedView();
+function TabSection(props) {
+  const { value, index, ...others } = props;
 
-  const [open, setOpen] = useState(true);
+  const AboutSection = value => {
+    return (
+      <div>
+        <Grid container xs="12">
+          <Typography variant="h2" style={{ textAlign: "left" }}>
+            About
+          </Typography>
+          <Divider />
+          <Grid item xs="12">
+            <Typography variant="body1">{project.description}</Typography>
+            {project.summaryPoints.map(point => {
+              return <Typography variant="body2">{point}</Typography>;
+            })}
+          </Grid>
+        </Grid>
+      </div>
+    );
+  };
+  const Team = value => {
+    return (
+      <div>
+        <Grid container xs="12">
+          <Typography variant="h2" style={{ textAlign: "left" }}>
+            Team
+          </Typography>
+          <Divider />
+          <Grid item xs="12">
+            <Box>
+              {project.teamMembers.map(member => {
+                return <Typography variant="body1">{member.name}</Typography>;
+              })}
 
-  const handleOpenClick = () => {
-    setOpen(true)
-  }
-
+              {project.summaryPoints.map(point => {
+                return <Typography variant="body2">{point}</Typography>;
+              })}
+            </Box>
+          </Grid>
+        </Grid>
+      </div>
+    );
+  };
 
   return (
     <div>
-      <Button onClick={handleOpenClick}>Hello</Button>
-      <Dialog open={open} fullWidth>
-        <DialogTitle>
-          <Chip label={project.category} size="small" />
-            <Typography variant='h5'>{project.title}</Typography>
-            <Typography variant='body2'>Project Subtitle</Typography>
-        </DialogTitle>
+      {value === 0 && <AboutSection />}
+      {value === 1 && <Team />}
+    </div>
+  );
+}
 
-        <DialogContent>
-        <Grid container spacing="1">
-        
-          <Grid item xs="8">
-                <Card >
+function DetailedProjectView(props) {
+  const classes = detailedView();
+  const fieldsClasses = fieldsStyle();
+
+  const projects = props.project1;
+  console.log(projects);
+
+  const [value, setValue] = useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <div>
+      <Dialog open={props.open} onClose={props.clickClose} className={classes.dialogSize} maxWidth="lg">
+        <Grid>
+          <DialogTitle className={classes.dialogTitle}>
+            <Chip
+              label={project.category}
+              color="primary"
+              className={className(fieldsClasses.field, fieldsClasses.chip, classes.chipPosition)}
+            />
+            <Typography variant="h5" color="textPrimary">
+              {projects.title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+              Project Subtitle
+            </Typography>
+          </DialogTitle>
+        </Grid>
+
+        <Grid xs="12" className={className(classes.bothCards)} >
+          <DialogContent>
+            <Grid container spacing="5">
+              {/* Left card */}
+              <Grid container xs="8">
+                <Card className={classes.leftCard}>
                   <CardContent>
-                  <CardMedia image={coffeeCup} src="img" style={{height: '220px'}} />
-                  <Tabs>
-                      <Tab label="About"/>
-                      <Tab label="Team"/>
-                      <Tab label="Market Size"/>
-                      <Tab label="Traction"/>
-                      <Tab label="Goals"/>
-                      <Tab label="Investment"/>
-                  </Tabs>
-                  <Typography>example</Typography>
-                  <Typography>example</Typography>
-                  <Typography>example</Typography>
-                  <Typography>example</Typography>
-                  <Typography>example</Typography>
-                  <Typography>example</Typography>
-
-                </CardContent>
-                </Card>
-          </Grid>
-
-          
-          <Grid item xs='4'>
-           
-                <Card>
-                <CardContent>
-                    <Typography variant="body2">
-                      ${project.raised}
-                    </Typography>
-                  <Typography variant="body2">
-                    / ${project.goal}
-                  </Typography>
-                    
-                  <Avatar src={coffeeCup} />
-                  <Typography variant="p2">{project.author}</Typography>
-                  <Typography variant="p2">{project.location}</Typography>
-
-                  <DialogActions>
-                    <Button>Send Message</Button>
-                    <Button>Fund This Project</Button>
-                  </DialogActions>
-                  
+                    <Grid item xs="12">
+                      <CardMedia image={coffeeCup} component="img" alt={project.alt} className={classes.media} />
+                    </Grid>
+                    <Grid item xs="12" wrap="wrap">
+                      <Tabs
+                        value={value}
+                        onChange={handleTabChange}
+                        style={{ borderBottom: "2px solid black" }}
+                        variant="scrollable"
+                      >
+                        <Tab label="About" />
+                        <Tab label="Team" />
+                        <Tab label="Market Size" />
+                        <Tab label="Traction" />
+                        <Tab label="Goals" />
+                        <Tab label="Investment" />
+                      </Tabs>
+                    </Grid>
+                    <Grid>
+                      {value === 0 && <Typography>example0</Typography>}
+                      {value === 1 && <Typography>example1</Typography>}
+                      {value === 2 && <Typography>example2</Typography>}
+                      {value === 3 && <Typography>example3</Typography>}
+                      {value === 4 && <Typography>example4</Typography>}
+                      {value === 5 && <Typography>example5</Typography>}
+                    </Grid>
                   </CardContent>
                 </Card>
-         
-          </Grid>
+              </Grid>
 
-          </Grid>
+              {/* Right card */}
+              <Grid container xs="4" direction="column">
+                <Card>
+                  <CardContent>
+                    <Grid container className={className(classes.rightCard)} justify="center" alignItems="center">
+                      <Typography variant="h4">${project.raised}</Typography>
+                      <Typography variant="body2" style={{ color:"gray" }} > / ${project.goal}</Typography>
+                    </Grid>
+
+                    <Grid justify="center" alignItems="center">
+                      <BorderLinearProgress variant="determinate" value={50} />
+                    </Grid>
+
+                    <Grid container justify="center" alignItems="center" style={{marginBottom: "10px"}}>
+                      <Typography>Equity Exchange: {project.equity}</Typography>
+                    </Grid>
+
+                    <Grid container justify="center" alignItems="center" className={className(classes.countdown)}  >
+                      <Grid item justify="center" alignContent="stretch"  className={className(classes.countdownBox)}>
+                        <Typography variant="h6">82</Typography>
+                        <Typography variant="body2" style={{ color:"gray" }}>backers</Typography>
+                      </Grid>
+                      <Grid item justify="center" alignItems="center" className={className(classes.countdownBox)} > 
+                        <Typography variant="h6">44</Typography>
+                        <Typography variant="body2" style={{ color:"gray" }}>days to go</Typography>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container justify="center" alignItems="center" className={className(classes.authorInfo)}>
+                      <Avatar src={coffeeCup} size />
+                      <Typography variant="p2">Author</Typography>
+                      <Typography variant="p2" style={{ color:"gray" }} >Location</Typography>
+                    </Grid>
+
+                    <DialogActions>
+                    <Grid container className={className(classes.button)} > 
+                      <Button variant="outlined" fullWidth>Send Message</Button>
+                      <Button onClick={props.clickClose} className={className(classes.fundButton)} fullWidth>Fund This Project</Button>
+                   </Grid>
+                    </DialogActions>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
           </DialogContent>
-        
+        </Grid>
       </Dialog>
     </div>
   );
 }
 
 export default DetailedProjectView;
-
-
-/*
-            1. Chip on top for category
-            2. title of project
-            3. Subtitle of project
-            4. LEFT SIDE
-                1. Video block
-                2. Tabs (look into appbar or toolbar); 6 sections 
-                    1. About
-                    2. Team
-                    3. Market Size
-                    4. Traction
-                    5. Goals
-                    6. Investment
-                3. Each tab should have:
-                    1. Title of the tab
-                    2. Sections as required
-*/

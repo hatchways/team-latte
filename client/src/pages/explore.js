@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  makeStyles,
-  Grid,
-  Select,
-  TextField,
-  MenuItem
-} from "@material-ui/core";
+import { Typography, makeStyles, Grid, Select, TextField, MenuItem } from "@material-ui/core";
 import classNames from "classnames";
 import coffeeCup from "../assets/coffee-cup.jpg";
 import espresso from "../assets/espresso.jpg";
 import pouringCoffee from "../assets/pouring-coffee.jpg";
 import ProjectList from "./Project";
+
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -34,6 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const mockProjectData = [
   {
+    id:'1',
     img: coffeeCup,
     category: "Food and Craft",
     alt: "Coffee Cup",
@@ -47,6 +42,7 @@ const mockProjectData = [
     location: "Pripyat, Ukraine"
   },
   {
+    id:'2',
     img: espresso,
     category: "Food and Craft",
     alt: "Espresso",
@@ -60,6 +56,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
+    id:'3',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -73,6 +70,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
+    id:'4',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -86,6 +84,7 @@ const mockProjectData = [
     location: "NYC, NY"
   },
   {
+    id:'5',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -103,8 +102,10 @@ const mockProjectData = [
 function Explore() {
   const classes = useStyles();
 
-  const [projects, setProjects] = useState(mockProjectData); //initialize it with mock data for demo
+  const [projects, setProjects] = useState([]); //initialize it with mock data for demo
   const [industries, setIndustries] = useState([]);
+
+console.log(projects)
 
   const [filterQuery, setFilterQuery] = useState({
     industry: "",
@@ -136,16 +137,18 @@ function Explore() {
   useEffect(() => {
     const uniqueIndustries = new Set();
 
-    projects.forEach(project => {             //REMEMBER forEach is for arrays (for each element)
-      uniqueIndustries.add(project.industry); //Adding each project's industry in the Set 
+    projects.forEach(project => {
+      //REMEMBER forEach is for arrays (for each element)
+      uniqueIndustries.add(project.industry); //Adding each project's industry in the Set
     });
-    console.log(setIndustries);
+
     setIndustries(Array.from(uniqueIndustries)); //This adds to 'industry' state hook by forming an array by iterating over an OBJECT because the initial includes an empty array!!
   }, [projects]); //THIS MEANS if projects array changes, it will render
 
-  const onChangeFilter = event => { //This is used in the Select element for industry... think 'event' for 'e'
+  const onChangeFilter = event => {
+    //This is used in the Select element for industry... think 'event' for 'e'
     const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create 2 variables using destructuring from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
-    setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>  
+    setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>
   };
 
   const filterProjects = projects => {
@@ -154,12 +157,22 @@ function Explore() {
 
     //Check issue #...
 
-    return projects.filter( // for each array's element (which are objects for project info)
-      project =>
-        project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry 
-        project.location.includes(location)
+    return projects.filter(
+      // for each array's element (which are objects for project info)
+      project => project.industry.includes(industry) && project.location.includes(location) //checking if specific project's industry MATCHES the industry AND location
     );
   };
+
+  const [open, setOpen] = useState(false);
+  const handleOpenClick = index => {
+    setOpen(true);
+   // setProjects(projects[index])
+
+  };
+  const handleCloseClick = () => {
+    setOpen(false);
+  };
+
   return (
     <div className={classes.container}>
       <Typography gutterBottom variant="h4">
@@ -172,9 +185,7 @@ function Explore() {
           value={filterQuery.industry}
           className={classNames(classes.select)}
           variant="outlined"
-          input={
-            <TextField variant="outlined" margin="normal" label="Industries" />
-          }
+          input={<TextField variant="outlined" margin="normal" label="Industries" />}
         >
           <MenuItem value={""}>{}</MenuItem>
           {industries.map(industry => (
@@ -200,9 +211,17 @@ function Explore() {
           label="Deadline"
         />
       </Grid>
+
       {projects && (
         <div className={classes.flexContainer}>
-          <ProjectList withAuthor projectData={filterProjects(projects)} /> {/*This will pass projects that passed filterProjects */}
+          <ProjectList
+            open={open}
+            onClick={handleOpenClick}
+            clickClose={handleCloseClick}
+            withAuthor
+            projectData={filterProjects(projects)}
+          />
+          {/*This will pass projects that passed filterProjects */}
         </div>
       )}
     </div>
