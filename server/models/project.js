@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-var moment = require("moment");
+
+const moment = require("moment");
 
 const projectSchema = new Schema(
   {

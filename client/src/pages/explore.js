@@ -10,8 +10,9 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns/build";
-import MomentUtils from "@date-io/moment";
-var moment = require("moment");
+//import MomentUtils from "@date-io/moment";
+
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -217,9 +218,9 @@ function Explore() {
   const filterProjects = projects => {
     const { industry, location, deadline } = filterQuery;
 
-   // const AfterDeadline = projects.filter(project => moment(project.deadline).from(filterQuery.deadline) >=  0 );
+    // const AfterDeadline = projects.filter(project => moment(project.deadline).from(filterQuery.deadline) >=  0 );
     
-   //const AfterDeadline = projects.filter(project => moment(project.deadline) >= filterQuery.deadline); <<-- This assumes deadlines are integers such that they can be compared but the deaadlines either appear as strings or moments
+    //const AfterDeadline = projects.filter(project => moment(project.deadline) >= filterQuery.deadline); <<-- This assumes deadlines are integers such that they can be compared but the deaadlines either appear as strings or moments
 
   
   return projects.filter(
