@@ -50,6 +50,11 @@ const projectSchema = new Schema(
       required: true,
       //default: moment(),
     },
+    equity: {
+      type: Number,
+      required: true
+    }
+    ,
     funding_goal: {
       type: Number,
       required: true,
@@ -84,7 +89,7 @@ const projectSchema = new Schema(
 
 projectSchema.methods.toJSON = function () {
   const projectObject = this.toObject();
-  moment(projectObject.deadline).format('YYYY')
+ // moment(projectObject.deadline).format('YYYY')
 
   return projectObject
 }

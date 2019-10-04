@@ -14,6 +14,7 @@ import DateFnsUtils from "@date-io/date-fns/build";
 
 import moment from "moment";
 
+
 const useStyles = makeStyles(theme => ({
   container: {
     marginTop: theme.spacing(5),
@@ -133,6 +134,8 @@ function Explore() {
   const [hasMore, setHasMore] = useState(true);
   const [cursor, setCursor] = useState(0);
 
+//console.log(projects)
+
   const [filterQuery, setFilterQuery] = useState({
     industry: "",
     //deadline: new Date(),
@@ -194,15 +197,16 @@ function Explore() {
 
       uniqueIndustries.add(project.industry); //1. Adding each project's industry in the 'Set'
     });
-    //console.log(setIndustries);
     setIndustries(Array.from(uniqueIndustries)); //2. Updating 'industry' state hook by forming an array (by iterating over an OBJECT) because the initial includes an empty array!!
   }, [projects]); //THIS MEANS if projects array changes, it will re-render
+
 
   const onChangeFilter = event => {
     //console.log(event)
     //console.log(event.target)
 
     //This is used in the Select element for industry... think 'event' for 'e'
+
     const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create an object of 2 props from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
     // console.log(name, value)
     setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>
@@ -221,9 +225,9 @@ function Explore() {
     //const AfterDeadline = projects.filter(project => moment(project.deadline).from(filterQuery.deadline) >=  0 );
     
     //const AfterDeadline = projects.filter(project => moment(project.deadline) >= filterQuery.deadline); <<-- This assumes deadlines are integers such that they can be compared but the deaadlines either appear as strings or moments
-
   
   return projects.filter(
+
       // for each array's element (which are objects for project info)
     project => {
       console.log(typeof project)
@@ -315,8 +319,10 @@ function Explore() {
           />
         </MuiPickersUtilsProvider>
       </Grid>
+
       {projects && (
         <div className={classes.flexContainer}>
+
           <InfiniteScroll
             pageStart={0}
             loadMore={loadMore}
@@ -327,7 +333,9 @@ function Explore() {
               </div>
             }
           >
-            <ProjectList withAuthor projectData={filterProjects(projects)} />
+            <ProjectList
+            projectData={filterProjects(projects)}
+          />
           </InfiniteScroll>
         </div>
       )}

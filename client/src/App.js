@@ -11,7 +11,9 @@ import EditForm from "./pages/Edit";
 import Explore from "./pages/explore";
 import Launch from "./pages/launch";
 import ProfilePage from "./pages/Profile";
+import DetailProjectView from "./pages/DetailedProjectView"
 import LaunchDetails from "./pages/launchdetails";
+
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   return (
@@ -33,13 +35,12 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/profile/:id" component={ProfilePage} />
-        {/* <Route path="/profile" component={ProfilePage} /> */}
         <Route path="/create" component={CreateForm} />
         <ProtectedRoute path="/edit" component={EditForm} />
         <Route path="/explore" component={Explore} />
         <Route path="/launch" component={Launch} />
         <Route path="/launchDetails" component={LaunchDetails} />
-        
+
       </BrowserRouter>
     </MuiThemeProvider>
   );
