@@ -15,6 +15,9 @@ import theme from "../themes/theme";
 import authFetch from "../utilities/auth";
 
 const useStyles = makeStyles(createTheme => ({
+  launchDetails: {
+    marginTop: "0px"
+  },
   container: {
     marginTop: createTheme.spacing(5),
     paddingLeft: "20px"
@@ -47,8 +50,7 @@ const useStyles = makeStyles(createTheme => ({
     paddingTop: createTheme.spacing(5),
     paddingLeft: "20px",
     borderRight: "10px solid",
-    borderImage: "linear-gradient(to right, #CCCCCC, rgba(0, 0, 0, 0)) 1 100%;",
-    borderRightLength: "50px"
+    borderImage: "linear-gradient(to right, #CCCCCC, rgba(0, 0, 0, 0)) 1 100%;"
   },
   displayTitle: {
     wordWrap: "break-word",
