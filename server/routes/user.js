@@ -36,6 +36,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  console.log(req);
   try {
     console.log(req.body);
     const user = await User.checkCredentials(req.body.email, req.body.password);

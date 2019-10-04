@@ -13,7 +13,7 @@ const projectSchema = new Schema(
     },
     industry: {
       type: String,
-      enum: ["Automotive", "Technology", "Culinary", "Literature", "Crafts"],
+      enum: ["Crafts", "Attire", "Food", "Photography", "Music"],
       required: true
     },
     location: {

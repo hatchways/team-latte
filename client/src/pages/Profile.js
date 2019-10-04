@@ -166,7 +166,6 @@ export default function ProfilePage(props) {
       ? console.log("hello")
       : console.log("get out!");
   };
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -186,7 +185,7 @@ export default function ProfilePage(props) {
             <Grid container justify="center" alignItems="center">
               <Avatar
                 alt={profile.name}
-                src={JHAvatar}
+                src={profile.profilePic.link}
                 className={classes.bigAvatar}
               />
             </Grid>
@@ -234,7 +233,7 @@ export default function ProfilePage(props) {
             </Grid>
 
             <Grid container justify="center" alignItems="center">
-              <Fields fieldsData={fieldsData} />
+              <Fields fieldsData={profile.expertise} />
             </Grid>
 
             <Grid container justify="center">

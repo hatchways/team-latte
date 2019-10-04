@@ -21,6 +21,7 @@ const upload = multer({
 });
 
 router.post("/project", auth, upload.array("images", 5), async (req, res) => {
+  console.log("hello");
   const s3 = new AWS.S3();
 
   //create new project to push to db

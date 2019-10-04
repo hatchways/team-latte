@@ -11,8 +11,8 @@ import {
   Button,
   Avatar
 } from "@material-ui/core";
-import JHAvatar from "../assets/jh-avatar.jpg";
 import authFetch from "../utilities/auth";
+import FileUpload from "../components/FileUpload";
 
 const useStyles = makeStyles({
   bigAvatar: {
@@ -23,21 +23,49 @@ const useStyles = makeStyles({
 });
 
 export default function EditDialog(props) {
+  const [files, setFiles] = useState([]);
   const [profile, setProfile] = useState(props.profile);
   const [open, setOpen] = useState(false);
 
   const modifyProfileInfo = profileInfo => {
-    authFetch({
-      url: "/profile/" + props.profile._id,
-      method: "PUT",
-      body: JSON.stringify(profileInfo)
-    }).then(res => {
-      if (res.error) {
-        console.log(res.error);
-      } else {
-        props.setProfile(res);
-      }
-    });
+    if (files.length == 1) {
+      const formData = new FormData();
+      formData.append("profile", files[0]);
+      Object.entries(profileInfo).forEach(([key, val]) => {
+        if (Array.isArray(val)) {
+          for (var i = 0; i < val.length; i++) {
+            formData.append(key + "[]", val[i]);
+          }
+        } else {
+          formData.append(key, val);
+        }
+      });
+      console.log(formData.get("expertise[]"));
+      authFetch({
+        url: "/profile",
+        method: "PUT",
+        isForm: true,
+        formData
+      }).then(res => {
+        if (res.error) {
+          console.log(res.error);
+        } else {
+          props.setProfile(res);
+        }
+      });
+    } else {
+      authFetch({
+        url: "/profile",
+        method: "PUT",
+        body: JSON.stringify(profileInfo)
+      }).then(res => {
+        if (res.error) {
+          console.log(res.error);
+        } else {
+          props.setProfile(res);
+        }
+      });
+    }
   };
 
   const handleSubmit = e => {
@@ -82,8 +110,8 @@ export default function EditDialog(props) {
             >
               <Grid item style={{ border: "2px solid red" }}>
                 <Avatar
-                  alt="James Hampton"
-                  src={JHAvatar}
+                  alt={profile.name}
+                  src={profile.profilePic.link}
                   className={classes.bigAvatar}
                 />
 
@@ -122,6 +150,60 @@ export default function EditDialog(props) {
                   fullWidth
                   required
                 />
+
+                <TextField
+                  type="text"
+                  name="linkedIn"
+                  id="localinkedIntion"
+                  margin="normal"
+                  variant="standard"
+                  label="linkedIn"
+                  value={profile.linkedIn}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setProfile(prevState => {
+                      return { ...prevState, linkedIn: val };
+                    });
+                  }}
+                  fullWidth
+                />
+
+                <TextField
+                  type="text"
+                  name="angelList"
+                  id="angelList"
+                  margin="normal"
+                  variant="standard"
+                  label="angelList"
+                  value={profile.angelList}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setProfile(prevState => {
+                      return { ...prevState, angelList: val };
+                    });
+                  }}
+                  fullWidth
+                />
+
+                <TextField
+                  type="text"
+                  name="expertise"
+                  id="expertise"
+                  margin="normal"
+                  variant="standard"
+                  label="expertise"
+                  value={profile.expertise}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setProfile(prevState => {
+                      console.log({ ...prevState, expertise: [val] });
+                      return { ...prevState, expertise: [val] };
+                    });
+                  }}
+                  fullWidth
+                />
+
+                <FileUpload fileNumber={1} files={files} setFiles={setFiles} />
 
                 {/*  <Grid container justify="center" alignItems="center">
                 <TextField type="text" value={fieldsData} />

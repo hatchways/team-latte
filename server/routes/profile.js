@@ -37,9 +37,8 @@ router.get("/profile/:id", async (req, res) => {
   }
 });
 
-
 router.put("/profile", auth, upload.single("profile"), async (req, res) => {
-  if (!req.user._id.match(/^[0-9a-fA-F]{24}$/)) {
+  if (!req.user._id.toString().match(/^[0-9a-fA-F]{24}$/)) {
     res.statusMessage = "Not a valid ID";
     res.status(404).send("Not a valid Id");
   }
@@ -63,7 +62,6 @@ router.put("/profile", auth, upload.single("profile"), async (req, res) => {
   } = req.body;
 
   //update user info on new user object
-
   if (name) profile.name = name;
   if (location) profile.location = location;
   if (expertise) profile.expertise = expertise;
@@ -73,7 +71,7 @@ router.put("/profile", auth, upload.single("profile"), async (req, res) => {
   if (angelList) profile.angelList = angelList;
 
   //remove from s3 if profile pic exists
-  if (profile.profilePic && req.file) {
+  if (profile.profilePic.length > 0 && req.file) {
     const params = {
       Bucket: process.env.aws_bucket,
       Key: profile.profilePic.key
