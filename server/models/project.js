@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const moment = require("moment");
+
 const projectSchema = new Schema(
   {
     title: {
@@ -43,6 +45,11 @@ const projectSchema = new Schema(
       type: Boolean,
       required: true
     },
+    deadline: {
+      type: Date,
+      required: true,
+      //default: moment(),
+    },
     equity: {
       type: Number,
       required: true
@@ -78,6 +85,14 @@ const projectSchema = new Schema(
     timestamps: true
   }
 );
+
+
+projectSchema.methods.toJSON = function () {
+  const projectObject = this.toObject();
+ // moment(projectObject.deadline).format('YYYY')
+
+  return projectObject
+}
 
 projectSchema.virtual("Investments", {
   ref: "Investment",

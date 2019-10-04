@@ -103,6 +103,8 @@ export default function ProfilePage(props) {
     });
   }, [props.match.params.id]);
 
+  
+
   //console.log(profile)
   const classes = useStyles();
 
