@@ -81,9 +81,10 @@ const projectSchema = new Schema(
   }
 );
 
+
 projectSchema.methods.toJSON = function () {
   const projectObject = this.toObject();
-  moment(projectObject.deadline)
+  moment(projectObject.deadline).format('YYYY')
 
   return projectObject
 }

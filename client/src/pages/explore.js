@@ -141,7 +141,7 @@ function Explore() {
   });
   console.log(filterQuery.deadline, typeof filterQuery.deadline);
   console.log(projects)
-
+  console.log(industries)
   // console.log(filterQuery.deadline)
 
   const onDeadline = event => {
@@ -175,8 +175,8 @@ function Explore() {
         const resJason = res.projects;
        // resJason.map(project => console.log(project))
        // console.log(isJsonString(resJason));
-        console.log(typeof resJason[7].deadline);
-        console.log(moment(resJason[4].deadline))
+       // console.log(typeof resJason[7].deadline);
+       // console.log(moment(resJason[4].deadline))
         setProjects(projects.concat(res.projects));
       }
     });
@@ -218,19 +218,21 @@ function Explore() {
   const filterProjects = projects => {
     const { industry, location, deadline } = filterQuery;
 
-    // const AfterDeadline = projects.filter(project => moment(project.deadline).from(filterQuery.deadline) >=  0 );
+    //const AfterDeadline = projects.filter(project => moment(project.deadline).from(filterQuery.deadline) >=  0 );
     
     //const AfterDeadline = projects.filter(project => moment(project.deadline) >= filterQuery.deadline); <<-- This assumes deadlines are integers such that they can be compared but the deaadlines either appear as strings or moments
 
   
   return projects.filter(
       // for each array's element (which are objects for project info)
-      project => {
-        return (
-          project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
-          project.location.includes(location)
-             // && project.deadline.includes(deadline)
-        //  && moment(project.deadline).to(filterQuery.deadline) >= 0
+    project => {
+      console.log(typeof project)
+      return (
+        project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
+        project.location.includes(location) &&
+        project.deadline.includes(deadline)
+        && moment(project.deadline).isAfter(filterQuery.deadline)
+        //| moment(project.deadline).issame(filterQuery.deadline)
 
         //Currently stuck on how to compare dates that are in an object, as part of moment
         
@@ -248,6 +250,8 @@ function Explore() {
         console.log(res);
         setHasMore(false);
       } else {
+        console.log(res);
+
         setProjects(projects.concat(res));
         setCursor(cursor + 1);
       }
