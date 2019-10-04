@@ -12,6 +12,7 @@ import {
 import classNames from "classnames";
 import FileUpload from "../components/FileUpload";
 import theme from "../themes/theme";
+import authFetch from "../utilities/auth";
 
 const useStyles = makeStyles(createTheme => ({
   container: {
@@ -87,6 +88,7 @@ const industryList = ["Crafts", "Attire", "Food", "Photography", "Music"];
 
 function LaunchDetails(props) {
   const classes = useStyles();
+  const [files, setFiles] = useState([]);
   const [project, setProject] = useState({
     ...props.location.state,
     title: "",
@@ -113,6 +115,48 @@ function LaunchDetails(props) {
       setProject({
         ...project,
         [name]: event.target.value
+      });
+    }
+  };
+
+  const submit = event => {
+    console.log(project);
+    if (files.length > 0) {
+      const formData = new FormData();
+      files.map(file => {
+        formData.append("images", file);
+      });
+      Object.entries(project).forEach(([key, val]) => {
+        formData.append(key, val);
+      });
+      formData.append("launch", true);
+      authFetch({
+        url: "/project",
+        method: "POST",
+        isForm: true,
+        formData
+      }).then(res => {
+        if (res.error) {
+          console.log(res.error);
+        } else {
+          window.location.replace(
+            "/profile/" + JSON.parse(window.sessionStorage.getItem("user"))._id
+          );
+        }
+      });
+    } else {
+      authFetch({
+        url: "/project",
+        method: "PUT",
+        body: JSON.stringify(project)
+      }).then(res => {
+        if (res.error) {
+          console.log(res.error);
+        } else {
+          window.location.replace(
+            "/profile/" + JSON.parse(window.sessionStorage.getItem("user"))._id
+          );
+        }
       });
     }
   };
@@ -288,16 +332,14 @@ function LaunchDetails(props) {
           <Typography gutterBottom variant="subtitle2">
             Project Images
           </Typography>
-          <FileUpload fileNumber={5} />
+          <FileUpload fileNumber={5} files={files} setFiles={setFiles} />
 
           {/* Submit Button */}
           <Button
             className={classes.button}
             type="button"
             variant="contained"
-            onClick={() => {
-              //submit data to server
-            }}
+            onClick={submit}
           >
             Save
           </Button>

@@ -55,19 +55,18 @@ const img = {
 };
 
 function FileUpload(props) {
-  const [files, setFiles] = useState([]);
   const [isCorrectFileNumber, setIsCorrectFileNumber] = useState(true);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/*",
     onDrop: (acceptedFiles, rejectedFiles) => {
       if (acceptedFiles.length > props.fileNumber) {
-        setFiles([]);
+        props.setFiles([]);
         rejectedFiles = acceptedFiles.splice(acceptedFiles.length);
         setIsCorrectFileNumber(false);
       } else {
         setIsCorrectFileNumber(true);
-        setFiles(
+        props.setFiles(
           acceptedFiles.map(file =>
             Object.assign(file, {
               preview: URL.createObjectURL(file)
@@ -80,12 +79,12 @@ function FileUpload(props) {
     init: function() {
       this.on("addedfile", function(file) {
         this.removeAllFiles();
-        setFiles([]);
+        props.setFiles([]);
       });
     }
   });
 
-  const thumbs = files.map(file => (
+  const thumbs = props.files.map(file => (
     <div style={thumb} key={file.name}>
       <div style={thumbInner}>
         <img src={file.preview} style={img} alt={file.name} />

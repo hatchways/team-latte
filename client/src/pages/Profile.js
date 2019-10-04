@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Avatar, Button, IconButton } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Avatar,
+  Button,
+  IconButton
+} from "@material-ui/core";
 import Fields from "./Fields";
 import ProjectList from "./Project";
 import EditDialog from "./ProfileInfoEdit";
@@ -112,7 +118,9 @@ export default function ProfilePage(props) {
   };
 
   const checkToken = () => {
-    window.sessionStorage.getItem("AuthToken") ? console.log("hello") : console.log("get out!");
+    window.sessionStorage.getItem("AuthToken")
+      ? console.log("hello")
+      : console.log("get out!");
   };
 
   return profile && projects ? (
@@ -125,7 +133,7 @@ export default function ProfilePage(props) {
             <Grid container justify="center" alignItems="center">
               <Avatar
                 alt={profile.name}
-                src={JHAvatar}
+                src={profile.profilePic.link}
                 className={classes.bigAvatar}
               />
             </Grid>
@@ -153,10 +161,11 @@ export default function ProfilePage(props) {
               </Typography>
             </Grid>
 
-            { window.sessionStorage.getItem("AuthToken") && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id ) ? (
-              
-              //&& window.sessionStorage.getItem('user')._id === props.match.params.id 
-              //JSON.parse(window.sesssionStorage.getItem('user))._id 
+            {window.sessionStorage.getItem("AuthToken") &&
+            JSON.parse(window.sessionStorage.getItem("user"))._id ===
+              props.match.params.id ? (
+              //&& window.sessionStorage.getItem('user')._id === props.match.params.id
+              //JSON.parse(window.sesssionStorage.getItem('user))._id
 
               <Grid container justify="center" className={checkToken}>
                 <EditDialog profile={profile} setProfile={setProfile} />
@@ -164,16 +173,15 @@ export default function ProfilePage(props) {
             ) : (
               <Grid container justify="center" className={checkToken}>
                 <Button variant="outlined">Add Friend</Button>
-            </Grid>
-            ) }
+              </Grid>
+            )}
 
             <Grid container justify="center" alignItems="center">
               <MessageDialog />
             </Grid>
 
             <Grid container justify="center" alignItems="center">
-
-              <Fields fieldsData={fieldsData} />
+              <Fields fieldsData={profile.expertise} />
             </Grid>
 
             <Grid container justify="center">
@@ -183,28 +191,29 @@ export default function ProfilePage(props) {
               <IconButton size="small">
                 <Avatar src={linkedin} />
               </IconButton>
-
             </Grid>
 
-            {window.sessionStorage.getItem('AuthToken') && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id )  ? (
-            <Grid container justify="center">
-              <Button onClick={clearing} variant="outlined">
-                Logout
-              </Button>
-            </Grid>) : (<div></div>)}
-      
+            {window.sessionStorage.getItem("AuthToken") &&
+            JSON.parse(window.sessionStorage.getItem("user"))._id ===
+              props.match.params.id ? (
+              <Grid container justify="center">
+                <Button onClick={clearing} variant="outlined">
+                  Logout
+                </Button>
+              </Grid>
+            ) : (
+              <div></div>
+            )}
           </Grid>
         </Grid>
 
         {/* Right part*/}
         <Grid item xs={8}>
-
           <Typography
             variant="h3"
             gutterBottom
             className={classes.projectTitle}
           >
-
             Projects
           </Typography>
           <ProjectList projectData={projectData} />{" "}
