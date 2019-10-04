@@ -117,7 +117,7 @@ function ProjectCard(props) {
         <div className={mainClasses.cardFooter}>
           <div className={mainClasses.cardFooterContent}>
             <Typography variant="body2" color="textPrimary">
-              {props.project.author}
+              {props.project.authorName}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {props.project.location}
