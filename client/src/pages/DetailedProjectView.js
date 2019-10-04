@@ -18,13 +18,11 @@ import {
   Box,
   LinearProgress
 } from "@material-ui/core";
-
 import { makeStyles, withStyles } from "@material-ui/styles";
 import { fieldsStyle } from "./Fields";
 import className from "classnames";
 
 import coffeeCup from "../assets/coffee-cup.jpg";
-
 import { lighten } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import theme from "../themes/theme";
@@ -46,12 +44,12 @@ const detailedView = makeStyles({
   },
   leftCard: {
     width: "100%"
+    // borderRadius: '0px',
   },
   tabBox: {
     flexGrow: 1,
     border: "2px solid red",
     justifyContent: "center"
-
   },
   bothCards: {
     flexDirection: "row",
@@ -141,7 +139,6 @@ function TabSection(props) {
           </Typography>
           <Divider />
           <Grid item xs="12">
-
             <Typography variant="body1">{project.description}</Typography>
             {project.summaryPoints.map(point => {
               return <Typography variant="body2">{point}</Typography>;
@@ -179,7 +176,6 @@ function TabSection(props) {
     <div>
       {value === 0 && <AboutSection />}
       {value === 1 && <Team />}
-
     </div>
   );
 }
@@ -248,7 +244,6 @@ function DetailedProjectView(props) {
                       </Tabs>
                     </Grid>
                     <Grid>
-
                       {value === 0 && <Typography>{project.description}</Typography>}
                       {value === 1 && <Typography>{project.description.substring(0,100)}</Typography>}
                       {value === 2 && <Typography>{project.description.substring(0,50)}</Typography>}
@@ -312,4 +307,3 @@ function DetailedProjectView(props) {
 }
 
 export default DetailedProjectView;
-

@@ -8,12 +8,6 @@ import ProjectList from "./Project";
 import authFetch from "../utilities/auth";
 import InfiniteScroll from "react-infinite-scroller";
 
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns/build";
-//import MomentUtils from "@date-io/moment";
-
-import moment from "moment";
-
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -36,11 +30,11 @@ const useStyles = makeStyles(theme => ({
 
 const mockProjectData = [
   {
-    deadline: "Tue Oct 22 2019",
+    id:'1',
     img: coffeeCup,
     category: "Food and Craft",
     alt: "Coffee Cup",
-    industry: "Tester Industry",
+    industry: "Customer Service",
     title: "Urban Jungle: eco-friendly coffee shop",
     raised_amount: "23,874",
     funding_goal: "40,000",
@@ -51,7 +45,7 @@ const mockProjectData = [
     src: ""
   },
   {
-    deadline: "Tue Oct 22 2019",
+    id:'2',
     img: espresso,
     category: "Food and Craft",
     alt: "Espresso",
@@ -66,7 +60,7 @@ const mockProjectData = [
     src: ""
   },
   {
-    deadline: "Wed Oct 23 2019",
+    id:'3',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -81,7 +75,7 @@ const mockProjectData = [
     src: ""
   },
   {
-    deadline: "Fri Oct 25 2019",
+    id:'4',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -96,7 +90,7 @@ const mockProjectData = [
     src: ""
   },
   {
-    deadline: "Sun Oct 27 2019",
+    id:'5',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -129,7 +123,7 @@ const mockProjectData = [
 function Explore() {
   const classes = useStyles();
 
-  const [projects, setProjects] = useState([]); //initialize it with mock data for demo
+  const [projects, setProjects] = useState([]);
   const [industries, setIndustries] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [cursor, setCursor] = useState(0);
@@ -138,55 +132,12 @@ function Explore() {
 
   const [filterQuery, setFilterQuery] = useState({
     industry: "",
-    //deadline: new Date(),
-    deadline: moment(),
-    location: ""
+    location: "",
+    deadline: ""
   });
-  console.log(filterQuery.deadline, typeof filterQuery.deadline);
-  console.log(projects)
-  console.log(industries)
-  // console.log(filterQuery.deadline)
-
-  const onDeadline = event => {
-    setFilterQuery({ ...filterQuery, deadline: moment(event)});
-    //setFilterQuery({ ...filterQuery, deadline: Date(event) });
-  };
 
   //It would be nice if this is run everytime the user hit the bottom of the page and fetches 20 new projects each time
   //look up 'react infinite scroll' for that
-  useEffect(() => {
-    /*
-    fetch("/projects", {
-      headers: {
-        //TODO instead of setting to token here, create a wrapper fetch function called 'authFetch' that sets the headers with the token
-        Authorization: `Bearer ${sessionStorage.getItem("AuthToken")}`
-      }
-    })
-      .then(res => {
-        //TODO verify status of request, catch errors
-        return res.json();
-      })
-      .then(res => {
-        setProjects(projects.concat(res.projects));
-      });*/
-    authFetch({
-      url: "/projects"
-    }).then(res => {
-      if (res.error) {
-        clearing();
-      } else {
-        const resJason = res.projects;
-       // resJason.map(project => console.log(project))
-       // console.log(isJsonString(resJason));
-       // console.log(typeof resJason[7].deadline);
-       // console.log(moment(resJason[4].deadline))
-        setProjects(projects.concat(res.projects));
-      }
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
 
   //This loads the industries from projects
   useEffect(() => {
@@ -194,23 +145,17 @@ function Explore() {
 
     projects.forEach(project => {
       //REMEMBER forEach is for arrays (for each element)
-
-      uniqueIndustries.add(project.industry); //1. Adding each project's industry in the 'Set'
+      uniqueIndustries.add(project.industry); //Adding each project's industry in the Set
     });
-    setIndustries(Array.from(uniqueIndustries)); //2. Updating 'industry' state hook by forming an array (by iterating over an OBJECT) because the initial includes an empty array!!
-  }, [projects]); //THIS MEANS if projects array changes, it will re-render
 
+    setIndustries(Array.from(uniqueIndustries)); //This adds to 'industry' state hook by forming an array by iterating over an OBJECT because the initial includes an empty array!!
+  }, [projects]); //THIS MEANS if projects array changes, it will render
 
   const onChangeFilter = event => {
-    //console.log(event)
-    //console.log(event.target)
-
     //This is used in the Select element for industry... think 'event' for 'e'
 
     const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create an object of 2 props from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
-    // console.log(name, value)
     setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>
-    //console.log(filterQuery)
   };
 
   const clearing = () => {
@@ -220,26 +165,17 @@ function Explore() {
   };
 
   const filterProjects = projects => {
-    const { industry, location, deadline } = filterQuery;
+    const { industry, deadline, location } = filterQuery; //TODO using deadline yet, it should the project timestamp and subtract dates
+    //Shouldn't deadline's & location's positions be FLIPPED??
 
-    //const AfterDeadline = projects.filter(project => moment(project.deadline).from(filterQuery.deadline) >=  0 );
-    
-    //const AfterDeadline = projects.filter(project => moment(project.deadline) >= filterQuery.deadline); <<-- This assumes deadlines are integers such that they can be compared but the deaadlines either appear as strings or moments
-  
-  return projects.filter(
 
+    //Check issue # ...
+    return projects.filter(
       // for each array's element (which are objects for project info)
-    project => {
-      console.log(typeof project)
-      return (
-        project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
-        project.location.includes(location) &&
-        project.deadline.includes(deadline)
-        && moment(project.deadline).isAfter(filterQuery.deadline)
-        //| moment(project.deadline).issame(filterQuery.deadline)
-
-        //Currently stuck on how to compare dates that are in an object, as part of moment
-        
+      project => {
+        return (
+          project.industry.includes(industry) && //checking if specific project's industry MATCHES the industry
+          project.location.includes(location)
         );
       }
     );
@@ -254,8 +190,6 @@ function Explore() {
         console.log(res);
         setHasMore(false);
       } else {
-        console.log(res);
-
         setProjects(projects.concat(res));
         setCursor(cursor + 1);
       }
@@ -290,34 +224,15 @@ function Explore() {
           margin="normal"
           label="Location"
         />
-        {/*
         <TextField
           onChange={onChangeFilter}
           value={filterQuery.deadline}
           name="deadline"
-          type="date"
           className={classes.fieldText}
           variant="outlined"
           margin="normal"
           label="Deadline"
         />
-        */}
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            autoOk
-            disableToolbar
-            variant="inline"
-            format="dd/MM/yyyy"
-            margin="normal"
-            id="date-picker-inline"
-            label="Deadline"
-            name="deadline"
-            inputVariant="outlined"
-            value={filterQuery.deadline}
-            onChange={date => onDeadline(date)}
-            //placeholder="___/___/______"
-          />
-        </MuiPickersUtilsProvider>
       </Grid>
 
       {projects && (
