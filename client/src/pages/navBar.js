@@ -42,7 +42,7 @@ function NavBar() {
     <React.Fragment>
       <CssBaseline />
 
-      <AppBar position="sticky" style={{marginBottom: '10px'}}>
+      <AppBar position="sticky">
         <div className={classes.separation}>
           <Avatar
             className={classes.companyLogo}
@@ -59,9 +59,10 @@ function NavBar() {
             <NavLink
               to="/explore"
               activeStyle={{
-                textUnderlinePosition: "under",
-                textDecorationColor: "#69E781",
                 color: "black"
+              }}
+              style={{
+                textDecoration: "none"
               }}
             >
               EXPLORE
@@ -72,9 +73,10 @@ function NavBar() {
             <NavLink
               to="/launch"
               activeStyle={{
-                textUnderlinePosition: "under",
-                textDecorationColor: "#69E781",
                 color: "black"
+              }}
+              style={{
+                textDecoration: "none"
               }}
             >
               LAUNCH
@@ -82,16 +84,34 @@ function NavBar() {
           </Button>
 
           <Button className={classes.button}>
-            <NavLink
-              to="/login"
-              activeStyle={{
-                textUnderlinePosition: "under",
-                textDecorationColor: "#69E781",
-                color: "black"
-              }}
-            >
-              LOGIN
-            </NavLink>
+            {window.sessionStorage.getItem("user") ? (
+              <NavLink
+                to={
+                  "/profile/" +
+                  JSON.parse(window.sessionStorage.getItem("user"))._id
+                }
+                activeStyle={{
+                  color: "black"
+                }}
+                style={{
+                  textDecoration: "none"
+                }}
+              >
+                PROFILE
+              </NavLink>
+            ) : (
+              <NavLink
+                to="/login"
+                activeStyle={{
+                  color: "black"
+                }}
+                style={{
+                  textDecoration: "none"
+                }}
+              >
+                LOGIN
+              </NavLink>
+            )}
           </Button>
         </div>
       </AppBar>

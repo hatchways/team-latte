@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Avatar, Button, IconButton } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Avatar,
+  Button,
+  IconButton
+} from "@material-ui/core";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import Fields from "./Fields";
 import ProjectList from "./Project";
 import EditDialog from "./ProfileInfoEdit";
 import MessageDialog from "./Message";
+import classNames from "classnames";
 
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import JHAvatar from "../assets/jh-avatar.jpg";
@@ -16,15 +25,16 @@ import angellist from "../assets/angellist.png";
 import linkedin from "../assets/linkedin.png";
 import "./Profile.css";
 import authFetch from "../utilities/auth";
+import { blue } from "@material-ui/core/colors";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(createTheme => ({
   avatar: {
     margin: 10
   },
   bigAvatar: {
     margin: 10,
-    width: 60,
-    height: 60
+    width: 150,
+    height: 150
   },
   smallAvatar: {
     margin: 10,
@@ -36,8 +46,17 @@ const useStyles = makeStyles({
   },
   projectGridList: {
     padding: 20
+  },
+  leftSection: {
+    paddingTop: createTheme.spacing(10),
+    borderRight: "10px solid",
+    borderImage: "linear-gradient(to right, #CCCCCC, rgba(0, 0, 0, 0)) 1 100%;"
+  },
+  rightSection: {
+    paddingLeft: createTheme.spacing(5),
+    paddingTop: createTheme.spacing(5)
   }
-});
+}));
 
 const fieldsData = ["TECHNOLOGY", "COFFEE", "CUSTOMER SERVICE", "RESTAURANT"];
 
@@ -88,9 +107,28 @@ const projectData = [
   }
 ];
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {children}
+    </Typography>
+  );
+}
+
 export default function ProfilePage(props) {
   const [profile, setProfile] = useState(null); //Reason why it renders empty for profile for a short time
   const [projects, setProjects] = useState(null);
+  const [investedProjects, setInvestedProjects] = useState([]);
+  const [value, setValue] = React.useState(0);
 
   useEffect(() => {
     authFetch({ url: `/profile/${props.match.params.id}` }).then(res => {
@@ -98,9 +136,21 @@ export default function ProfilePage(props) {
         clearing();
       } else {
         setProfile(res.profile);
+        console.log(res.projects);
         setProjects(res.projects);
       }
     });
+    authFetch({ url: `/userInvestments/${props.match.params.id}` }).then(
+      res => {
+        if (res.error) {
+          clearing();
+        } else {
+          console.log(res.projects);
+          setInvestedProjects(res.projects);
+          console.log(investedProjects);
+        }
+      }
+    );
   }, [props.match.params.id]);
 
   
@@ -114,15 +164,26 @@ export default function ProfilePage(props) {
   };
 
   const checkToken = () => {
-    window.sessionStorage.getItem("AuthToken") ? console.log("hello") : console.log("get out!");
+    window.sessionStorage.getItem("AuthToken")
+      ? console.log("hello")
+      : console.log("get out!");
+  };
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return profile && projects ? (
     //set up a condition to render only if profile and project isn't null
     <React.Fragment>
-      <Grid container justify="center" spacing={3}>
+      <Grid container justify="center">
         {/* Left part */}
-        <Grid item xs={3} style={{ minHeight: "200px" }}>
+        <Grid
+          item
+          xs={3}
+          className={classNames(classes.leftSection)}
+          style={{ minHeight: "200px" }}
+        >
           <Grid container direction="column" spacing={3}>
             <Grid container justify="center" alignItems="center">
               <Avatar
@@ -155,10 +216,11 @@ export default function ProfilePage(props) {
               </Typography>
             </Grid>
 
-            { window.sessionStorage.getItem("AuthToken") && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id ) ? (
-              
-              //&& window.sessionStorage.getItem('user')._id === props.match.params.id 
-              //JSON.parse(window.sesssionStorage.getItem('user))._id 
+            {window.sessionStorage.getItem("AuthToken") &&
+            JSON.parse(window.sessionStorage.getItem("user"))._id ===
+              props.match.params.id ? (
+              //&& window.sessionStorage.getItem('user')._id === props.match.params.id
+              //JSON.parse(window.sesssionStorage.getItem('user))._id
 
               <Grid container justify="center" className={checkToken}>
                 <EditDialog profile={profile} setProfile={setProfile} />
@@ -166,15 +228,14 @@ export default function ProfilePage(props) {
             ) : (
               <Grid container justify="center" className={checkToken}>
                 <Button variant="outlined">Add Friend</Button>
-            </Grid>
-            ) }
+              </Grid>
+            )}
 
             <Grid container justify="center" alignItems="center">
               <MessageDialog />
             </Grid>
 
             <Grid container justify="center" alignItems="center">
-
               <Fields fieldsData={fieldsData} />
             </Grid>
 
@@ -185,56 +246,58 @@ export default function ProfilePage(props) {
               <IconButton size="small">
                 <Avatar src={linkedin} />
               </IconButton>
-
             </Grid>
 
-            {window.sessionStorage.getItem('AuthToken') && ( JSON.parse(window.sessionStorage.getItem('user'))._id === props.match.params.id )  ? (
-            <Grid container justify="center">
-              <Button onClick={clearing} variant="outlined">
-                Logout
-              </Button>
-            </Grid>) : (<div></div>)}
-      
+            {window.sessionStorage.getItem("AuthToken") &&
+            JSON.parse(window.sessionStorage.getItem("user"))._id ===
+              props.match.params.id ? (
+              <Grid container justify="center">
+                <Button onClick={clearing} variant="outlined">
+                  Logout
+                </Button>
+              </Grid>
+            ) : (
+              <div></div>
+            )}
           </Grid>
         </Grid>
 
         {/* Right part*/}
-        <Grid item xs={8}>
-
-          <Typography
-            variant="h3"
-            gutterBottom
-            className={classes.projectTitle}
+        <Grid item xs={8} className={classNames(classes.rightSection)}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            aria-label="full width tabs example"
           >
-
-            Projects
-          </Typography>
-          <ProjectList projectData={projectData} />{" "}
-          {/*the prop would be changed with projects state */}
-          <h1>Column 2</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>new line</h1>
-          <h1>end line</h1>
+            <Tab label="Projects" />
+            <Tab label="Investments" />
+          </Tabs>
+          <TabPanel value={value} index={0}>
+            <Typography
+              variant="h3"
+              gutterBottom
+              className={classes.projectTitle}
+            >
+              Projects
+            </Typography>
+            <ProjectList projectData={projects} />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Typography
+              variant="h3"
+              gutterBottom
+              className={classes.projectTitle}
+            >
+              Investments
+            </Typography>
+            <ProjectList projectData={investedProjects} />
+          </TabPanel>
         </Grid>
       </Grid>
     </React.Fragment>
   ) : (
     <div>Error</div>
   );
-  /*(
-    <div>
-      <Redirect to="/launch" />
-    </div> */
 }
