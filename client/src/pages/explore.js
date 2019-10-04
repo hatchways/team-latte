@@ -128,7 +128,7 @@ function Explore() {
   const [hasMore, setHasMore] = useState(true);
   const [cursor, setCursor] = useState(0);
 
-console.log(projects)
+//console.log(projects)
 
   const [filterQuery, setFilterQuery] = useState({
     industry: "",

@@ -68,6 +68,10 @@ const projectSchema = new Schema(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User"
+    },
+    authorName: {
+      type: String,
+      required: true
     }
   },
   {
