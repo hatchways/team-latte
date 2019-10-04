@@ -43,6 +43,11 @@ const projectSchema = new Schema(
       type: Boolean,
       required: true
     },
+    equity: {
+      type: Number,
+      required: true
+    }
+    ,
     funding_goal: {
       type: Number,
       required: true,

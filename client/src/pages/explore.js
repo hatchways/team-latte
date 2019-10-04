@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  makeStyles,
-  Grid,
-  Select,
-  TextField,
-  MenuItem
-} from "@material-ui/core";
+import { Typography, makeStyles, Grid, Select, TextField, MenuItem } from "@material-ui/core";
 import classNames from "classnames";
 import coffeeCup from "../assets/coffee-cup.jpg";
 import espresso from "../assets/espresso.jpg";
@@ -14,6 +7,7 @@ import pouringCoffee from "../assets/pouring-coffee.jpg";
 import ProjectList from "./Project";
 import authFetch from "../utilities/auth";
 import InfiniteScroll from "react-infinite-scroller";
+
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -36,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 const mockProjectData = [
   {
+    id:'1',
     img: coffeeCup,
     category: "Food and Craft",
     alt: "Coffee Cup",
@@ -50,6 +45,7 @@ const mockProjectData = [
     src: ""
   },
   {
+    id:'2',
     img: espresso,
     category: "Food and Craft",
     alt: "Espresso",
@@ -64,6 +60,7 @@ const mockProjectData = [
     src: ""
   },
   {
+    id:'3',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -78,6 +75,7 @@ const mockProjectData = [
     src: ""
   },
   {
+    id:'4',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -92,6 +90,7 @@ const mockProjectData = [
     src: ""
   },
   {
+    id:'5',
     img: pouringCoffee,
     category: "Life Hacks",
     alt: "Pouring Coffee",
@@ -124,10 +123,12 @@ const mockProjectData = [
 function Explore() {
   const classes = useStyles();
 
-  const [projects, setProjects] = useState(mockProjectData); //initialize it with mock data for demo
+  const [projects, setProjects] = useState([]);
   const [industries, setIndustries] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [cursor, setCursor] = useState(0);
+
+//console.log(projects)
 
   const [filterQuery, setFilterQuery] = useState({
     industry: "",
@@ -146,11 +147,13 @@ function Explore() {
       //REMEMBER forEach is for arrays (for each element)
       uniqueIndustries.add(project.industry); //Adding each project's industry in the Set
     });
+
     setIndustries(Array.from(uniqueIndustries)); //This adds to 'industry' state hook by forming an array by iterating over an OBJECT because the initial includes an empty array!!
   }, [projects]); //THIS MEANS if projects array changes, it will render
 
   const onChangeFilter = event => {
     //This is used in the Select element for industry... think 'event' for 'e'
+
     const { value, name } = event.target; // IOW, the 'event' (or 'e') is used to create an object of 2 props from the element that hosts the event... such as clicking on allows you to get the value and name which are parts of the <Select> element;
     setFilterQuery({ ...filterQuery, [name]: value }); //This will add onto the filterQuery but replaces the key-pair value... IOW ['industry']: one of the options avalaible due to <MenuItem>
   };
@@ -164,6 +167,7 @@ function Explore() {
   const filterProjects = projects => {
     const { industry, deadline, location } = filterQuery; //TODO using deadline yet, it should the project timestamp and subtract dates
     //Shouldn't deadline's & location's positions be FLIPPED??
+
 
     //Check issue # ...
     return projects.filter(
@@ -204,9 +208,7 @@ function Explore() {
           value={filterQuery.industry}
           className={classNames(classes.select)}
           variant="outlined"
-          input={
-            <TextField variant="outlined" margin="normal" label="Industries" />
-          }
+          input={<TextField variant="outlined" margin="normal" label="Industries" />}
         >
           <MenuItem value={""}>{}</MenuItem>
           {industries.map(industry => (
@@ -232,8 +234,10 @@ function Explore() {
           label="Deadline"
         />
       </Grid>
+
       {projects && (
         <div className={classes.flexContainer}>
+
           <InfiniteScroll
             pageStart={0}
             loadMore={loadMore}
@@ -244,7 +248,9 @@ function Explore() {
               </div>
             }
           >
-            <ProjectList withAuthor projectData={filterProjects(projects)} />
+            <ProjectList
+            projectData={filterProjects(projects)}
+          />
           </InfiniteScroll>
         </div>
       )}
