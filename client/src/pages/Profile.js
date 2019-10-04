@@ -5,7 +5,9 @@ import {
   Typography,
   Avatar,
   Button,
-  IconButton
+  IconButton,
+  FormControlLabel,
+  Switch
 } from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -173,6 +175,15 @@ export default function ProfilePage(props) {
     setValue(newValue);
   };
 
+  const [check, setCheck] = useState(true);
+  function handleChecked() {
+    setCheck(true)
+  }
+  function handleUnchecked(props) {
+    setCheck(false)
+  }
+
+
   return profile && projects ? (
     //set up a condition to render only if profile and project isn't null
     <React.Fragment>
@@ -239,6 +250,15 @@ export default function ProfilePage(props) {
               <Fields fieldsData={fieldsData} />
             </Grid>
 
+            <Grid container justify="center" alignItems="center">
+              <FormControlLabel
+                value="start"
+                control={<Switch checked={check} onChange={handleUnchecked} color="primary" />}
+                label="Launched"
+                labelPlacement="end"
+              />
+            </Grid>
+            
             <Grid container justify="center">
               <IconButton size="small">
                 <Avatar src={angellist} />
@@ -282,6 +302,9 @@ export default function ProfilePage(props) {
             >
               Projects
             </Typography>
+
+              {/* {check == true ? projects.map((project) => project.launch === true) : projects.map((project) => project.launch === false) } */}
+
             <ProjectList projectData={projects} />
           </TabPanel>
           <TabPanel value={value} index={1}>
