@@ -4,6 +4,7 @@ const auth = require("../middleware/auth");
 const Profile = require("../models/profile");
 const Investment = require("../models/investment");
 const Project = require("../models/project");
+const mongoose = require("mongoose");
 
 router.post("/invest", auth, async (req, res) => {
   try {
@@ -66,13 +67,20 @@ router.get("/projectInvestments/:projectID", async (req, res) => {
 router.get("/userInvestments/:userID", async (req, res) => {
   try {
     const profile = await Profile.findById(req.params.userID).populate(
-      "investments"
+      "investments",
+      "projectID amount"
     );
-    console.log(profile);
+    const projectIDs = profile.investments.map(
+      investment => investment.projectID
+    );
+    const projects = await Project.find()
+      .where("_id")
+      .in(projectIDs);
+
     if (!profile) {
       throw new Error({ status: 404, message: "Profile not found!" });
     }
-    res.status(200).send(profile.investments);
+    res.status(200).send({ investments: profile.investments, projects });
   } catch (e) {
     if (e.status) {
       res.statusMessage = e.message;
