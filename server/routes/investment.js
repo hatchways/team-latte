@@ -19,11 +19,10 @@ router.post("/invest", auth, async (req, res) => {
     const investment = new Investment({
       investorID: profile._id,
       projectID: project._id,
-      amount: req.body.amount
+      amount: parseFloat(req.body.amount)
     });
     await investment.save();
-    project.raised_amount =
-      parseInt(project.raised_amount) + parseInt(req.body.amount);
+    project.raised_amount = project.raised_amount + parseFloat(req.body.amount);
 
     project.investments = project.investments.concat([investment._id]);
     profile.investments = profile.investments.concat([investment._id]);

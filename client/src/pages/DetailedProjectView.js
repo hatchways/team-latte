@@ -5,6 +5,7 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
+  TextField,
   Typography,
   Chip,
   Grid,
@@ -13,6 +14,7 @@ import {
   Tabs,
   Tab,
   Avatar,
+  InputAdornment,
   CardContent,
   Divider,
   Box,
@@ -20,12 +22,19 @@ import {
 } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/styles";
 import { fieldsStyle } from "./Fields";
-import className from "classnames";
+import classNames from "classnames";
+import authFetch from "../utilities/auth";
 
 import coffeeCup from "../assets/coffee-cup.jpg";
 import { lighten } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import theme from "../themes/theme";
+
+const useStyles = makeStyles(createTheme => ({
+  fundDialog: {
+    padding: 20
+  }
+}));
 
 const detailedView = makeStyles({
   dialogSize: {
@@ -53,15 +62,14 @@ const detailedView = makeStyles({
   },
   bothCards: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-  }
-  ,
+    justifyContent: "space-evenly"
+  },
   rightCard: {
     margin: theme.spacing(3)
   },
   authorInfo: {
     flexDirection: "column",
-    margin: 10,
+    margin: 10
   },
   countdown: {
     flexDirection: "row",
@@ -70,7 +78,7 @@ const detailedView = makeStyles({
   },
   countdownBox: {
     borderTop: "2px solid rgba(0,0,0,0.1)",
-   // borderRight: "1px solid rgba(0,0,0,0.5)",
+    // borderRight: "1px solid rgba(0,0,0,0.5)",
     borderBottom: "2px solid rgba(0,0,0,0.1)",
     padding: "20px",
     alignItems: "stretch",
@@ -127,55 +135,64 @@ const project = {
   ]
 };
 
-function TabSection(props) {
-  const { value, index, ...others } = props;
+function FundDialog(props) {
+  const classes = useStyles();
+  const [amount, setAmount] = useState("");
 
-  const AboutSection = value => {
-    return (
-      <div>
-        <Grid container xs="12">
-          <Typography variant="h2" style={{ textAlign: "left" }}>
-            About
-          </Typography>
-          <Divider />
-          <Grid item xs="12">
-            <Typography variant="body1">{project.description}</Typography>
-            {project.summaryPoints.map(point => {
-              return <Typography variant="body2">{point}</Typography>;
-            })}
-          </Grid>
-        </Grid>
-      </div>
-    );
+  const handleAmountChange = event => {
+    console.log(props.projectID);
+    if (/^([1-9][0-9]*[\.]{0,1}[0-9]{0,2})?$/.test(event.target.value)) {
+      setAmount(event.target.value);
+    }
   };
-  const Team = value => {
-    return (
-      <div>
-        <Grid container xs="12">
-          <Typography variant="h2" style={{ textAlign: "left" }}>
-            Team
-          </Typography>
-          <Divider />
-          <Grid item xs="12">
-            <Box>
-              {project.teamMembers.map(member => {
-                return <Typography variant="body1">{member.name}</Typography>;
-              })}
-
-              {project.summaryPoints.map(point => {
-                return <Typography variant="body2">{point}</Typography>;
-              })}
-            </Box>
-          </Grid>
-        </Grid>
-      </div>
-    );
+  const handleInvestSubmit = () => {
+    console.log("hello");
+    authFetch({
+      url: "/invest",
+      method: "POST",
+      body: JSON.stringify({
+        projectID: props.projectID,
+        amount: amount
+      })
+    }).then(res => {
+      if (res.error) {
+        alert("ERROR");
+      } else {
+        console.log("/profile/" + sessionStorage.getItem("user")._id);
+      }
+    });
   };
 
   return (
     <div>
-      {value === 0 && <AboutSection />}
-      {value === 1 && <Team />}
+      <Dialog
+        open={props.fundDialog}
+        onClose={() => props.setFundDialog(false)}
+        maxWidth="md"
+      >
+        <div className={classNames(classes.fundDialog)}>
+          <Typography variant="body2">
+            Please enter the dollar amount you wish to invest to the project.
+          </Typography>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            className={classNames(classes.select)}
+            label="Amount to invest"
+            value={amount}
+            onChange={handleAmountChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              )
+            }}
+          />
+          <br />
+          <Button variant="outlined" onClick={handleInvestSubmit}>
+            Submit Investment
+          </Button>
+        </div>
+      </Dialog>
     </div>
   );
 }
@@ -183,6 +200,7 @@ function TabSection(props) {
 function DetailedProjectView(props) {
   const classes = detailedView();
   const fieldsClasses = fieldsStyle();
+  const [fundDialog, setFundDialog] = useState(false);
 
   const project = props.project;
   //console.log(projects);
@@ -195,28 +213,37 @@ function DetailedProjectView(props) {
 
   const raisedAmount = (project.raised_amount / project.funding_goal) * 100;
 
-
-
   return (
     <div>
-      <Dialog open={props.open} onClose={props.clickClose} className={classes.dialogSize} maxWidth="lg">
+      <Dialog
+        open={props.open}
+        onClose={props.clickClose}
+        className={classes.dialogSize}
+        maxWidth="lg"
+      >
         <Grid>
           <DialogTitle className={classes.dialogTitle}>
             <Chip
-              label={ project.industry }
+              label={project.industry}
               color="primary"
-              className={className(fieldsClasses.field, fieldsClasses.chip, classes.chipPosition)}
+              className={classNames(
+                fieldsClasses.field,
+                fieldsClasses.chip,
+                classes.chipPosition
+              )}
             />
             <Typography variant="h5" color="textPrimary">
               {project.title}
             </Typography>
             <Typography variant="body2" color="textSecondary">
-              {project.subtitle ? project.subtitle : "Our to-be-investors are too busy to read subtitles anyway..."}
+              {project.subtitle
+                ? project.subtitle
+                : "Our to-be-investors are too busy to read subtitles anyway..."}
             </Typography>
           </DialogTitle>
         </Grid>
 
-        <Grid xs="12" className={className(classes.bothCards)} >
+        <Grid xs="12" className={classNames(classes.bothCards)}>
           <DialogContent>
             <Grid container spacing="5">
               {/* Left card */}
@@ -224,9 +251,13 @@ function DetailedProjectView(props) {
                 <Card className={classes.leftCard}>
                   <CardContent>
                     <Grid item xs="12">
-                      <CardMedia image={coffeeCup} component="img" alt={project.title} className={classes.media} />
-                      {/*How can we specify which uploaded photo be used for the card pic? */}  
-
+                      <CardMedia
+                        image={coffeeCup}
+                        component="img"
+                        alt={project.title}
+                        className={classes.media}
+                      />
+                      {/*How can we specify which uploaded photo be used for the card pic? */}
                     </Grid>
                     <Grid item xs="12" wrap="wrap">
                       <Tabs
@@ -244,12 +275,34 @@ function DetailedProjectView(props) {
                       </Tabs>
                     </Grid>
                     <Grid>
-                      {value === 0 && <Typography>{project.description}</Typography>}
-                      {value === 1 && <Typography>{project.description.substring(0,100)}</Typography>}
-                      {value === 2 && <Typography>{project.description.substring(0,50)}</Typography>}
-                      {value === 3 && <Typography>{project.description.substring(0,150)}</Typography>}
-                      {value === 4 && <Typography>{project.description.substring(0,70)}</Typography>}
-                      {value === 5 && <Typography>{project.description.substring(0,200)}</Typography>}
+                      {value === 0 && (
+                        <Typography>{project.description}</Typography>
+                      )}
+                      {value === 1 && (
+                        <Typography>
+                          {project.description.substring(0, 100)}
+                        </Typography>
+                      )}
+                      {value === 2 && (
+                        <Typography>
+                          {project.description.substring(0, 50)}
+                        </Typography>
+                      )}
+                      {value === 3 && (
+                        <Typography>
+                          {project.description.substring(0, 150)}
+                        </Typography>
+                      )}
+                      {value === 4 && (
+                        <Typography>
+                          {project.description.substring(0, 70)}
+                        </Typography>
+                      )}
+                      {value === 5 && (
+                        <Typography>
+                          {project.description.substring(0, 200)}
+                        </Typography>
+                      )}
                     </Grid>
                   </CardContent>
                 </Card>
@@ -259,41 +312,95 @@ function DetailedProjectView(props) {
               <Grid container xs="4" direction="column">
                 <Card>
                   <CardContent>
-                    <Grid container className={className(classes.rightCard)} justify="center" alignItems="center">
-                      <Typography variant="h4">${project.raised_amount}</Typography>
-                      <Typography variant="body2" style={{ color:"gray" }} > / ${project.funding_goal}</Typography>
+                    <Grid
+                      container
+                      className={classNames(classes.rightCard)}
+                      justify="center"
+                      alignItems="center"
+                    >
+                      <Typography variant="h4">
+                        ${project.raised_amount}
+                      </Typography>
+                      <Typography variant="body2" style={{ color: "gray" }}>
+                        {" "}
+                        / ${project.funding_goal}
+                      </Typography>
                     </Grid>
 
                     <Grid justify="center" alignItems="center">
-                      <BorderLinearProgress variant="determinate" value={raisedAmount} />
+                      <BorderLinearProgress
+                        variant="determinate"
+                        value={raisedAmount}
+                      />
                     </Grid>
 
-                    <Grid container justify="center" alignItems="center" style={{marginBottom: "10px"}}>
-                      <Typography>Equity Exchange: {project.equity}%</Typography>
+                    <Grid
+                      container
+                      justify="center"
+                      alignItems="center"
+                      style={{ marginBottom: "10px" }}
+                    >
+                      <Typography>
+                        Equity Exchange: {project.equity}%
+                      </Typography>
                     </Grid>
 
-                    <Grid container justify="center" alignItems="center" className={className(classes.countdown)}  >
-                      <Grid item justify="center" alignContent="stretch"  className={className(classes.countdownBox)}>
+                    <Grid
+                      container
+                      justify="center"
+                      alignItems="center"
+                      className={classNames(classes.countdown)}
+                    >
+                      <Grid
+                        item
+                        justify="center"
+                        alignContent="stretch"
+                        className={classNames(classes.countdownBox)}
+                      >
                         <Typography variant="h6">82</Typography>
-                        <Typography variant="body2" color= "textSecondary">backers</Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          backers
+                        </Typography>
                       </Grid>
-                      <Grid item justify="center" alignItems="center" className={className(classes.countdownBox)} > 
+                      <Grid
+                        item
+                        justify="center"
+                        alignItems="center"
+                        className={classNames(classes.countdownBox)}
+                      >
                         <Typography variant="h6">44</Typography>
-                        <Typography variant="body2" color= "textSecondary">days to go</Typography>
-                        </Grid>
+                        <Typography variant="body2" color="textSecondary">
+                          days to go
+                        </Typography>
+                      </Grid>
                     </Grid>
 
-                    <Grid container justify="center" alignItems="center" className={className(classes.authorInfo)}>
+                    <Grid
+                      container
+                      justify="center"
+                      alignItems="center"
+                      className={classNames(classes.authorInfo)}
+                    >
                       <Avatar src={coffeeCup} size />
                       <Typography variant="p2">{project.author}</Typography>
-                      <Typography variant="p2" color="textSecondary" >{project.location}</Typography>
+                      <Typography variant="p2" color="textSecondary">
+                        {project.location}
+                      </Typography>
                     </Grid>
 
                     <DialogActions>
-                    <Grid container className={className(classes.button)} > 
-                      <Button variant="outlined" fullWidth>Send Message</Button>
-                      <Button onClick={props.clickClose} className={className(classes.fundButton)} fullWidth>Fund This Project</Button>
-                   </Grid>
+                      <Grid container className={classNames(classes.button)}>
+                        <Button variant="outlined" fullWidth>
+                          Send Message
+                        </Button>
+                        <Button
+                          onClick={() => setFundDialog(true)}
+                          className={classNames(classes.fundButton)}
+                          fullWidth
+                        >
+                          Fund This Project
+                        </Button>
+                      </Grid>
                     </DialogActions>
                   </CardContent>
                 </Card>
@@ -302,6 +409,11 @@ function DetailedProjectView(props) {
           </DialogContent>
         </Grid>
       </Dialog>
+      <FundDialog
+        fundDialog={fundDialog}
+        setFundDialog={setFundDialog}
+        projectID={project._id}
+      />
     </div>
   );
 }
