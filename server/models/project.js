@@ -13,7 +13,7 @@ const projectSchema = new Schema(
     },
     industry: {
       type: String,
-      enum: ["Crafts", "Attire", "Food", "Photography", "Music"],
+      enum: ["Crafts", "Attire", "Food", "Photography", "Music", "Technology"],
       required: true
     },
     location: {
@@ -43,11 +43,6 @@ const projectSchema = new Schema(
       type: Boolean,
       required: true
     },
-    equity: {
-      type: Number,
-      required: true
-    }
-    ,
     funding_goal: {
       type: Number,
       required: true,
