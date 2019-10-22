@@ -4,7 +4,6 @@ import { join } from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 
-import indexRouter from "./routes/index";
 import pingRouter from "./routes/ping";
 import userRouter from "./routes/user";
 import projectRouter from "./routes/project";
@@ -22,12 +21,16 @@ app.use(express.static(join(__dirname, "public")));
 // start up mongoose db
 require("./database/mongoose");
 
-app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use(userRouter);
 app.use(projectRouter);
 app.use(profileRouter);
 app.use(investmentRouter);
+
+app.use(express.static(join(__dirname, "public", "build")));
+app.get("/*", (req, res) => {
+  res.sendFile(join(__dirname, "public", "build", "index.html"));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

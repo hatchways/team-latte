@@ -9,6 +9,8 @@ server/.env
 # production
 client/server/src/public/build/
 
+server/public/build
+
 # misc
 .DS_Store
 .env.local
