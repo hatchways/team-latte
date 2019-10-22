@@ -131,7 +131,7 @@ export default function ProfilePage(props) {
   const [value, setValue] = React.useState(0);
 
   useEffect(() => {
-    authFetch({ url: `/profile/${props.match.params.id}` }).then(res => {
+    authFetch({ url: `/apiprofile/${props.match.params.id}` }).then(res => {
       if (res.error) {
         clearing();
       } else {

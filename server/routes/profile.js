@@ -37,7 +37,7 @@ router.get("/profile/:id", async (req, res) => {
   }
 });
 
-router.put("/profile", auth, upload.single("profile"), async (req, res) => {
+router.put("/apiprofile", auth, upload.single("profile"), async (req, res) => {
   if (!req.user._id.toString().match(/^[0-9a-fA-F]{24}$/)) {
     res.statusMessage = "Not a valid ID";
     res.status(404).send("Not a valid Id");
