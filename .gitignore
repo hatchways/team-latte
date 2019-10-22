@@ -7,7 +7,7 @@ node_modules/
 server/.env
 
 # production
-/build/
+client/server/src/public/build/
 
 # misc
 .DS_Store
